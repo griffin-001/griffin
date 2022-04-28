@@ -46,8 +46,17 @@ which will furher help reduce conflicts.
 
 
 ## Team
-| Name           | Student Number |
-|----------------|----------------|
-| Glenn Phillips | 820624         |
-| ---            | ---            |
+| Name             | Student Number |
+|------------------|----------------|
+| Glenn Phillips   | 820624         |
+| James Vinnicombe | 916250         |
+| ...              |                |
+| ...              |                |
+| ...              |                |
+| ...              |                |
+| ...              |                |
+| ...              |                |
+| ...              |                |
+| ...              |                |
+
 
