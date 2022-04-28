@@ -1,0 +1,6 @@
+# for general mac files
+.DS_Store
+
+# for general JetBrains files
+.idea/
+
