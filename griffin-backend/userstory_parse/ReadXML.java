@@ -1,3 +1,5 @@
+package userstory_parse;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -14,7 +16,7 @@ public class ReadXML {
 
     public static void main(String[] argv) {
         try {
-            File xmlFile = new File("griffin-backend/pom.xml");
+            File xmlFile = new File("griffin-backend/userstory_parse/pom.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
