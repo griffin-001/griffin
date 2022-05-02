@@ -17,35 +17,40 @@ public class ReadXML {
     private static final List<String> properties = new ArrayList<>();
 
     public static void main(String[] argv) {
+        // Parses xml with the file location as the argument
+        parseXML("temp-backend/userstory_parse/pom.xml");
+    }
+
+    public static void parseXML(String fileName) {
         try {
-            File xmlFile = new File("temp-backend/userstory_parse/pom.xml");
+            File xmlFile = new File(fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
 
-            getName(doc);
-            getPlugins(doc);
-            getDependencies(doc);
-            getProperties(doc);
-
-            // Print document name
-            System.out.println("Project Name: \n" + projectName);
-
-            // Print plugins HashMap
-            System.out.println("\nPlugins: ");
-            plugins.forEach(System.out::println);
-
-            // Print dependencies HashMap
-            System.out.println("\nDependencies: ");
-            dependencies.forEach(System.out::println);
-
-            // Print properties HashMap
-            System.out.println("\nProperties: ");
-            properties.forEach(System.out::println);
+        getName(doc);
+        getPlugins(doc);
+        getDependencies(doc);
+        getProperties(doc);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Print document name
+        System.out.println("Project Name: \n" + projectName);
+
+        // Print plugins HashMap
+        System.out.println("\nPlugins: ");
+        plugins.forEach(System.out::println);
+
+        // Print dependencies HashMap
+        System.out.println("\nDependencies: ");
+        dependencies.forEach(System.out::println);
+
+        // Print properties HashMap
+        System.out.println("\nProperties: ");
+        properties.forEach(System.out::println);
     }
 
     public static void getName(Document doc) {
