@@ -6,17 +6,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ReadXML {
     private static String projectName = "";
-    private static final HashMap<String,String> plugins = new HashMap<>();
-    private static final HashMap<String,String> dependencies = new HashMap<>();
-    private static final HashMap<String,String> properties = new HashMap<>();
+    private static final List<String> plugins = new ArrayList<>();
+    private static final List<String> dependencies = new ArrayList<>();
+    private static final List<String> properties = new ArrayList<>();
 
     public static void main(String[] argv) {
         try {
-            File xmlFile = new File("griffin-backend/userstory_parse/pom.xml");
+            File xmlFile = new File("temp-backend/userstory_parse/pom.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
@@ -31,15 +33,15 @@ public class ReadXML {
 
             // Print plugins HashMap
             System.out.println("\nPlugins: ");
-            plugins.forEach((key, value) -> System.out.println("Name: " + key + ", Version: " + value));
+            plugins.forEach(System.out::println);
 
             // Print dependencies HashMap
             System.out.println("\nDependencies: ");
-            dependencies.forEach((key, value) -> System.out.println("Name: " + key + ", Version: " + value));
+            dependencies.forEach(System.out::println);
 
             // Print properties HashMap
             System.out.println("\nProperties: ");
-            properties.forEach((key, value) -> System.out.println(key + " " + value));
+            properties.forEach(System.out::println);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +61,7 @@ public class ReadXML {
         NodeList pluginList = doc.getElementsByTagName("plugin");
 
         // Get the name and version of each plugin
-        xmlToHashMap(pluginList, plugins);
+        xmlToStrings(pluginList, plugins);
     }
 
     public static void getDependencies(Document doc) {
@@ -67,7 +69,7 @@ public class ReadXML {
         NodeList dependencyList = doc.getElementsByTagName("dependency");
 
         // Get the name and version of each plugin
-        xmlToHashMap(dependencyList, dependencies);
+        xmlToStrings(dependencyList, dependencies);
     }
 
     public static void getProperties(Document doc) {
@@ -75,20 +77,24 @@ public class ReadXML {
         NodeList dependencyList = doc.getElementsByTagName("property");
 
         // Get the name and version of each plugin
-        xmlToHashMap(dependencyList, properties);
+        xmlToStrings(dependencyList, properties);
     }
 
-    private static void xmlToHashMap(NodeList dependencyList, HashMap<String, String> dependencies) {
+    private static void xmlToStrings(NodeList dependencyList, List<String> stringList) {
         for(int i = 0; i < dependencyList.getLength(); i++) {
             Element element = (Element) dependencyList.item(i);
 
-            NodeList nameNode = element.getElementsByTagName("artifactId");
+            NodeList groupIdNode = element.getElementsByTagName("groupId");
+            NodeList artifactIdNode = element.getElementsByTagName("artifactId");
             NodeList versionNode = element.getElementsByTagName("version");
 
-            Element nameElement = (Element) nameNode.item(0);
+            Element groupIdElement = (Element) groupIdNode.item(0);
+            Element artifactIdElement = (Element) artifactIdNode.item(0);
             Element versionElement = (Element) versionNode.item(0);
 
-            dependencies.put(nameElement.getTextContent(), versionElement.getTextContent());
+            stringList.add(groupIdElement.getTextContent() + ":" +
+                          artifactIdElement.getTextContent() + ":" +
+                             versionElement.getTextContent());
         }
     }
 }
