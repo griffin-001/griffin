@@ -4,8 +4,8 @@
  * The headerbar component allows user to go to home, report, profile, dashboard, or setup pages
  */
 
+import {IconButton, AppBar, Typography, Toolbar} from '@mui/material';
 import * as React from 'react';
-import {AppBar, Icon, IconButton, Toolbar, Typography} from "@material-ui/core";
 import RouteURLs from "../utils/RouteURLs";
 
 type Props = {
