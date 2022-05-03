@@ -14,7 +14,7 @@
 const HeaderBar: FunctionComponent<Props> = (props) => {
     return (
         <React.Fragment>
-            <AppBar>
+            <AppBar position="sticky">
                 <Toolbar>
                     <Typography variant="h6" component={"div"} style={{flexGrow: 1}}>
                         Griffin
