@@ -1,10 +1,16 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import React from "react";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <React.Fragment>
+      <Head>
+        {/* eslint-disable-next-line @next/next/no-title-in-document-head */}
+        <title>Griffin</title>
+      </Head>
+
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link
         rel="stylesheet"
