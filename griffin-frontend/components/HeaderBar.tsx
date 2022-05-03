@@ -20,7 +20,7 @@ const HeaderBar: FunctionComponent<Props> = (props) => {
                         height: 35,
                         width: 35,
                         }}/>
-                    <Typography variant="h6" component={"div"} style={{flexGrow: 1}}>
+                    <Typography variant="h4" component={"div"} style={{flexGrow: 1}}>
                         Griffin
                     </Typography>
                     <IconButton color="inherit" >
