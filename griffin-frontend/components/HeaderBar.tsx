@@ -4,18 +4,22 @@
  * The headerbar component allows user to go to home, report, profile, dashboard, or setup pages
  */
 
- import {IconButton, AppBar, Typography, Toolbar} from '@mui/material';
- import React, { FunctionComponent } from 'react';
+import {IconButton, AppBar, Typography, Toolbar, Box} from '@mui/material';
+import React, { FunctionComponent } from 'react';
  
- interface Props {
+interface Props {
  
- }
+}
 
 const HeaderBar: FunctionComponent<Props> = (props) => {
     return (
         <React.Fragment>
             <AppBar position="sticky">
                 <Toolbar>
+                    <Box component="img" src="/assets/griffin-logo.png" sx={{
+                        height: 35,
+                        width: 35,
+                        }}/>
                     <Typography variant="h6" component={"div"} style={{flexGrow: 1}}>
                         Griffin
                     </Typography>
