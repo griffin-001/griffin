@@ -1,4 +1,4 @@
-export const colours = {
+export const COLOURS = {
 
   BLACK_TEXT: "#10141a",
   DARK_BLUE: "#1a3c5b", // todo currently unused

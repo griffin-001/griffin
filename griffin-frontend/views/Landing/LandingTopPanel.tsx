@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import {Box, Typography, Grid, Button} from "@mui/material";
-import colours from '../../constants/colours';
 
 interface Props {
 

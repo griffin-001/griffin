@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import HeaderBar from '../../components/HeaderBar';
-import {Box, Typography} from "@mui/material";
 import LandingTopPanel from "./LandingTopPanel";
+import NavBar from "../../components/NavBar/NavBar";
 
 interface Props {
 
@@ -15,7 +14,7 @@ const Landing: FunctionComponent<Props> = (props) => {
 
   return (
     <React.Fragment>
-      <HeaderBar/>
+      <NavBar/>
       <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', left: '50%'}}>
         <LandingTopPanel/>
       </div>
