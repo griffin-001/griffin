@@ -52,7 +52,7 @@ which will furher help reduce conflicts.
 | Tom Woodruff     | 834481         |
 | Caiwen Song      | 1146838        |
 | Nicholas Wong    | 926736         |
-| ...              |                |
+| Yi Gao           | 1195878        |
 | ...              |                |
 | ...              |                |
 | ...              |                |
