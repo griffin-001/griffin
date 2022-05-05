@@ -50,8 +50,8 @@ which will furher help reduce conflicts.
 | Glenn Phillips   | 820624         |
 | James Vinnicombe | 916250         |
 | Tom Woodruff     | 834481         |
-| ...              |                |
-| ...              |                |
+| Caiwen Song      | 1146838        |
+| Nicholas Wong    | 926736         |
 | ...              |                |
 | ...              |                |
 | ...              |                |

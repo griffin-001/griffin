@@ -8,12 +8,30 @@ import java.util.*;
 
 public class ReadGradle {
 
-    private static final HashMap<String,String> dependencies = new HashMap<>();
+    private static final List<String> dependency = new LinkedList<>();
 
     public static void main(String[] args) {
+        //file package
+        File fileList = new File("temp-backend/userstory_parse/gradle_files");
+        //file set
+        File[] files = fileList.listFiles();
+        for (File file : files) {
+            String filePath = file.toString();
+            if(filePath.endsWith("gradle")){
+                File realFile = new File(filePath);
+                readGradle(realFile);
+            }
+        }
 
+        System.out.println("\nDependencies: ");
+        for (String s : dependency) {
+            System.out.println(s);
+        }
+    }
+
+    private static void readGradle(File file) {
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("griffin-backend/userstory_parse/build_test.gradle"))));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;
             while((line=br.readLine())!=null){
                 line = line.trim();
@@ -32,13 +50,13 @@ public class ReadGradle {
                                         if(line.contains(":")){
                                             String[] split = line.replace("'","").replace("\"","").split(":");
                                             if(split.length>2){
-                                                dependencies.put(split[1],split[2]);
+                                                dependency.add(split[0]+";"+split[1]+";"+split[2]);
                                             }
                                         }
-                                    //style 2
+                                        //style 2
                                     }else if(line.split(" ")[1].equals("group:")){
                                         String[] split = line.split("'");
-                                        dependencies.put(split[3],split[5]);
+                                        dependency.add(split[1]+";"+split[3]+";"+split[5]);
                                     }
                                 }
                             }
@@ -46,14 +64,8 @@ public class ReadGradle {
                     }
                 }
             }
-
         }catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Print dependencies HashMap
-        System.out.println("\nDependencies: ");
-        dependencies.forEach((key, value) -> System.out.println("Name: " + key + ", Version: " + value));
-
     }
 }
