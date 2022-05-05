@@ -11,11 +11,16 @@ const NavBarBtn: FunctionComponent<Props> = (props) => {
 
   return (
     <Link href={props.link} passHref>
-      <Button>
+      <button style={{
+        all: "unset",
+        cursor: "pointer",
+        padding: "0.5rem",
+        marginLeft: "1rem",
+      }}>
         <Typography variant="h6">
           {props.text}
         </Typography>
-      </Button>
+      </button>
     </Link>
   )
 };

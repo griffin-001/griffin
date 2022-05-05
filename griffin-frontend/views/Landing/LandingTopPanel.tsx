@@ -8,7 +8,11 @@ interface Props {
 const LandingTopPanel: FunctionComponent<Props> = (props) => {
 
   return (
-    <Box>
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Box

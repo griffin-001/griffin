@@ -21,16 +21,20 @@ const NavBar: FunctionComponent<Props> = (props) => {
         alignItems: "center",
         height: "64px",
         width: "100%",
+        paddingLeft: "1rem",
         borderBottom: "solid 1px " + COLOURS.BLACK_TEXT,
       }}>
         <Box sx={{
           display: "flex",
           flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
           width: "100%"
         }}>
           <Box component="img" src="/assets/griffin-logo.png" sx={{
-            height: 35,
-            width: 35,
+            height: 50,
+            width: 60,
+            marginRight: "0.5rem",
           }}/>
           <Typography variant="h4" component={"div"} style={{flexGrow: 1}} fontFamily={"Courier"} fontWeight={"bold"}>
             Griffin
@@ -41,11 +45,11 @@ const NavBar: FunctionComponent<Props> = (props) => {
           flexDirection: "row",
           paddingRight: "1rem"
         }}>
-          <NavBarBtn text={"Home"} link={"/"}/>
-          <NavBarBtn text={"Report"} link={"/"}/>
-          <NavBarBtn text={"Dashboard"} link={"/"}/>
-          <NavBarBtn text={"Setup"} link={"/"}/>
-          <NavBarBtn text={"Profile"} link={"/"}/>
+          <NavBarBtn text={"Home"} link={"/home"}/>
+          <NavBarBtn text={"Report"} link={"/report"}/>
+          <NavBarBtn text={"Dashboard"} link={"/dashboard"}/>
+          <NavBarBtn text={"Setup"} link={"/setup"}/>
+          <NavBarBtn text={"Profile"} link={"/profile"}/>
         </Box>
       </Box>
     )
