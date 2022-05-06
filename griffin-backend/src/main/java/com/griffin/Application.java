@@ -1,7 +1,7 @@
 package com.griffin;
 
 import com.griffin.collector.Collector;
-import com.griffin.crawler.Crawler;
+import com.griffin.collector.Crawler;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

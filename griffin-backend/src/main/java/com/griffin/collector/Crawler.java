@@ -1,4 +1,4 @@
-package com.griffin.crawler;
+package com.griffin.collector;
 
 import java.io.IOException;
 import java.nio.file.Path;
