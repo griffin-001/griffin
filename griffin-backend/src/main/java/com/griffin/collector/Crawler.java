@@ -24,7 +24,7 @@ public class Crawler {
         workingDir = Paths.get(System.getProperty("user.dir"));
         outputDir = workingDir.resolve("repo-build-files");
         repoFolderRoot = workingDir.resolve("repositories");
-        log.info("Working directory: "+workingDir+"\nOutput directory: "+outputDir);
+        log.info("Working directory: " + workingDir + "\nOutput directory: " + outputDir);
     }
 
     /**
@@ -37,7 +37,7 @@ public class Crawler {
         // Check if repositories folder exists
         if (Files.notExists(repoFolderRoot)) {
             log.error("No 'repositories' folder found.");
-            throw new Exception(repoFolderRoot.toString()+" not found.\nAborting "+
+            throw new Exception(repoFolderRoot.toString() + " not found.\nAborting " +
             "build file crawler...");
         }
 
@@ -69,7 +69,7 @@ public class Crawler {
      * @throws IOException
      */
     private void saveFileToOutput(Path file) throws IOException {
-        log.info("Copying "+file.toString());
+        log.info("Copying " + file.toString());
         // Find which repo the file belongs to
         Path repoNamePath = file.getParent();
         
@@ -78,14 +78,14 @@ public class Crawler {
         }
         // Concat the name of the output file <REPO_NAME>-<COUNT>-<FILENAME>
         String repoName = repoNamePath.getFileName().toString();
-        String outputFileName = repoName+"-"+counter+"-"+file.getFileName().toString();
+        String outputFileName = repoName + "-" + counter + "-" + file.getFileName().toString();
 
         Path outputFilePath = outputDir.resolve(outputFileName);
 
         // Copy file to output file
         Files.createDirectories(outputDir);
         Files.write(outputFilePath, Files.readAllBytes(file));
-        log.info("Copied file to "+outputFilePath);
+        log.info("Copied file to " + outputFilePath);
         counter ++;
     }
 
@@ -97,10 +97,7 @@ public class Crawler {
     private boolean checkFileName(Path file) {
         String fileName = file.getFileName().toString().toLowerCase();
 
-        if (BUILDFILE_NAME_JAVA.contains(fileName)) {
-            return true;
-        }
-        return false;
+        return BUILDFILE_NAME_JAVA.contains(fileName);
     }
     
 }
