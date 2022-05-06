@@ -8,7 +8,7 @@ The system is split into two components, stored in  `griffin-frontend` and `grif
 
 TODO
 
-For development instructions see the [readme](griffin-backend/README.md) in griffin-backend.
+For development instructions see the [readme](griffin-frontend/README.md) in griffin-frontend.
 
 ## Backend
 
@@ -19,7 +19,7 @@ The backend consists of the following components, all within the same Spring Boo
 - Web Server (serving API for frontend)
 - Insights Database
 
-For development instructions see the [readme](griffin-frontend/README.md) in griffin-backend.
+For development instructions see the [readme](griffin-backend/README.md) in griffin-backend.
 
 ## Style Guide
 
