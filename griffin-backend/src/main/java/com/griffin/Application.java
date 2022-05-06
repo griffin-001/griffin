@@ -1,6 +1,7 @@
 package com.griffin;
 
 import com.griffin.collector.Collector;
+import com.griffin.collector.Crawler;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +21,9 @@ public class Application {
 		return args -> {
 			Collector collector = new Collector();
 			collector.collect();
+
+			Crawler crawler = new Crawler();
+			crawler.searchForFiles();
 		};
 	}
 }
