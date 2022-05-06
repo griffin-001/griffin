@@ -1,5 +1,6 @@
 package com.griffin.collector.bitbucket;
 
+import com.griffin.collector.Project;
 import com.griffin.collector.Repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,8 +19,8 @@ import java.util.HashMap;
 /**
  * Stores relevant information for a given project returned as JSON by the Bitbucket Server API.
  */
-public class Project {
-    private static final Logger log = LoggerFactory.getLogger(Project.class);
+public class bitbucketProject extends Project {
+    private static final Logger log = LoggerFactory.getLogger(bitbucketProject.class);
 
     // TODO: Store these in configuration instead.
     private final String apiPath  = "/rest/api/1.0/projects";
@@ -38,7 +39,7 @@ public class Project {
      * Uses given JsonNode object to get create itself.
      * @param root a JsonNode object with information from an GET request.
      */
-    public Project(JsonNode root) {
+    public bitbucketProject(JsonNode root) {
         key                = root.get("key").asText();
         name               = root.get("name").asText();
         description        = root.get("description").asText();
@@ -73,16 +74,16 @@ public class Project {
             System.exit(1);
         }
 
-//        root.get("values").forEach(node -> {
-//            String name = node.get("name").asText();
-//            Repository repository = new Repository(node);
-//            output.put(name, repository);
-//        });
         for (JsonNode node : root.get("values")) {
             String name = node.get("name").asText();
             Repository repository = new Repository(node);
             output.put(name, repository);
-            break;  // TODO: Remove this, it's just so you only clone one repository per project.
+            /*
+             * TODO:
+             * This break is here so that during development we don't clone every single remote repository.
+             * Need to change this so that when dev profile is set, this breaks early, but not in prod.
+             */
+            break;
         }
         return output;
     }
