@@ -38,3 +38,6 @@ out/
 
 ### Cloned repositories ###
 /repositories
+
+### Build file outputs ###
+repo-build-files/
