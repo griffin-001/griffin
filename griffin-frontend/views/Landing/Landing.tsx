@@ -1,6 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent} from 'react';
 import LandingTopPanel from "./LandingTopPanel";
 import NavBar from "../../components/NavBar/NavBar";
+import PageContainer from "../../components/PageContainer";
 
 interface Props {
 
@@ -10,16 +11,15 @@ interface Props {
 //  can just go within the landing folder in views
 //  Only the global stuff needs to go in a separate folder
 
-const Landing: FunctionComponent<Props> = (props) => {
+class Landing extends React.Component<Props> {
+  render() {
 
-  return (
-    <React.Fragment>
-      <NavBar/>
-      <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', left: '50%'}}>
+    return (
+      <PageContainer isCentered>
         <LandingTopPanel/>
-      </div>
-    </React.Fragment>
-  );
-};
+      </PageContainer>
+    );
+  }
+}
 
 export default Landing;

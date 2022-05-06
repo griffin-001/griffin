@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent} from 'react';
 import {Box, Typography, Grid, Button} from "@mui/material";
 
 interface Props {
@@ -8,10 +8,11 @@ interface Props {
 const LandingTopPanel: FunctionComponent<Props> = (props) => {
 
   return (
-    <Box sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      left: '50%'
     }}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
@@ -28,28 +29,44 @@ const LandingTopPanel: FunctionComponent<Props> = (props) => {
         <Grid item xs={6}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                <Typography  style={{ fontWeight: 600 }} variant={"h5"}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <Typography style={{fontWeight: 600}} variant={"h5"}>
                   Griffin, the cooler Grafeas
                 </Typography>
               </div>
             </Grid>
             <Grid item style={{height: '100%'}} xs={12}>
-              <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
                 <Button>
                   Login
                 </Button>
               </div>
             </Grid>
             <Grid item xs={12}>
-              <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
                 <Typography variant={"h6"}>
                   Or
                 </Typography>
               </div>
             </Grid>
             <Grid item xs={12}>
-              <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
                 <Button>
                   Register
                 </Button>
@@ -58,7 +75,7 @@ const LandingTopPanel: FunctionComponent<Props> = (props) => {
           </Grid>
         </Grid>
       </Grid>
-    </Box>
+    </div>
   );
 };
 
