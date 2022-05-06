@@ -19,8 +19,8 @@ import java.util.HashMap;
 /**
  * Stores relevant information for a given project returned as JSON by the Bitbucket Server API.
  */
-public class bitbucketProject extends Project {
-    private static final Logger log = LoggerFactory.getLogger(bitbucketProject.class);
+public class BitbucketProject extends Project {
+    private static final Logger log = LoggerFactory.getLogger(BitbucketProject.class);
 
     // TODO: Store these in configuration instead.
     private final String apiPath  = "/rest/api/1.0/projects";
@@ -39,7 +39,7 @@ public class bitbucketProject extends Project {
      * Uses given JsonNode object to get create itself.
      * @param root a JsonNode object with information from an GET request.
      */
-    public bitbucketProject(JsonNode root) {
+    public BitbucketProject(JsonNode root) {
         key                = root.get("key").asText();
         name               = root.get("name").asText();
         description        = root.get("description").asText();

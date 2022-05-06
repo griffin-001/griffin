@@ -9,12 +9,19 @@ spring:
       on-profile: dev
   main:
     banner-mode: off
-#bitbucket:
-#  protocol: 'http'
-#  apibase: '/rest/api/1.0/'
-#  servers:
-#    - '3.26.194.213'
-#    - '3.26.194.213'
+bitbucket:
+  protocol: 'http'
+  apibase: '/rest/api/1.0/'
+  servers:
+    - '3.26.194.213'
+    - '3.26.194.213'
+gitlab:
+  protocol: 'http'
+  apibase: '/not/sure/yet/'
+  servers:
+    - '1.2.3.4'
+    - '5.6.7.8'
+    - '42.42.42.42'
 ---
 spring:
   config:

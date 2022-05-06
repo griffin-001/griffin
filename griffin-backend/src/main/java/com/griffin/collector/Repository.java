@@ -17,6 +17,7 @@ public class Repository {
     private static final Logger log = LoggerFactory.getLogger(Repository.class);
 
     public Repository(JsonNode root) {
+        // NOTE: Bitbucket specific.
         name = root.get("name").asText();
         getCloneUrls(root);
         cloneRepository();
@@ -34,6 +35,7 @@ public class Repository {
      * @param root a JsonNode object with data for just this repo.
      */
     private void getCloneUrls(JsonNode root) {
+        // NOTE: Entire method is Bitbucket specific.
         root.get("links").get("clone").forEach(node -> {
             if (node.get("name").asText().equals("http")) {
                 hrefHTTP = node.get("href").asText();
@@ -49,10 +51,9 @@ public class Repository {
     }
 
     // TODO: Use /opt/data or /var or /etc when prod profile is set.
-    // TODO: Double check if this is cross-platform.
     private void cloneRepository() {
         String currentDir = System.getProperty("user.dir");
-        String repoDirString = Paths.get(currentDir) + "/repositories/" + name;
+        String repoDirString = Paths.get(currentDir) + "/repositories/" + name;  // NOTE: Bitbucket specific.
         Path repoDir = Paths.get(repoDirString);
         log.info(repoDir.toString());
         try {
