@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+You must have Yarn installed to run this application: [https://classic.yarnpkg.com/en/](https://classic.yarnpkg.com/en/)
+
 First, run the development server:
 
 ```bash
