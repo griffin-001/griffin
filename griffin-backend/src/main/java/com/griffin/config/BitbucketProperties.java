@@ -10,6 +10,7 @@ public class BitbucketProperties {
     private String protocol;
     private String apiBase;
     private List<String> servers;
+    private Boolean minimalClones;
 
     public BitbucketProperties() {
     }
@@ -36,5 +37,13 @@ public class BitbucketProperties {
 
     public void setApiBase(String apiBase) {
         this.apiBase = apiBase;
+    }
+
+    public Boolean getMinimalClones() {
+        return minimalClones;
+    }
+
+    public void setMinimalClones(Boolean minimalClones) {
+        this.minimalClones = minimalClones;
     }
 }

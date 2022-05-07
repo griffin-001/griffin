@@ -1,6 +1,9 @@
 package com.griffin.collector;
 
 import com.griffin.collector.bitbucket.BitbucketProject;
+import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.bitbucket.BitbucketWrapper;
+import com.griffin.collector.gitlab.GitlabWrapper;
 import com.griffin.config.BitbucketProperties;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,13 +35,22 @@ import java.util.List;
 public class CollectorService {
     private static final Logger log = LoggerFactory.getLogger(CollectorService.class);
     private final Environment environment;
-    private List<BitbucketProject> projects;
+    private final BitbucketProperties bitbucketProperties;
+    private final Crawler crawler;
+    private BitbucketWrapper bitbucketWrapper;
+    private GitlabWrapper gitlabWrapper;
+    private List<Project> projects;
 
-    @Autowired
-    private BitbucketProperties bitbucketProperties;
-
-    public CollectorService(Environment environment) {
+    public CollectorService(Environment environment,
+                            BitbucketProperties bitbucketProperties,
+                            Crawler crawler,
+                            BitbucketWrapper bitbucketWrapper,
+                            GitlabWrapper gitlabWrapper) {
         this.environment = environment;
+        this.bitbucketProperties = bitbucketProperties;
+        this.crawler = crawler;
+        this.bitbucketWrapper = bitbucketWrapper;
+        this.gitlabWrapper = gitlabWrapper;
         this.projects = new ArrayList<>();
     }
 
@@ -46,23 +59,38 @@ public class CollectorService {
 //    @Scheduled(fixedDelay = 4000)
     public void test() {
         log.info(environment.getProperty("bitbucket.protocol"));
-    }
+        }
 
-    /**
-     * Driver method for this class.
+        /**
+     * Driver method for this class, and therefore for the whole collection system.
      */
     @GetMapping("/collect")
-    public void collect() throws Exception{
-        String protocol = bitbucketProperties.getProtocol();
-        String apiBase = bitbucketProperties.getApiBase();
-        String projectAPIBase = "projects";
-        for (String ipAddress : bitbucketProperties.getServers()) {
-            log.info("starting collection from " + ipAddress);
-            String url = protocol + "://" + ipAddress + apiBase + projectAPIBase;
-            List<BitbucketProject> bitbucketProjects = getAllProjects(url);
-            projects.addAll(bitbucketProjects);
-            // TODO: Still need to get this working for > 1 servers.
-            break;
+    public void collect() {
+        collectFrom("bitbucket");
+//        collectFrom("gitlab");
+//        crawler.searchForFiles();
+    }
+
+    public void collectFrom(String scmType) {
+        // TODO: Refactor to use the same method for Bitbucket and Gitlab using some OO magic.
+        for (String ip : bitbucketProperties.getServers()) {
+            log.info("starting collection from " + ip);
+            String serverIdentity = bitbucketWrapper.getServerType(ip);
+            if (!serverIdentity.equals("bitbucket")) {
+                log.error("received incorrect response from ip " + ip);
+                System.exit(1);
+            } else {
+                List<BitbucketProject> bitbucketProjects = bitbucketWrapper.getProjects(ip);
+                for (Project project : bitbucketProjects) {
+                    HashMap<String, BitbucketRepository> repositoryHashMap = bitbucketWrapper.getProjectRepos(ip, project);
+                    project.setRepositoryHashMap(repositoryHashMap);
+                    this.projects.add(project);
+                }
+            }
+            if (environment.getRequiredProperty("minimalclones", Boolean.class)) {
+                // This ensures that we only clone repos for one ip address if dev profile is active.
+                break;
+            }
         }
     }
 
@@ -71,31 +99,6 @@ public class CollectorService {
      */
     @GetMapping("/crawl")
     public void crawl() throws Exception {
-        Crawler crawler = new Crawler();
         crawler.searchForFiles();
-    }
-
-    /**
-     * Connects to the specified url and gets all projects from it.
-     * @param url is for a given SCM instance
-     * @return a list of projects found at the input url.
-     */
-    private List<BitbucketProject> getAllProjects(String url) throws Exception {
-        log.info("getting all projects from url endpoint " + url);
-        List<BitbucketProject> output = new ArrayList<>();
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(response.getBody());
-        root.get("values").forEach(node -> {  // NOTE: Bitbucket specific.
-            BitbucketProject project = new BitbucketProject(node);
-            output.add(project);
-        });
-        output.forEach(project -> {
-            project.getRepositoryHashMap().entrySet().forEach(stringRepositoryEntry -> {
-                log.info(stringRepositoryEntry.toString());
-            });
-        });
-        return output;
     }
 }
