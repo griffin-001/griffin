@@ -2,6 +2,7 @@ package com.griffin.collector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Component
 public class Crawler {
     private static final Logger log = LoggerFactory.getLogger(Crawler.class);
     private List<String> BUILDFILE_NAME_JAVA = new ArrayList<String>(
@@ -25,7 +27,7 @@ public class Crawler {
         workingDir = Paths.get(System.getProperty("user.dir"));
         outputDir = workingDir.resolve("repo-build-files");
         repoFolderRoot = workingDir.resolve("repositories");
-        log.info("Working directory: " + workingDir + "\nOutput directory: " + outputDir);
+        log.info("Working directory: " + workingDir + " Output directory: " + outputDir);
     }
 
     /**

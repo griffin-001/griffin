@@ -9,8 +9,9 @@ spring:
       on-profile: dev
   main:
     banner-mode: off
+minimalclones: true
 bitbucket:
-  protocol: 'http'
+  protocol: 'http://'
   apibase: '/rest/api/1.0/'
   servers:
     - '3.26.194.213'
