@@ -1,5 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {Box, Typography, Grid, Button} from "@mui/material";
+import COLOURS from "../../constants/colours";
 
 interface Props {
 
@@ -45,7 +46,7 @@ const LandingTopPanel: FunctionComponent<Props> = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-                <Button>
+                <Button variant="contained">
                   Login
                 </Button>
               </div>
@@ -67,7 +68,7 @@ const LandingTopPanel: FunctionComponent<Props> = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-                <Button>
+                <Button variant="contained">
                   Register
                 </Button>
               </div>
