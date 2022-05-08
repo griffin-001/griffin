@@ -1,6 +1,8 @@
 package com.griffin.collector.bitbucket;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.griffin.collector.Crawler;
+import com.griffin.collector.Repository;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,23 +13,24 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 
-public class BitbucketRepository {
+public class BitbucketRepository implements Repository {
     private static final Logger log = LoggerFactory.getLogger(BitbucketRepository.class);
 
     public BitbucketRepository(JsonNode root) {
         name = root.get("name").asText();
         getCloneUrls(root);
         cloneRepository();
+        findBuildFiles();
     }
 
     private String name;
     private String hrefHTTP;
     private String hrefSSH;
-    private File localLocation;
-
-    private File buildFile;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found.
+    private File localLocation; // TODO: Store a reference to where the repo is stored locally.
+    private List<File> buildFile;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found.
 
     /**
      * Finds the url that we will use to finally clone this repo.
@@ -54,28 +57,41 @@ public class BitbucketRepository {
         String currentDir = System.getProperty("user.dir");
         String repoDirString = Paths.get(currentDir) + "/repositories/bitbucket/" + name;
         Path repoDir = Paths.get(repoDirString);
-        log.info(repoDir.toString());
-        try {
-            Files.createDirectories(repoDir);
-        } catch (IOException e) {
-            log.error("couldn't create repo directory " + repoDir);
-            System.exit(1);
+        if (Files.exists(repoDir)) {
+            log.info("Directory " + repoDir.toString() + " already exists, skipping cloning");
+            // TODO: Git pull here.
+        } else {
+            try {
+                Files.createDirectories(repoDir);
+            } catch (IOException e) {
+                log.error("couldn't create repo directory " + repoDir);
+                System.exit(1);
+            }
+            try {
+                log.info("cloning " + hrefHTTP);
+                Git repo = Git.cloneRepository().
+                        setURI(hrefHTTP).
+                        setDirectory(new File(repoDirString)).
+                        call();
+                log.info("finished cloning " + hrefHTTP);
+            } catch (Exception e) {
+                log.error("problem while cloning " + hrefHTTP);
+                System.exit(1);
+            }
         }
-        try {
-            log.info("cloning " + hrefHTTP);
-            Git repo = Git.cloneRepository().
-                    setURI(hrefHTTP).
-                    setDirectory(new File(repoDirString)).
-                    call();
-            log.info("finished cloning " + hrefHTTP);
-        } catch (Exception e) {
-            log.error("problem while cloning " + hrefHTTP);
-            System.exit(1);
-        }
+    }
+
+    public void findBuildFiles() {
+        // TODO: Use crawler here and add build files to this class.
     }
 
     public String getHrefHTTP() {
         return hrefHTTP;
+    }
+
+    @Override
+    public List<File> getBuildFiles() {
+        return buildFile;
     }
 
     @Override
