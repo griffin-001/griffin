@@ -31,16 +31,25 @@ public class TransformerService {
                     String projectName = "";
                     List<String> dependencies = new ArrayList<>();
 
-                    if(fileType.equals("xml")) {
+                    if(fileType.equals(".xml")) {
+                        log.info(repository.toString() + " : Maven found");
                         projectName = ReadXML.parseProjectName(buildFile);
                         dependencies = ReadXML.parseDependencies(buildFile);
+
+                        System.out.println(projectName);
+                        assert dependencies != null;
+                        for(String dependency : dependencies) {
+                            System.out.println(dependency);
+                        }
                     }
-                    else if(fileType.equals("gradle")) {
-                        projectName = ReadGradle.parseProjectName(buildFile);
-                        dependencies = ReadGradle.parseDependencies(buildFile);
+                    else if(fileType.equals(".gradle")) {
+                        log.info(repository.toString() + " : Gradle found");
+                        // Below code causes ArrayIndexOutOfBoundsException
+//                        projectName = ReadGradle.parseProjectName(buildFile);
+//                        dependencies = ReadGradle.parseDependencies(buildFile);
                     }
                     else {
-                        log.error("Invalid build file extension");
+                        log.error("\"" + buildFile.getName() + "\", " + fileType + " - Invalid build file extension");
                     }
 
                     // TODO: Uncomment when below method convert to Spring Boot

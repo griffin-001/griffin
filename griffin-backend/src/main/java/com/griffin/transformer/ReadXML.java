@@ -17,7 +17,6 @@ public class ReadXML {
             Document doc = dBuilder.parse(file);
 
             // Gets the first element called artifactId
-            // NOTE: Unsure if the title is always the first artifactId element
             NodeList nameList = doc.getElementsByTagName("artifactId");
             Element element = (Element) nameList.item(0);
             return element.getTextContent();

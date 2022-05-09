@@ -46,6 +46,7 @@ public class BitbucketProject implements Project {
 
     @Override
     public void setRepositoryHashMap(HashMap<String, BitbucketRepository> repositoryHashMap) {
+        this.repositoryHashMap = repositoryHashMap;
     }
 
     @Override
