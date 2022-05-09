@@ -18,7 +18,7 @@ class Home extends React.Component<Props> {
       <PageContainer isCentered>
         <Typography style={{fontWeight: 600}} variant={"h5"}>
           Alerts
-        <Typography/>
+        </Typography>
       </PageContainer>
     );
   }
