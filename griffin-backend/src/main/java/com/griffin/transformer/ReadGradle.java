@@ -1,52 +1,29 @@
+package com.griffin.transformer;
+
 import java.io.*;
 import java.util.*;
 
 public class ReadGradle {
-
-    private static String projectName = "";
-//    private static final List<String> dependency = new LinkedList<>();
-    private static final HashSet<String> dependencies = new HashSet<>();
-
-    public static void main(String[] args) {
-        //file package
-        File fileList = new File("temp-backend/userstory_parse/gradle_files");
-        //file set
-        File[] files = fileList.listFiles();
-        for (File file : files) {
-            String filePath = file.toString();
-            File realFile = new File(filePath);
-            if(filePath.endsWith("settings.gradle")){
-                readProjectName(realFile);
+    public static String parseProjectName(File file) {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line;
+            while ((line = br.readLine()) != null) {
+                line=line.trim();
+                if(line.contains("=")){
+                    return line.split("=")[1].replace("'","").trim();
+                }
             }
-            if(filePath.endsWith("gradle")){
-                readGradle(realFile);
-            }
-        }
 
-        System.out.println("\nProjectName: ");
-        System.out.println(projectName);
-        System.out.println("\nDependencies: ");
-        for (String s : dependencies) {
-            System.out.println(s);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return "";
     }
 
-    private static void readProjectName(File file) {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    line=line.trim();
-                    if(line.contains("=")){
-                        projectName = line.split("=")[1].replace("'","").trim();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public static List<String> parseDependencies(File file) {
+        List<String> dependencies = new ArrayList<>();
 
-    private static void readGradle(File file) {
         try{
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;
@@ -62,19 +39,15 @@ public class ReadGradle {
                                 if(line.contains("'")){
                                     String[] split = line.split("'");
                                     if(split.length>=3){
-//                                        dependency.add("NoGroup"+";"+split[1]+";"+split[3]);
                                         dependencies.add("NoGroup"+";"+split[1]+";"+split[3]);
                                     }else if(split.length<3){
-//                                        dependency.add("NoGroup"+";"+split[1]+";"+"latest");
                                         dependencies.add("NoGroup"+";"+split[1]+";"+"latest");
                                     }
                                 }else if(line.contains("'")){
                                     String[] split = line.split("\"");
                                     if(split.length>=3){
-//                                        dependency.add("NoGroup"+";"+split[1]+";"+split[3]);
                                         dependencies.add("NoGroup"+";"+split[1]+";"+split[3]);
                                     }else if(split.length<3){
-//                                        dependency.add("NoGroup"+";"+split[1]+";"+"latest");
                                         dependencies.add("NoGroup"+";"+split[1]+";"+"latest");
                                     }
                                 }
@@ -89,17 +62,14 @@ public class ReadGradle {
                                         if(line.contains(":")){
                                             String[] split = line.replace("'","").replace("\"","").split(":");
                                             if(split.length>2){
-//                                                dependency.add(split[0]+";"+split[1]+";"+split[2]);
                                                 dependencies.add(split[0]+";"+split[1]+";"+split[2]);
                                             }else if(split.length==2){
-//                                                dependency.add(split[0]+";"+split[1]+";"+"latest");
                                                 dependencies.add(split[0]+";"+split[1]+";"+"latest");
                                             }
                                         }
                                         //style 2
                                     }else if(line.split(" ")[1].equals("group:")){
                                         String[] split = line.split("'");
-//                                        dependency.add(split[1]+";"+split[3]+";"+split[5]);
                                         dependencies.add(split[1]+";"+split[3]+";"+split[5]);
                                     }
                                 }
@@ -111,5 +81,6 @@ public class ReadGradle {
         }catch (Exception e) {
             e.printStackTrace();
         }
+        return dependencies;
     }
 }

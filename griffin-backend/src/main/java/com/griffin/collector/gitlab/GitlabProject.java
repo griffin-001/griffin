@@ -11,6 +11,11 @@ public class GitlabProject implements Project {
     }
 
     @Override
+    public HashMap<String, BitbucketRepository> getRepositoryHashMap() {
+        return new HashMap<>();
+    }
+
+    @Override
     public String getKey() {
         return null;
     }
