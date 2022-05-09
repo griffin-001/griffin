@@ -48,6 +48,11 @@ public class BitbucketProject implements Project {
     public void setRepositoryHashMap(HashMap<String, BitbucketRepository> repositoryHashMap) {
     }
 
+    @Override
+    public HashMap<String, BitbucketRepository> getRepositoryHashMap() {
+        return repositoryHashMap;
+    }
+
     public String getKey() {
         return key;
     }
