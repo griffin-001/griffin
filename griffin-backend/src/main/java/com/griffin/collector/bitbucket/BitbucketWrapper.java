@@ -42,7 +42,7 @@ public class BitbucketWrapper implements SCMWrapper {
     @Override
     public List<BitbucketProject> getProjects(String ip) {
         String url = protocol + ip + apiBase + "projects";
-        log.info("getting project urls from endpoint " + url);
+        log.info("Getting project urls from " + url);
         List<BitbucketProject> output = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -55,7 +55,7 @@ public class BitbucketWrapper implements SCMWrapper {
             }
             return output;
         } catch (JsonProcessingException e) {
-            log.error("problem reading returned json of project urls " + e.getMessage());
+            log.error("Problem reading returned json of project urls " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +64,7 @@ public class BitbucketWrapper implements SCMWrapper {
     public HashMap<String, BitbucketRepository> getProjectRepos(String ip, Project project) {
         HashMap<String, BitbucketRepository> output = new HashMap<>();
         String urlListRepos = protocol + ip + apiBase + "projects/" + project.getKey() + "/repos";
-        log.info("getting repositories for project " + project.getKey() + " from url " + urlListRepos);
+        log.info("Getting repos for project " + project.getKey() + " from " + urlListRepos);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(urlListRepos, String.class);
