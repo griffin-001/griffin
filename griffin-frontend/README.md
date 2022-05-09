@@ -6,14 +6,20 @@ You must have Yarn installed to run this application: [https://classic.yarnpkg.c
 
 Once ``yarn`` is installed **NOT** ``npm``:
 
-Navigate to the the ``griffin-frontend`` folder
-```cd griffin-frontend```
+Navigate to the the ``griffin-frontend`` folder.  
+```
+cd griffin-frontend
+```
 
-Then, update your dependencies.
-```yarn```
+Then, update your dependencies.  
+```
+yarn
+```
 
-Then, run the development server:
-```yarn dev```
+Then, run the development server.  
+```
+yarn dev
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
