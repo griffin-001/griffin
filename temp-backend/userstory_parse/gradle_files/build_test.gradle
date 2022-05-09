@@ -1,4 +1,4 @@
-package userstory_parse
+package gradle_files
 
 plugins {
     id 'java'

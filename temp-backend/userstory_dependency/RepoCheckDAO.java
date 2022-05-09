@@ -39,9 +39,6 @@ public class RepoCheckDAO {
 
                 findAllRepo(depID, status, conn);
             }
-            else{
-                System.out.println(groupID+':'+artifactID+':'+versionID+" is not in dependency list.");
-            }
 
             stmt.close();
             rs.close();

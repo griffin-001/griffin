@@ -16,6 +16,7 @@ dependencies {
 	implementation 'org.eclipse.jgit:org.eclipse.jgit:6.1.0.202203080745-r'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
