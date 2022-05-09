@@ -18,6 +18,11 @@ import java.util.List;
 
 public class BitbucketRepository implements Repository {
     private static final Logger log = LoggerFactory.getLogger(BitbucketRepository.class);
+    private String name;
+    private String hrefHTTP;
+    private String hrefSSH;
+    private Path localLocation; // TODO: Store a reference to where the repo is stored locally.
+    private List<File> buildFiles;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found.
 
     public BitbucketRepository(JsonNode root) {
         name = root.get("name").asText();
@@ -25,12 +30,6 @@ public class BitbucketRepository implements Repository {
         cloneRepository();
         findBuildFiles();
     }
-
-    private String name;
-    private String hrefHTTP;
-    private String hrefSSH;
-    private File localLocation; // TODO: Store a reference to where the repo is stored locally.
-    private List<File> buildFile;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found.
 
     /**
      * Finds the url that we will use to finally clone this repo.
@@ -56,15 +55,15 @@ public class BitbucketRepository implements Repository {
     private void cloneRepository() {
         String currentDir = System.getProperty("user.dir");
         String repoDirString = Paths.get(currentDir) + "/repositories/bitbucket/" + name;
-        Path repoDir = Paths.get(repoDirString);
-        if (Files.exists(repoDir)) {
-            log.info("Directory " + repoDir.toString() + " already exists, skipping cloning");
+        localLocation = Paths.get(repoDirString);
+        if (Files.exists(localLocation)) {
+            log.info("Repo " + name + " already exists on this machine, skipping cloning");
             // TODO: Git pull here.
         } else {
             try {
-                Files.createDirectories(repoDir);
+                Files.createDirectories(localLocation);
             } catch (IOException e) {
-                log.error("couldn't create repo directory " + repoDir);
+                log.error("Couldn't create repo directory " + localLocation);
                 System.exit(1);
             }
             try {
@@ -73,16 +72,22 @@ public class BitbucketRepository implements Repository {
                         setURI(hrefHTTP).
                         setDirectory(new File(repoDirString)).
                         call();
-                log.info("finished cloning " + hrefHTTP);
+                log.info("Finished cloning " + hrefHTTP);
             } catch (Exception e) {
-                log.error("problem while cloning " + hrefHTTP);
+                log.error("Problem while cloning " + hrefHTTP);
                 System.exit(1);
             }
         }
     }
 
-    public void findBuildFiles() {
-        // TODO: Use crawler here and add build files to this class.
+    private void findBuildFiles() {
+        try {
+            Crawler crawler = new Crawler(localLocation);
+            buildFiles = crawler.getBuildFiles();
+        } catch (Exception e) {
+            log.warn("Crawler failed for path " + localLocation.toString());
+        }
+        // TODO: Handle case where a repo has no build file.
     }
 
     public String getHrefHTTP() {
@@ -91,7 +96,7 @@ public class BitbucketRepository implements Repository {
 
     @Override
     public List<File> getBuildFiles() {
-        return buildFile;
+        return buildFiles;
     }
 
     @Override

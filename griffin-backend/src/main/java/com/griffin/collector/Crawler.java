@@ -2,8 +2,8 @@ package com.griffin.collector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,22 +12,28 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Component
 public class Crawler {
     private static final Logger log = LoggerFactory.getLogger(Crawler.class);
     private List<String> BUILDFILE_NAME_JAVA = new ArrayList<String>(
         Arrays.asList("pom.xml", "build.gradle")
     );
     private int counter = 1;
-    private Path workingDir;
+    private Path rootDir;
     private Path outputDir;
     private Path repoFolderRoot;
+    private List<File> buildFiles;
 
-    public Crawler() {
-        workingDir = Paths.get(System.getProperty("user.dir"));
-        outputDir = workingDir.resolve("repo-build-files");
-        repoFolderRoot = workingDir.resolve("repositories");
-        log.info("Working directory: " + workingDir + " Output directory: " + outputDir);
+    public Crawler(Path repoPath) throws Exception {
+        log.info("Crawling: " + repoPath.getFileName().toString());
+        buildFiles = new ArrayList<>();
+        rootDir = repoPath;
+        repoFolderRoot = repoPath;
+        searchForFiles();
+        if (buildFiles.isEmpty()) {
+            log.warn("Found no build files for repo " + repoPath.getFileName().toString());
+        } else {
+            log.info("Finished crawling " + repoPath.getFileName().toString() + " and found build files");
+        }
     }
 
     /**
@@ -35,7 +41,7 @@ public class Crawler {
      * @throws IOException
      * @throws Exception
      */
-    public void searchForFiles() 
+    private void searchForFiles() 
         throws IOException, Exception{
         // Check if repositories folder exists
         if (Files.notExists(repoFolderRoot)) {
@@ -61,7 +67,8 @@ public class Crawler {
         }
         else {
             if (checkFileName(file)) {
-                saveFileToOutput(file);
+                // saveFileToOutput(file);
+                storeFileDetails(file);
             }
         }  
     }
@@ -103,4 +110,16 @@ public class Crawler {
         return BUILDFILE_NAME_JAVA.contains(fileName);
     }
     
+    /**
+     * Store all build files found in a list.
+     * @param path
+     */
+    private void storeFileDetails(Path path) {
+        log.info("Storing file: " + path.getFileName());
+        buildFiles.add(path.toFile());
+    }
+
+    public List<File> getBuildFiles() {
+        return buildFiles;
+    }
 }
