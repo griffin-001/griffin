@@ -49,10 +49,10 @@ const NavBar: FunctionComponent<Props> = (props) => {
         flexDirection: "row",
         paddingRight: "1rem"
       }}>
-        <NavBarBtn text={"Home"} link={"/home"}/>
-        <NavBarBtn text={"Report"} link={"/report"}/>
-        <NavBarBtn text={"Dashboard"} link={"/dashboard"}/>
-        <NavBarBtn text={"Setup"} link={"/setup"}/>
+        <NavBarBtn text={"Home"} link={"/"}/>
+        <NavBarBtn text={"Report"} link={"/vulnerabilitiesReport"}/>
+        <NavBarBtn text={"Dashboard"} link={"/projectsDashboard"}/>
+        <NavBarBtn text={"Setup"} link={"/initiateScan"}/>
         <NavBarBtn text={"Profile"} link={"/profile"}/>
       </Box>
     </Box>
