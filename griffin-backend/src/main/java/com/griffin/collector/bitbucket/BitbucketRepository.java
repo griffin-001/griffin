@@ -1,34 +1,45 @@
 package com.griffin.collector.bitbucket;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.griffin.collector.Crawler;
 import com.griffin.collector.Repository;
+import com.griffin.config.BitbucketProperties;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class BitbucketRepository implements Repository {
     private static final Logger log = LoggerFactory.getLogger(BitbucketRepository.class);
     private String name;
+    private String projectKey;
+    private String bitInstanceIp;
     private String hrefHTTP;
     private String hrefSSH;
     private Path localLocation; // TODO: Store a reference to where the repo is stored locally.
-    private List<File> buildFiles;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found.
+    private List<File> buildFiles;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found
 
-    public BitbucketRepository(JsonNode root) {
-        name = root.get("name").asText();
-        getCloneUrls(root);
-        cloneRepository();
-        findBuildFiles();
+    public BitbucketRepository(JsonNode root, String bitInstanceIp, BitbucketProperties bitbucketProperties) {
+        this.name = root.get("name").asText();
+        this.bitInstanceIp = bitInstanceIp;
+//        getCloneUrls(root);
+//        cloneRepository();
+//        findBuildFiles();
+        retrieveProjectKey(root);
+        retrieveBuildFilesViaApi(bitbucketProperties);
     }
 
     /**
@@ -90,6 +101,24 @@ public class BitbucketRepository implements Repository {
         // TODO: Handle case where a repo has no build file.
     }
 
+    /** Retrieve project key
+     *  requires the project key for api call**/
+    private void retrieveProjectKey(JsonNode root){
+        projectKey= root.get("project").get("key").asText();
+        log.info("project key for repo = " + projectKey);
+
+        if (projectKey ==null){
+            log.error("no project key found for repo" + name);
+        }
+    }
+    /** Retrieve Build File via Bitbucket server 1.0 api**/
+    private void retrieveBuildFilesViaApi(BitbucketProperties bitbucketProperties){
+        BitbucketApi bitbucketApi = new BitbucketApi(projectKey, name, bitInstanceIp ,bitbucketProperties);
+        this.buildFiles = bitbucketApi.getBuildFiles();
+        log.info("build file found");
+    }
+
+
     public String getHrefHTTP() {
         return hrefHTTP;
     }
@@ -107,4 +136,5 @@ public class BitbucketRepository implements Repository {
                 append("hrefSSH", hrefSSH).
                 toString();
     }
+
 }
