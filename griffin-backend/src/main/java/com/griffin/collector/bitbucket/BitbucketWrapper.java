@@ -74,7 +74,8 @@ public class BitbucketWrapper implements SCMWrapper {
             JsonNode root = mapper.readTree(response.getBody());
             for (JsonNode node : root.get("values")) {
                 String name = node.get("name").asText();
-                BitbucketRepository repository = new BitbucketRepository(node);
+                Boolean noclones = environment.getRequiredProperty("noclones", Boolean.class);
+                BitbucketRepository repository = new BitbucketRepository(protocol, ip, apiBase, project.getKey(), node, noclones);
                 output.put(name, repository);
                 if (environment.getRequiredProperty("minimalclones", Boolean.class)) {
                     // This ensures that we only clone one repository per project if dev profile is active.

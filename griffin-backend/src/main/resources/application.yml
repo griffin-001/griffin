@@ -9,6 +9,7 @@ spring:
       on-profile: dev
   main:
     banner-mode: off
+noclones: false
 minimalclones: true
 bitbucket:
   protocol: 'http://'
@@ -28,3 +29,4 @@ spring:
   config:
     activate:
       on-profile: prod
+noclones: false
