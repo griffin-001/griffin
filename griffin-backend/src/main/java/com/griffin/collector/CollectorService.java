@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class CollectorService {
      * Driver method for this class, and therefore for the whole collection system.
      */
     @GetMapping("/collect")
-    public void collect() {
+    public void collect() throws SQLException {
         collectFrom("bitbucket");
         /*
         TODO: at the moment, just to get this wired up, we're directly creating

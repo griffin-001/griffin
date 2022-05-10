@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,7 @@ public class TransformerService {
         this.projects = projects;
     }
 
-    public void transform() {
+    public void transform() throws SQLException {
         for(Project project : projects) {
             HashMap<String, BitbucketRepository> repositories = project.getRepositoryHashMap();
 
@@ -41,6 +43,14 @@ public class TransformerService {
                         for(String dependency : dependencies) {
                             System.out.println(dependency);
                         }
+
+                        // connect to MySQl and resolve dependency
+                        /*
+                        Connection conn = RepoCheckDAO.connectDatabase();
+                        DependencyDAO.insertProject(projectName, dependencies);
+                        RepoCheckDAO.getDepID("org.hibernate", "hibernate-core", "3.6.3.Final", 2, conn);
+                        */
+
                     }
                     else if(fileType.equals(".gradle")) {
                         log.info(repository.toString() + " : Gradle found");
