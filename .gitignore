@@ -4,3 +4,7 @@
 # for general JetBrains files
 .idea/
 
+# java files that somehow end up outside of the backend
+*.class
+/output
+
