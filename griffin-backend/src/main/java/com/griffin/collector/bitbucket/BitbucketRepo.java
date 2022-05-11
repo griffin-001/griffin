@@ -2,7 +2,7 @@ package com.griffin.collector.bitbucket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.griffin.collector.Crawler;
-import com.griffin.collector.Repository;
+import com.griffin.collector.Repo;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +16,18 @@ import java.nio.file.Paths;
 import java.util.List;
 
 
-public class BitbucketRepository implements Repository {
-    private static final Logger log = LoggerFactory.getLogger(BitbucketRepository.class);
+public class BitbucketRepo implements Repo {
+    private static final Logger log = LoggerFactory.getLogger(BitbucketRepo.class);
     private String name;
     private String hrefHTTP;
     private String hrefSSH;
     private Path localLocation; // TODO: Store a reference to where the repo is stored locally.
     private List<File> buildFiles;  // TODO: This will contain the in-memory pom.xml or build.gradle once it's been found.
 
-    public BitbucketRepository(JsonNode root) {
+    public BitbucketRepo(JsonNode root) {
         name = root.get("name").asText();
         getCloneUrls(root);
-        cloneRepository();
+        cloneRepo();
         findBuildFiles();
     }
 
@@ -52,7 +52,7 @@ public class BitbucketRepository implements Repository {
     }
 
     // TODO: Use /opt/data or /var or /etc when prod profile is set.
-    private void cloneRepository() {
+    private void cloneRepo() {
         String currentDir = System.getProperty("user.dir");
         String repoDirString = Paths.get(currentDir) + "/repositories/bitbucket/" + name;
         localLocation = Paths.get(repoDirString);

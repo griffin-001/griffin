@@ -2,7 +2,7 @@ package com.griffin.collector;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.griffin.collector.bitbucket.BitbucketProject;
-import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.bitbucket.BitbucketRepo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public interface SCMWrapper {
      * @param project specified project to get repos from.
      * @return list of repositories for specified project on remote server.
      */
-    public HashMap<String, BitbucketRepository> getProjectRepos(String ip, Project project);
+    public HashMap<String, BitbucketRepo> getProjectRepos(String ip, Project project);
 
     /**
      * If a remote server supports this, it's easier to just grab all the repositories in one go.

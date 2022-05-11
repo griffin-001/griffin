@@ -1,7 +1,7 @@
 package com.griffin.collector.gitlab;
 
 import com.griffin.collector.Project;
-import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.bitbucket.BitbucketRepo;
 import com.griffin.collector.SCMWrapper;
 import com.griffin.collector.bitbucket.BitbucketProject;
 
@@ -25,7 +25,7 @@ public class GitlabWrapper implements SCMWrapper {
     }
 
     @Override
-    public HashMap<String, BitbucketRepository> getProjectRepos(String ip, Project project) {
+    public HashMap<String, BitbucketRepo> getProjectRepos(String ip, Project project) {
         return null;
     }
 

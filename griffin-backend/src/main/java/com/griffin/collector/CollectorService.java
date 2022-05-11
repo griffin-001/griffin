@@ -1,24 +1,17 @@
 package com.griffin.collector;
 
 import com.griffin.collector.bitbucket.BitbucketProject;
-import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.bitbucket.BitbucketRepo;
 import com.griffin.collector.bitbucket.BitbucketWrapper;
 import com.griffin.collector.gitlab.GitlabWrapper;
 import com.griffin.config.BitbucketProperties;
 import com.griffin.transformer.TransformerService;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -88,8 +81,8 @@ public class CollectorService {
             } else {
                 List<BitbucketProject> bitbucketProjects = bitbucketWrapper.getProjects(ip);
                 for (Project project : bitbucketProjects) {
-                    HashMap<String, BitbucketRepository> repositoryHashMap = bitbucketWrapper.getProjectRepos(ip, project);
-                    project.setRepositoryHashMap(repositoryHashMap);
+                    HashMap<String, BitbucketRepo> repositoryHashMap = bitbucketWrapper.getProjectRepos(ip, project);
+                    project.setRepoHashMap(repositoryHashMap);
                     this.projects.add(project);
                 }
             }

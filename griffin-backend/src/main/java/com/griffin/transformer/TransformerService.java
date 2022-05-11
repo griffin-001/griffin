@@ -1,13 +1,12 @@
 package com.griffin.transformer;
 
 import com.griffin.collector.Project;
-import com.griffin.collector.Repository;
-import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.Repo;
+import com.griffin.collector.bitbucket.BitbucketRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +22,9 @@ public class TransformerService {
 
     public void transform() throws SQLException {
         for(Project project : projects) {
-            HashMap<String, BitbucketRepository> repositories = project.getRepositoryHashMap();
+            HashMap<String, BitbucketRepo> repositories = project.getRepoHashMap();
 
-            for(Repository repository : repositories.values()) {
+            for(Repo repository : repositories.values()) {
                 List<File> buildFiles = repository.getBuildFiles();
 
                 for(File buildFile : buildFiles) {
