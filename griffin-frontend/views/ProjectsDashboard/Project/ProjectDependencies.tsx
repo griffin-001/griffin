@@ -1,9 +1,22 @@
-import React, {FunctionComponent} from 'react';
+/**
+ * List to display dependencies, could theoretically be used to display projects or vulnerabilities as well
+ * by Chuyang Chen
+ */
+
+import React, {FunctionComponent, useState} from 'react';
 import {Box} from "@mui/system";
 import DependencyList from "../../../components/DependencyList";
 
 interface Props {
 
+}
+
+const TestDependencies = [{name: "Dep1"}, {name: "Dep2"}]
+
+const displayedDependency = null;
+
+const handleSelect = (item: {name: string}) => {
+    console.log(item)
 }
 
 const ProjectDependencies: FunctionComponent<Props> = (props) => {
@@ -12,7 +25,7 @@ const ProjectDependencies: FunctionComponent<Props> = (props) => {
   return (
     <Box>
       Project dependencies
-        <DependencyList items={[{name: 'Test dependency'}]}/>
+        <DependencyList items={TestDependencies} onSelect={handleSelect}/>
 
     </Box>
   );
