@@ -3,8 +3,8 @@ import {List, ListItem, ListItemButton, ListItemText} from "@mui/material";
 import {Box} from "@mui/system";
 
 interface Props {
-    items: Array<{name: string}>,
-    onSelect: (item: {name: string}) => void
+    items: Array<{name: string, version: string, description: string}>,
+    onSelect: (item: {name: string, version: string, description: string}) => void
 }
 
 const DependencyList: FunctionComponent<Props> = (props) => {
@@ -14,7 +14,7 @@ const DependencyList: FunctionComponent<Props> = (props) => {
     const handleListItemClick = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         index: number,
-        item: {name: string}
+        item: {name: string, version: string, description: string}
     ) => {
         setSelectedIndex(index);
         props.onSelect(item);
@@ -23,14 +23,16 @@ const DependencyList: FunctionComponent<Props> = (props) => {
     const renderItems = () => {
         return props.items.map( (item, index) => {
             return (
-                <ListItem>
-                    <ListItemButton
-                        selected={selectedIndex === index}
-                        onClick={(event) =>
-                            handleListItemClick(event, index, item)}>
-                        <ListItemText primary={item.name}/>
-                    </ListItemButton>
-                </ListItem>);
+                <Box>
+                    <ListItem>
+                        <ListItemButton
+                            selected={selectedIndex === index}
+                            onClick={(event) =>
+                                handleListItemClick(event, index, item)}>
+                            <ListItemText primary={item.name}/>
+                        </ListItemButton>
+                    </ListItem>
+                </Box>);
         });
     };
 
