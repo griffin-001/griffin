@@ -61,8 +61,8 @@ public class BitbucketWrapper implements SCMWrapper {
     }
 
     @Override
-    public HashMap<String, BitbucketRepository> getProjectRepos(String ip, Project project) {
-        HashMap<String, BitbucketRepository> output = new HashMap<>();
+    public HashMap<String, BitbucketRepo> getProjectRepos(String ip, Project project) {
+        HashMap<String, BitbucketRepo> output = new HashMap<>();
         String urlListRepos = protocol + ip + apiBase + "projects/" + project.getKey() + "/repos";
         log.info("Getting repos for project " + project.getKey() + " from " + urlListRepos);
 
@@ -75,7 +75,7 @@ public class BitbucketWrapper implements SCMWrapper {
             for (JsonNode node : root.get("values")) {
                 String name = node.get("name").asText();
                 Boolean noclones = environment.getRequiredProperty("noclones", Boolean.class);
-                BitbucketRepository repository = new BitbucketRepository(protocol, ip, apiBase, project.getKey(), node, noclones);
+                BitbucketRepo repository = new BitbucketRepo(protocol, ip, apiBase, project.getKey(), node, noclones);
                 output.put(name, repository);
                 if (environment.getRequiredProperty("minimalclones", Boolean.class)) {
                     // This ensures that we only clone one repository per project if dev profile is active.

@@ -1,7 +1,7 @@
 package com.griffin.collector;
 
 import com.griffin.collector.bitbucket.BitbucketProject;
-import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.bitbucket.BitbucketRepo;
 import com.griffin.collector.bitbucket.BitbucketWrapper;
 import com.griffin.collector.gitlab.GitlabWrapper;
 import com.griffin.config.BitbucketProperties;
@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,7 @@ public class CollectorService {
      * Driver method for this class, and therefore for the whole collection system.
      */
     @GetMapping("/collect")
-    public void collect() {
+    public void collect() throws SQLException {
         collectFrom("bitbucket");
         /*
         TODO: at the moment, just to get this wired up, we're directly creating
@@ -80,8 +81,8 @@ public class CollectorService {
             } else {
                 List<BitbucketProject> bitbucketProjects = bitbucketWrapper.getProjects(ip);
                 for (Project project : bitbucketProjects) {
-                    HashMap<String, BitbucketRepository> repositoryHashMap = bitbucketWrapper.getProjectRepos(ip, project);
-                    project.setRepositoryHashMap(repositoryHashMap);
+                    HashMap<String, BitbucketRepo> repositoryHashMap = bitbucketWrapper.getProjectRepos(ip, project);
+                    project.setRepoHashMap(repositoryHashMap);
                     this.projects.add(project);
                 }
             }

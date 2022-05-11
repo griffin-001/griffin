@@ -21,7 +21,7 @@ public class BitbucketProject implements Project {
     private final String description;
     private final Boolean publicly_available;
     private final String href;
-    private HashMap<String, BitbucketRepository> repositoryHashMap;
+    private HashMap<String, BitbucketRepo> repoHashMap;
 
     /**
      * Uses given JsonNode object to get create itself.
@@ -45,13 +45,13 @@ public class BitbucketProject implements Project {
     }
 
     @Override
-    public void setRepositoryHashMap(HashMap<String, BitbucketRepository> repositoryHashMap) {
-        this.repositoryHashMap = repositoryHashMap;
+    public void setRepoHashMap(HashMap<String, BitbucketRepo> repoHashMap) {
+        this.repoHashMap = repoHashMap;
     }
 
     @Override
-    public HashMap<String, BitbucketRepository> getRepositoryHashMap() {
-        return repositoryHashMap;
+    public HashMap<String, BitbucketRepo> getRepoHashMap() {
+        return repoHashMap;
     }
 
     public String getKey() {

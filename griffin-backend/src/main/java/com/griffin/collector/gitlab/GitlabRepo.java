@@ -1,11 +1,11 @@
 package com.griffin.collector.gitlab;
 
-import com.griffin.collector.Repository;
+import com.griffin.collector.Repo;
 
 import java.io.File;
 import java.util.List;
 
-public class GitlabRepository implements Repository {
+public class GitlabRepo implements Repo {
     @Override
     public List<File> getBuildFiles() {
         return null;

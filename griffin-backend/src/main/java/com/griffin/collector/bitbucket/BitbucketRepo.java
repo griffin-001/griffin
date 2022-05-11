@@ -1,10 +1,10 @@
 package com.griffin.collector.bitbucket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.griffin.collector.Crawler;
-import com.griffin.collector.Repository;
+import com.griffin.collector.Repo;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BitbucketRepository implements Repository {
-    private static final Logger log = LoggerFactory.getLogger(BitbucketRepository.class);
+public class BitbucketRepo implements Repo {
+    private static final Logger log = LoggerFactory.getLogger(BitbucketRepo.class);
     private String ip;
     private String projectKey;
     private String name;
@@ -34,7 +34,7 @@ public class BitbucketRepository implements Repository {
 
     private final String[] BUILD_FILE_TYPES = {"pom.xml", "build.gradle", "settings.gradle"};  // TODO: This should probably go elsewhere.
 
-    public BitbucketRepository(String protocol, String ip, String apiBase, String projectKey, JsonNode root, Boolean noclones) {
+    public BitbucketRepo(String protocol, String ip, String apiBase, String projectKey, JsonNode root, Boolean noclones) {
         this.ip = ip;
         this.projectKey = projectKey;
         this.name = root.get("name").asText();
@@ -42,7 +42,7 @@ public class BitbucketRepository implements Repository {
             retrieveBuildFileViaApi(protocol, apiBase);
         } else {
             getCloneUrls(root);
-            cloneRepository();
+            cloneRepo();
             findBuildFiles();
         }
     }
@@ -67,7 +67,7 @@ public class BitbucketRepository implements Repository {
     }
 
     // TODO: Use /opt/data or /var or /etc when prod profile is set.
-    private void cloneRepository() {
+    private void cloneRepo() {
         String currentDir = System.getProperty("user.dir");
         String repoDirString = Paths.get(currentDir) + "/repositories/bitbucket/" + name;
         localLocation = Paths.get(repoDirString);

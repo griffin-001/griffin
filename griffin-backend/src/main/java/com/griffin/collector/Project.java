@@ -1,14 +1,14 @@
 package com.griffin.collector;
 
-import com.griffin.collector.bitbucket.BitbucketRepository;
+import com.griffin.collector.bitbucket.BitbucketRepo;
 
 import java.util.HashMap;
 
 public interface Project {
 
-    public void setRepositoryHashMap(HashMap<String, BitbucketRepository> repositoryHashMap);
+    public void setRepoHashMap(HashMap<String, BitbucketRepo> repoHashMap);
 
-    public HashMap<String, BitbucketRepository> getRepositoryHashMap();
+    public HashMap<String, BitbucketRepo> getRepoHashMap();
 
     public String getKey();
 }
