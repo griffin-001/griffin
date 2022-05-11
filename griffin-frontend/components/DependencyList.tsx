@@ -1,3 +1,8 @@
+/**
+ * List to display dependencies, could theoretically be used to display projects or vulnerabilities as well
+ * by Chuyang Chen
+ */
+
 import React, { FunctionComponent, useState} from 'react';
 import {List, ListItem, ListItemButton, ListItemText} from "@mui/material";
 import {Box} from "@mui/system";

@@ -1,3 +1,8 @@
+/**
+ * Card to display dependencies, could theoretically be used to display projects or vulnerabilities as well
+ * by Chuyang Chen
+ */
+
 import React, { FunctionComponent } from 'react';
 import {Box} from "@mui/system";
 import {CardContent, Typography} from "@mui/material";

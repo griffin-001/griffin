@@ -1,17 +1,17 @@
 /**
- * List to display dependencies, could theoretically be used to display projects or vulnerabilities as well
- * by Chuyang Chen
+ * Project dependencies page
+ * By Chuyang Chen
  */
 
 import React, {FunctionComponent, useState} from 'react';
 import {Box} from "@mui/system";
 import DependencyList from "../../../components/DependencyList";
 import DependencyDisplay from "../../../components/DependencyDisplay";
+import {Button, Grid, Typography} from "@mui/material";
 
 interface Props {
 
 }
-
 
 const ProjectDependencies: FunctionComponent<Props> = (props) => {
 
@@ -28,9 +28,17 @@ const ProjectDependencies: FunctionComponent<Props> = (props) => {
   // toggle between a table showing current vs existing dependencies
   return (
     <Box>
-      Project dependencies
-        <DependencyList items={TestDependencies} onSelect={handleSelect}/>
-        <DependencyDisplay item={selectedItem}/>
+        <Typography variant={"h6"}>
+            Project Dependencies
+        </Typography>
+        <Grid container spacing={2}>
+            <Grid item xs={6}>
+                <DependencyList items={TestDependencies} onSelect={handleSelect}/>
+            </Grid>
+            <Grid item xs={6}>
+                <DependencyDisplay item={selectedItem}/>
+            </Grid>
+        </Grid>
     </Box>
   );
 };

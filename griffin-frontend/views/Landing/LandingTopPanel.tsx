@@ -8,7 +8,7 @@ interface Props {
 const LandingTopPanel: FunctionComponent<Props> = (props) => {
 
   return (
-    <div style={{
+    <Box style={{
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -75,7 +75,7 @@ const LandingTopPanel: FunctionComponent<Props> = (props) => {
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };
 
