@@ -1,5 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {Box} from "@mui/system";
+import DependencyList from "../../../components/DependencyList";
 
 interface Props {
 
@@ -11,6 +12,8 @@ const ProjectDependencies: FunctionComponent<Props> = (props) => {
   return (
     <Box>
       Project dependencies
+        <DependencyList items={[{name: 'Test dependency'}]}/>
+
     </Box>
   );
 };
