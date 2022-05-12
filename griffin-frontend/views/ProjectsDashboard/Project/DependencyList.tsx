@@ -43,7 +43,10 @@ const DependencyList: FunctionComponent<Props> = (props) => {
 
   return (
       <Box>
-          <List>
+          <List sx={{position: 'relative',
+              overflow: 'auto',
+              maxHeight: '75%',
+          }}>
               {renderItems()}
           </List>
       </Box>

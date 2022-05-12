@@ -17,7 +17,12 @@ const ProjectDependencies: FunctionComponent<Props> = (props) => {
 
 
     const TestDependencies = [  {name: "Dep1", version: "1.4.1", description: "Dependency 1"},
-        {name: "Dep2", version: "2.1.1", description: "Dependency 2"}]
+        {name: "Dep2", version: "2.1.1", description: "Dependency 2"},
+        {name: "Dep3", version: "2.1.1", description: "Dependency 3"},
+        {name: "Dep4", version: "2.1.1", description: "Dependency 4"},
+        {name: "Dep5", version: "2.1.1", description: "Dependency 5"},
+        {name: "Dep6", version: "2.1.1", description: "Dependency 6"},
+        {name: "Dep7", version: "2.1.1", description: "Dependency 7"}]
 
     const [selectedItem, setSelectedItem] = useState(TestDependencies[0]);
 

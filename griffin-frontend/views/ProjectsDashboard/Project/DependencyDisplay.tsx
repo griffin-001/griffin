@@ -17,7 +17,7 @@ const DependencyDisplay: FunctionComponent<Props> = (props) => {
 
   return (
       <Box>
-        <Card variant="outlined">
+        <Card variant="outlined" sx={{height: '75%'}}>
           <CardContent>
             <Typography variant="h5" component="div">
               {props.item.name}
