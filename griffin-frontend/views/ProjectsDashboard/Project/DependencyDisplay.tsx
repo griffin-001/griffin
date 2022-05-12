@@ -23,7 +23,7 @@ const DependencyDisplay: FunctionComponent<Props> = (props) => {
               {props.item.name}
             </Typography>
             <Typography sx={{ mb: 1.5 }}>
-              Version: {props.item.version}
+              Version {props.item.version}
             </Typography>
             <Typography variant="body2">
               {props.item.description}

@@ -5,8 +5,8 @@
 
 import React, {FunctionComponent, useState} from 'react';
 import {Box} from "@mui/system";
-import DependencyList from "../../../components/DependencyList";
-import DependencyDisplay from "../../../components/DependencyDisplay";
+import DependencyList from "./DependencyList";
+import DependencyDisplay from "./DependencyDisplay";
 import {Button, Grid, Typography} from "@mui/material";
 
 interface Props {
@@ -32,10 +32,10 @@ const ProjectDependencies: FunctionComponent<Props> = (props) => {
             Project Dependencies
         </Typography>
         <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
                 <DependencyList items={TestDependencies} onSelect={handleSelect}/>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={8}>
                 <DependencyDisplay item={selectedItem}/>
             </Grid>
         </Grid>
