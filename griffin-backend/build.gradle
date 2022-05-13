@@ -20,10 +20,9 @@ dependencies {
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'com.h2database:h2'
-	implementation 'org.springframework.data:spring-data-relational:2.3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.7'
-
+	runtimeOnly 'org.postgresql:postgresql:42.3.5'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.7'
 
 }
 
