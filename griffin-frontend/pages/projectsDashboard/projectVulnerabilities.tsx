@@ -14,7 +14,6 @@ const TestDeps = [
         version : "1.1.5"}
 ]
 
-
 const TestVulns = [
     {name : "Vulnerability 1",
         description : "This is a vulnerability",
@@ -22,7 +21,7 @@ const TestVulns = [
     {name : "Vulnerability 2",
         description : "This is another vulnerability",
         dependency : TestDeps[0]
-}]
+    }]
 
 const projectVulnerabilities: FunctionComponent<Props> = (props) => {
     return <ProjectVulnerabilities vulnerabilities={TestVulns}/>;

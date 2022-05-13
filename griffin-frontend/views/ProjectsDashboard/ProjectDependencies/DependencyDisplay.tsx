@@ -15,22 +15,35 @@ type Props = OwnProps;
 
 const DependencyDisplay: FunctionComponent<Props> = (props) => {
 
-  return (
-      <Box>
-        <Card variant="outlined" sx={{height: '75%'}}>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              {props.item.name}
-            </Typography>
-            <Typography sx={{ mb: 1.5 }}>
-              Version {props.item.version}
-            </Typography>
-            <Typography variant="body2">
-              {props.item.description}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>);
+    if (props.item != null) {
+        return (
+            <Box>
+                <Card variant="outlined" sx={{height: '75%'}}>
+                    <CardContent>
+                        <Typography variant="h5" component="div">
+                            {props.item.name}
+                        </Typography>
+                        <Typography sx={{mb: 1.5}}>
+                            Version {props.item.version}
+                        </Typography>
+                        <Typography variant="body2">
+                            {props.item.description}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>);
+    } else {
+        return (
+            <Box>
+                <Card variant="outlined" sx={{height: '75%'}}>
+                    <CardContent>
+                        <Typography variant="h5" component="div">
+                            No Dependencies!
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>);
+    }
 };
 
 export default DependencyDisplay;
