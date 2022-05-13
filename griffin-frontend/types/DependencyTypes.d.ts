@@ -14,16 +14,18 @@
 interface Dependency {
   name: string;
   version: string; // perhaps this could be changed to a "number" type instead?
+  description: string;
 }
 
 /**
  * A vulnerability has a name and version just like a dependency
  * It may also contain some other meta-data like a description
  */
-interface Vulnerability extends Dependency {
-  metaData: {
-    description: string;
-  };
+interface Vulnerability {
+  name: string;
+  dependency: Dependency;
+  description: string;
+
 }
 
 /**
@@ -52,7 +54,7 @@ interface Repo {
 }
 
 /**
- * A project containing a number of repositories
+ * A projectDependencies containing a number of repositories
  */
 interface Project {
   name: string;

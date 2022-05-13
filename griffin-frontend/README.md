@@ -6,7 +6,7 @@ You must have Yarn installed to run this application: [https://classic.yarnpkg.c
 
 Once ``yarn`` is installed **NOT** ``npm``:
 
-Navigate to the the ``griffin-frontend`` folder.  
+Navigate to the ``griffin-frontend`` folder.  
 ```
 cd griffin-frontend
 ```

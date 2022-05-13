@@ -8,7 +8,7 @@ import {Box} from "@mui/system";
 import {Card, CardContent, Typography} from "@mui/material";
 
 interface OwnProps {
-  item: {name: string, version: string, description: string}
+  item: Dependency
 }
 
 type Props = OwnProps;

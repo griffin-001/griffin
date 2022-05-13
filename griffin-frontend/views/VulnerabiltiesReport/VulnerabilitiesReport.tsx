@@ -12,7 +12,7 @@ interface Props {
 // number of new vulnerabilities
 
 // potentially could also add a table with
-// todo add some summary info for each project
+// todo add some summary info for each projectDependencies
 //  i.e. number of vulnerabilities
 //
 const VulnerabilitiesReport: FunctionComponent<Props> = (props) => {
