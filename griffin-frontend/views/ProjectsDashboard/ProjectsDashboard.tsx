@@ -8,7 +8,7 @@ interface Props {
 
 }
 
-// todo add cards for each project or even just a list / table
+// todo add cards for each projectDependencies or even just a list / table
 const ProjectsDashboard: FunctionComponent<Props> = (props) => {
 
   return (
@@ -16,9 +16,14 @@ const ProjectsDashboard: FunctionComponent<Props> = (props) => {
       <Box>
         Projects Dashboard
       </Box>
-      <Link href={"/projectsDashboard/project"} passHref>
+      <Link href={"/projectsDashboard/projectDependencies"} passHref>
         <Button>
-          <Typography variant="h6">Sample Project</Typography>
+          <Typography variant="h6">See Project Dependencies</Typography>
+        </Button>
+      </Link>
+      <Link href={"/projectsDashboard/projectVulnerabilities"} passHref>
+        <Button>
+            <Typography variant="h6">See Project Vulnerabilities</Typography>
         </Button>
       </Link>
     </PageContainer>
