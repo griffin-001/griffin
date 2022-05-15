@@ -1,32 +1,25 @@
 package com.griffin.insightsdb.service;
 
-import com.griffin.insightsdb.model.Project;
+import com.griffin.insightsdb.model.Repository;
 import com.griffin.insightsdb.repository.DependencyRepository;
-import com.griffin.insightsdb.repository.MapRepository;
-import com.griffin.insightsdb.repository.ProjectRepository;
-import org.springframework.data.jpa.repository.Query;
+import com.griffin.insightsdb.repository.RepositoryRepository;
+import com.griffin.insightsdb.repository.ServerRepository;
+import org.springframework.stereotype.Component;
+
 
 import java.util.List;
 
+@Component
 public class InsightDBService {
 
+    ServerRepository serverRepository;
     DependencyRepository dependencyRepository;
-    MapRepository mapRepository;
-    ProjectRepository projectRepository;
+    RepositoryRepository repositoryRepository;
 
-    public InsightDBService(DependencyRepository dependencyRepository, MapRepository mapRepository, ProjectRepository projectRepository) {
+    public InsightDBService(ServerRepository serverRepository,
+                            DependencyRepository dependencyRepository, RepositoryRepository repositoryRepository) {
+        this.serverRepository = serverRepository;
         this.dependencyRepository = dependencyRepository;
-        this.mapRepository = mapRepository;
-        this.projectRepository = projectRepository;
+        this.repositoryRepository = repositoryRepository;
     }
-
-    public void UpdateProject(String name, List<String> dependencies){
-        List<Project> projects = projectRepository.findByName(name);
-    }
-
-    @Query(value = "select Id from article", nativeQuery = true)
-    List<String> findAllCategories() {
-        return null;
-    }
-
 }
