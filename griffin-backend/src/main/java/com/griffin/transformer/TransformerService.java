@@ -30,36 +30,29 @@ public class TransformerService {
                 for(File buildFile : buildFiles) {
                     String fileType = getFileExtension(buildFile.getName());
                     String projectName = "";
-                    List<String> dependencies = new ArrayList<>();
+                    List<String> dependencies;
 
                     if(fileType.equals(".xml")) {
-                        log.info(repository.toString() + " : Maven found");
+                        log.info(repository + " : Maven found");
                         projectName = ReadXML.parseProjectName(buildFile);
                         dependencies = ReadXML.parseDependencies(buildFile);
+                    }
+                    else if(fileType.equals(".gradle")) {
+                        log.info(repository.toString() + " : Gradle found");
+                        // Below code causes ArrayIndexOutOfBoundsException
+                        projectName = ReadGradle.parseProjectName(buildFile);
+                        dependencies = ReadGradle.parseDependencies(buildFile);
+                    }
+                    else {
+                        log.error("\"" + buildFile.getName() + "\", " + fileType + " - Invalid build file extension");
+                    }
 
-                        System.out.println(projectName);
-                        assert dependencies != null;
-                        for(String dependency : dependencies) {
-                            System.out.println(dependency);
-                        }
-
-                        // connect to MySQl and resolve dependency
+                    // connect to MySQl and resolve dependency
                         /*
                         Connection conn = RepoCheckDAO.connectDatabase();
                         DependencyDAO.insertProject(projectName, dependencies);
                         RepoCheckDAO.getDepID("org.hibernate", "hibernate-core", "3.6.3.Final", 2, conn);
                         */
-
-                    }
-                    else if(fileType.equals(".gradle")) {
-                        log.info(repository.toString() + " : Gradle found");
-                        // Below code causes ArrayIndexOutOfBoundsException
-//                        projectName = ReadGradle.parseProjectName(buildFile);
-//                        dependencies = ReadGradle.parseDependencies(buildFile);
-                    }
-                    else {
-                        log.error("\"" + buildFile.getName() + "\", " + fileType + " - Invalid build file extension");
-                    }
 
                     // TODO: Uncomment when below method convert to Spring Boot
                     // DependencyDAO.insertProject(projectName, dependencies);
