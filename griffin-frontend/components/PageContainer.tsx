@@ -21,7 +21,7 @@ const PageContainer: FunctionComponent<PropsWithChildren<any>> = (props) => {
 
       {!props.disableNav && <NavBar/>}
 
-      {(props.isCentered) ? (
+      {(props.centered) ? (
         <CenteredBox>
           {props.children}
         </CenteredBox>

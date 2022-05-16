@@ -19,7 +19,7 @@ const NavBarBtn: FunctionComponent<Props> = (props) => {
         padding: "0.5rem",
         marginLeft: "1rem",
       }}>
-        <SubHeading>
+        <SubHeading noWrap>
           {props.text}
         </SubHeading>
       </button>

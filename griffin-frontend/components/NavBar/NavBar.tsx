@@ -52,11 +52,10 @@ const NavBar: FunctionComponent<Props> = (props) => {
         paddingRight: "1rem",
         marginRight: "calc(1rem + 100% - 100vw)",
       }}>
-        <NavBarBtn text={"Home"} link={"/"}/>
-        <NavBarBtn text={"Report"} link={"/vulnerabilitiesReport"}/>
-        <NavBarBtn text={"Dashboard"} link={"/projectsDashboard"}/>
-        <NavBarBtn text={"Scan"} link={"/initiateScan"}/>
-        <NavBarBtn text={"Profile"} link={"/profile"}/>
+        <NavBarBtn text={"Scanner"} link={"/scanner"}/>
+        <NavBarBtn text={"Statistics"} link={"/statistics"}/>
+        <NavBarBtn text={"Advanced"} link={"/advanced"}/>
+        <NavBarBtn text={"Log out"} link={"/"}/>
       </Box>
     </Box>
   )

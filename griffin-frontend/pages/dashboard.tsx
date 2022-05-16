@@ -5,9 +5,9 @@ interface Props {
 
 }
 
-const projectsDashboard: FunctionComponent<Props> = (props) => {
+const dashboard: FunctionComponent<Props> = (props) => {
 
   return <ProjectsDashboard/>;
 };
 
-export default projectsDashboard;
+export default dashboard;

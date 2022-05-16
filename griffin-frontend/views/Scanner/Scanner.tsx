@@ -26,7 +26,7 @@ interface Props {
 // todo add some summary info for each projectDependencies
 //  i.e. number of vulnerabilities
 //
-const VulnerabilitiesReport: FunctionComponent<Props> = (props) => {
+const Scanner: FunctionComponent<Props> = (props) => {
 
   return (
     <PageContainer>
@@ -42,4 +42,4 @@ const VulnerabilitiesReport: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default VulnerabilitiesReport;
+export default Scanner;
