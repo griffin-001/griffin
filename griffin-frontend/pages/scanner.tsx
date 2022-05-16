@@ -1,12 +1,12 @@
 import React, {FunctionComponent} from 'react';
-import ScannerContainer from "../views/Scanner/ScannerContainer";
+import ScannerWrapper from "../views/Scanner/ScannerWrapper";
 
 interface Props {
 
 }
 
 const ScannerPage: FunctionComponent<Props> = (props) => {
-  return <ScannerContainer/>
+  return <ScannerWrapper/>
 };
 
 export default ScannerPage;

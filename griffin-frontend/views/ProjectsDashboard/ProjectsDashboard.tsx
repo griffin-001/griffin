@@ -9,7 +9,8 @@ interface Props {
 }
 
 // todo add cards for each projectDependencies or even just a list / table
-// todo this is deprecated
+// todo this is deprecated/unused
+//  - saving this in case it is needed for a later sprint
 const ProjectsDashboard: FunctionComponent<Props> = (props) => {
 
   return (

@@ -11,34 +11,36 @@ import {Button, Grid, Typography} from "@mui/material";
 import PageContainer from "../../../components/PageContainer";
 
 interface Props {
-    dependencies: Array<Dependency>,
+  dependencies: Array<Dependency>,
 }
 
+// todo this is deprecated/unused
+//  - saving this in case it is needed for a later sprint
 const ProjectDependencies: FunctionComponent<Props> = (props) => {
 
-    const [selectedItem, setSelectedItem] = useState(props.dependencies[0]);
+  const [selectedItem, setSelectedItem] = useState(props.dependencies[0]);
 
-    const handleSelect = (item: Dependency) => {
-        setSelectedItem(item);
-    }
+  const handleSelect = (item: Dependency) => {
+    setSelectedItem(item);
+  }
 
   // toggle between a table showing current vs existing dependencies
   return (
-      <PageContainer>
-         <Box>
-            <Typography variant={"h6"}>
-                Project Dependencies
-            </Typography>
-            <Grid container spacing={2}>
-                <Grid item xs={4}>
-                    <DependencyList items={props.dependencies} onSelect={handleSelect}/>
-                </Grid>
-                <Grid item xs={8}>
-                    <DependencyDisplay item={selectedItem}/>
-                </Grid>
-            </Grid>
-         </Box>
-      </PageContainer>
+    <PageContainer>
+      <Box>
+        <Typography variant={"h6"}>
+          Project Dependencies
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <DependencyList items={props.dependencies} onSelect={handleSelect}/>
+          </Grid>
+          <Grid item xs={8}>
+            <DependencyDisplay item={selectedItem}/>
+          </Grid>
+        </Grid>
+      </Box>
+    </PageContainer>
   );
 };
 

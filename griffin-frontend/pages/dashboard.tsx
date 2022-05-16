@@ -5,9 +5,11 @@ interface Props {
 
 }
 
-const dashboard: FunctionComponent<Props> = (props) => {
+// todo this is deprecated/unused
+//  - saving this in case it is needed for a later sprint
+const DashboardPage: FunctionComponent<Props> = (props) => {
 
   return <ProjectsDashboard/>;
 };
 
-export default dashboard;
+export default DashboardPage;

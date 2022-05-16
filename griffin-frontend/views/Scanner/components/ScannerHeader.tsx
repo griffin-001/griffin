@@ -8,7 +8,7 @@ interface Props {
 
 }
 
-const ReportHeader: FunctionComponent<Props> = (props) => {
+const ScannerHeader: FunctionComponent<Props> = (props) => {
 
 
   const [value, setValue] = useState(false);
@@ -56,4 +56,4 @@ const ReportHeader: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default ReportHeader;
+export default ScannerHeader;

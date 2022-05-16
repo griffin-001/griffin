@@ -6,13 +6,10 @@ import {
   Grid,
   Typography
 } from "@mui/material";
-import VulnerabilitiesSummary from "./components/ReportSummary";
-import VulnerabilitiesListAll from "./components/ReportListAll";
-import Section from "../../components/Section";
-import Heading from "../../components/Text/Heading";
-import ReportHeader from "./components/ReportHeader";
-import ReportSummary from "./components/ReportSummary";
-import ReportListAll from "./components/ReportListAll";
+
+import ScannerHeader from "./components/ScannerHeader";
+import ScanList from "./components/ScanList";
+import FooterSpacer from "../../components/FooterSpacer";
 
 interface Props {
   vulnerabilities: Array<Vulnerability>,
@@ -30,13 +27,11 @@ const Scanner: FunctionComponent<Props> = (props) => {
 
   return (
     <PageContainer>
-      <ReportHeader/>
-      <ReportSummary
+      <ScannerHeader/>
+      <ScanList
         items={props.vulnerabilities}
       />
-      <ReportListAll
-        items={props.vulnerabilities}
-      />
+      <FooterSpacer/>
     </PageContainer>
 
   );

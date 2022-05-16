@@ -3,6 +3,7 @@ import {Typography} from "@mui/material";
 
 interface Props {
   bold?: boolean
+  style?: React.CSSProperties;
 }
 
 const BodyText: FunctionComponent<PropsWithChildren<any>> = (props) => {
@@ -13,6 +14,7 @@ const BodyText: FunctionComponent<PropsWithChildren<any>> = (props) => {
       sx={{
         fontWeight: props.bold ? "bold" : "none",
       }}
+      style={props.style}
     >
       {props.children}
     </Typography>
