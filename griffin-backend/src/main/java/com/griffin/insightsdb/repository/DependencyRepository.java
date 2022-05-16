@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DependencyRepository extends JpaRepository<Dependency, Long> {
+
+    Dependency findByName(String name);
+
+    Boolean existsByName(String name);
 }
