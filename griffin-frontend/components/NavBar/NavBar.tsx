@@ -36,7 +36,7 @@ const NavBar: FunctionComponent<Props> = (props) => {
       }}>
         <Box component="img" src="/assets/griffin-logo.png" sx={{
           height: 50,
-          width: 60,
+          width: 50,
           marginRight: "0.5rem",
         }}/>
         <Typography variant="h4" component={"div"} style={{flexGrow: 1}}

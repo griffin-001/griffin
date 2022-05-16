@@ -6,6 +6,8 @@ import CenteredBox from "./CenteredBox";
 interface Props {
   // toggles if the page containers contents are centered or not
   centered?: boolean;
+
+  // hides the nav bar
   disableNav?: boolean;
 }
 
@@ -17,12 +19,6 @@ const PageContainer: FunctionComponent<PropsWithChildren<any>> = (props) => {
       height: "100vh",
     }}>
 
-      {/* this is the same as the below line*/}
-      {/* {() => {*/}
-      {/*   if (!props.disableNav) {*/}
-      {/*     return <NavBar/>*/}
-      {/*   }*/}
-      {/* }}*/}
       {!props.disableNav && <NavBar/>}
 
       {(props.isCentered) ? (
