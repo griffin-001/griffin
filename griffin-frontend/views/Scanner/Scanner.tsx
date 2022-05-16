@@ -12,7 +12,8 @@ import ScanList from "./components/ScanList";
 import FooterSpacer from "../../components/FooterSpacer";
 
 interface Props {
-  vulnerabilities: Array<Vulnerability>,
+  listOfScans: ListOfScans;
+  runScanner: () => void;
 }
 
 // todo add summary info for entire ecosystem
@@ -27,9 +28,9 @@ const Scanner: FunctionComponent<Props> = (props) => {
 
   return (
     <PageContainer>
-      <ScannerHeader/>
+      <ScannerHeader runScanner={props.runScanner}/>
       <ScanList
-        items={props.vulnerabilities}
+        listOfScans={props.listOfScans}
       />
       <FooterSpacer/>
     </PageContainer>

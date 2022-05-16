@@ -1,22 +1,18 @@
 import React, {FunctionComponent} from "react";
 import {Box} from "@mui/system";
 import {
-  Stack,
   Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow,
-  Typography
 } from "@mui/material";
 import Heading from "../../../../components/Text/Heading";
-import BodyText from "../../../../components/Text/BodyText";
 import {COLOURS} from "../../../../constants/colours";
-import ResultsTableFooter from "./ResultsTableFooter";
 
 interface Props {
-  items: Array<Vulnerability>,
+  data: VulnerabilityData[],
 }
 
 const VulnerabilityList: FunctionComponent<Props> = (props) => {
-  if (props.items.length != 0) {
+  if (props.data.length != 0) {
     return (
       <Box>
         <TableContainer sx={{maxHeight: "50vh", px: 2, pb: 2}}>
@@ -32,15 +28,26 @@ const VulnerabilityList: FunctionComponent<Props> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.items.map((vul) => (
+              {props.data.map((row, index) => (
                 <TableRow
-                  key={vul.name}
-                  sx={{background: COLOURS.GREEN_HIGHLIGHT}}
+                  key={index}
+                  sx={{
+                    background: () => {
+                      switch (row.vulnerabilityStatus) {
+                        case "new":
+                          return COLOURS.RED_HIGHLIGHT;
+                        case "unresolved":
+                          return COLOURS.YELLOW_HIGHLIGHT;
+                        case "resolved":
+                          return COLOURS.GREEN_HIGHLIGHT;
+                      }
+                    }
+                  }}
                 >
-                  <TableCell align="left">{"project name"}</TableCell>
-                  <TableCell align="left">{"repo name"}</TableCell>
-                  <TableCell align="left">{vul.dependency.name}</TableCell>
-                  <TableCell align="left">{vul.dependency.version}</TableCell>
+                  <TableCell align="left">{row.projectName}</TableCell>
+                  <TableCell align="left">{row.repoName}</TableCell>
+                  <TableCell align="left">{row.dependencyName}</TableCell>
+                  <TableCell align="left">{row.dependencyVersion}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

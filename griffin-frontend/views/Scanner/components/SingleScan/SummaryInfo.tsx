@@ -8,7 +8,8 @@ import {COLOURS} from "../../../../constants/colours";
 import Heading from "../../../../components/Text/Heading";
 
 interface Props {
-
+  dateTime: Date;
+  summary: VulnerabilitySummary;
 }
 
 const SummaryInfo: FunctionComponent<Props> = (props) => {
@@ -17,7 +18,8 @@ const SummaryInfo: FunctionComponent<Props> = (props) => {
     <Stack>
       <Box sx={{p: 2, borderBottom: 1}}>
         <CenteredBox>
-          <SubHeading center> 10/05/22 11:00PM </SubHeading>
+          {/*todo we will need to format this more*/}
+          <SubHeading center> {props.dateTime.toString()} </SubHeading>
         </CenteredBox>
       </Box>
       <Box sx={{p: 2}}>
@@ -26,15 +28,17 @@ const SummaryInfo: FunctionComponent<Props> = (props) => {
           <Divider/>
           <Box sx={{mt: 2}}/>
           <BodyText style={{background: COLOURS.RED_HIGHLIGHT}}>
-            Newly added vulnerabilities: 2
+            Newly added vulnerabilities: {props.summary.newVulnerabilities}
           </BodyText>
           <Box sx={{mt: 1}}/>
           <BodyText style={{background: COLOURS.YELLOW_HIGHLIGHT}}>
-            Unresolved existing vulnerabilities: 12
+            Unresolved existing
+            vulnerabilities: {props.summary.unresolvedExistingVulnerabilities}
           </BodyText>
           <Box sx={{mt: 1}}/>
           <BodyText style={{background: COLOURS.GREEN_HIGHLIGHT}}>
-            Resolved existing vulnerabilities: 2
+            Resolved existing
+            vulnerabilities: {props.summary.resolvedExistingVulnerabilities}
           </BodyText>
         </Stack>
         <Box sx={{mt: 2}}/>
@@ -44,7 +48,7 @@ const SummaryInfo: FunctionComponent<Props> = (props) => {
           <Box sx={{width: "100%"}}>
             <Stack>
               <CenteredBox>
-                <Heading>1/2</Heading>
+                <Heading>{props.summary.projectsAffected}/{props.summary.totalProjects}</Heading>
               </CenteredBox>
               <CenteredBox>
                 <BodyText> Projects affected</BodyText>
@@ -56,7 +60,7 @@ const SummaryInfo: FunctionComponent<Props> = (props) => {
           <Box sx={{width: "100%"}}>
             <Stack>
               <CenteredBox>
-                <Heading>3/4</Heading>
+                <Heading>{props.summary.repositoriesAffected}/{props.summary.totalRepositories}</Heading>
               </CenteredBox>
               <CenteredBox>
                 <BodyText> Repositories affected</BodyText>

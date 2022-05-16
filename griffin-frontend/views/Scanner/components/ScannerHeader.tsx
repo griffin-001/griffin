@@ -5,7 +5,7 @@ import {Box} from "@mui/system";
 import Section from "../../../components/Section";
 
 interface Props {
-
+  runScanner: () => void;
 }
 
 const ScannerHeader: FunctionComponent<Props> = (props) => {
@@ -45,7 +45,7 @@ const ScannerHeader: FunctionComponent<Props> = (props) => {
               variant="outlined"
               size="large"
               onClick={(event) =>
-                handleButton()}
+                props.runScanner()}
             >
               Start New Scan
             </Button>
