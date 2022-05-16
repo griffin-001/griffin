@@ -26,6 +26,8 @@ const NavBar: FunctionComponent<Props> = (props) => {
       width: "100%",
       paddingLeft: "1rem",
       borderBottom: "solid 1px " + COLOURS.BLACK_TEXT,
+      zIndex: 10,
+      backgroundColor: COLOURS.WHITE_BACKGROUND,
     }}>
       <Box sx={{
         display: "flex",
@@ -36,7 +38,7 @@ const NavBar: FunctionComponent<Props> = (props) => {
       }}>
         <Box component="img" src="/assets/griffin-logo.png" sx={{
           height: 50,
-          width: 60,
+          width: 50,
           marginRight: "0.5rem",
         }}/>
         <Typography variant="h4" component={"div"} style={{flexGrow: 1}}
@@ -47,13 +49,13 @@ const NavBar: FunctionComponent<Props> = (props) => {
       <Box sx={{
         display: "flex",
         flexDirection: "row",
-        paddingRight: "1rem"
+        paddingRight: "1rem",
+        marginRight: "calc(1rem + 100% - 100vw)",
       }}>
-        <NavBarBtn text={"Home"} link={"/"}/>
-        <NavBarBtn text={"Report"} link={"/vulnerabilitiesReport"}/>
-        <NavBarBtn text={"Dashboard"} link={"/projectsDashboard"}/>
-        <NavBarBtn text={"Setup"} link={"/initiateScan"}/>
-        <NavBarBtn text={"Profile"} link={"/profile"}/>
+        <NavBarBtn text={"Scanner"} link={"/scanner"}/>
+        <NavBarBtn text={"Statistics"} link={"/statistics"}/>
+        <NavBarBtn text={"Advanced"} link={"/advanced"}/>
+        <NavBarBtn text={"Log out"} link={"/"}/>
       </Box>
     </Box>
   )
