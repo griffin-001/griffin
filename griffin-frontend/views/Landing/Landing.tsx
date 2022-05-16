@@ -1,7 +1,8 @@
 import React, {FunctionComponent} from 'react';
-import LandingTopPanel from "./LandingTopPanel";
-import NavBar from "../../components/NavBar/NavBar";
 import PageContainer from "../../components/PageContainer";
+import {Box, Button, Grid, Typography} from "@mui/material";
+import LeftLandingPanel from "./components/LeftLandingPanel";
+import RightLandingPanel from "./components/RightLandingPanel";
 
 interface Props {
 
@@ -16,7 +17,18 @@ class Landing extends React.Component<Props> {
 
     return (
       <PageContainer isCentered>
-        <LandingTopPanel/>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LeftLandingPanel/>
+          <RightLandingPanel/>
+        </Grid>
       </PageContainer>
     );
   }
