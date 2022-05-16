@@ -33,7 +33,7 @@ const RightLandingPanel: FunctionComponent<Props> = (props) => {
             <Button
               variant="contained"
               onClick={() => {
-                router.push("/projectsDashboard")
+                router.push("/vulnerabilitiesReport")
                   .catch((e) => {
                     //error
 
