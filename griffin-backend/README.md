@@ -8,7 +8,6 @@ The backend is currently contained within a single Spring Boot application, with
 
 Other JDK's should work for development, however the above JDK will be used in production.
 
-
 ## Development
 
 ### IDE
@@ -24,7 +23,7 @@ Gradle binaries are contained within the repository (`gradlew` and `gradlew.bat`
 To run the application:
 
 ```Bash
-./gradlew bootrun
+./gradlew clean bootrun
 ```
 
 To remove build files from the project:
@@ -35,7 +34,8 @@ To remove build files from the project:
 
 To build a jar file:
 
-```Bash./gradlew clean build
+```Bash
+./gradlew clean build
 ```
 
 ## Components
@@ -71,9 +71,9 @@ for each address:
 	Send list of project objects to transformer service
 ```
 
-Thoughts:
+Note:
 
-- Repositories currently stored on file system, not in a db. This simplifies development.
+- Repositories are currently stored on file system, not in a db. This simplifies development.
 - If Jgit has the right support (i.e. if you can read a repo into a Git object straight from bytes), it might actually be easier to store the repo files in a db.
 
 ### Transformer
@@ -83,41 +83,15 @@ for each Project Object:
 	for each Repository Object:
 		extract dependency info from build file(s)
 		extract insights from repo files
-		add mapping to insights database
+		add repository mapping and exctracted information to insights database
 ```
 	
 ### Insights Database
 
-For actual documentation of this see [documentation](https://confluence.cis.unimelb.edu.au:8443/display/SWEN900132022TZ/Dependency+Resolver)
+The main purpose of the insights database is to store snapshots of a repository and it's dependencies over time.
 
-TODO: Combine this with existing documentation on Confluence.
+For detailed documentation see [database docs](https://confluence.cis.unimelb.edu.au:8443/display/SWEN900132022TZ/Dependency+Resolver)
 
-Requires the following:
+### InsightsAPI
 
-- Store unique mappings of IP -> repository
-- Store those mappings over time
-- Allow historical searches of one repository's dependencies over time
-- Store build files (pom.xml, build.gradle, etc...)
-- Possibly store actual repository itself? This won't work if you have one repository per time stamp since it would take up too much space
-- List of dependencies for each repository
-- Store generated insights per repository
-
-Given the requirements for searches over time, we should probably use an SQL database (sorry Caiwen, you were right).
-
-Mapping would be:
-
-- server_table -> repositories_table -> dependencies_table
-
-Potential basic schema for a repository:
-
-```SQL
-create table repositories (
-    ip_address primary key,
-    name text,
-    http_url text,
-    https_url text,
-    ssh_url text,
-    -- also needs to store references to its build file(s)
-    changes_pulled_at timestamp,  -- super important, but also a design contraint
-);
-```
+This is the endpoint the front-end will use to get repository and dependency information from the backed.
