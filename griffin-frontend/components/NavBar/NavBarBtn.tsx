@@ -1,6 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent} from 'react';
 import {Button, IconButton, Typography} from "@mui/material";
 import Link from "next/link";
+import SubHeading from "../Text/SubHeading";
+import Heading from "../Text/Heading";
 
 interface Props {
   text: string;
@@ -17,9 +19,9 @@ const NavBarBtn: FunctionComponent<Props> = (props) => {
         padding: "0.5rem",
         marginLeft: "1rem",
       }}>
-        <Typography variant="h6">
+        <SubHeading>
           {props.text}
-        </Typography>
+        </SubHeading>
       </button>
     </Link>
   )

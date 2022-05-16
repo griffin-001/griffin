@@ -6,13 +6,17 @@ import {
   Grid,
   Typography
 } from "@mui/material";
-import VulnerabilitiesSummary from "./VulnerabilitiesSummary";
-import VulnerabilitiesListAll from "./VulnerabilitiesListAll";
+import VulnerabilitiesSummary from "./components/ReportSummary";
+import VulnerabilitiesListAll from "./components/ReportListAll";
+import Section from "../../components/Section";
+import Heading from "../../components/Text/Heading";
+import ReportHeader from "./components/ReportHeader";
+import ReportSummary from "./components/ReportSummary";
+import ReportListAll from "./components/ReportListAll";
 
 interface Props {
   vulnerabilities: Array<Vulnerability>,
 }
-
 
 // todo add summary info for entire ecosystem
 // number of existing vulnerabilities
@@ -24,39 +28,15 @@ interface Props {
 //
 const VulnerabilitiesReport: FunctionComponent<Props> = (props) => {
 
-  const [value, setValue] = useState(false);
-
-  const handleButton = () => {
-    value ? setValue(false) : setValue(true);
-  }
-
-
   return (
     <PageContainer>
-      <Box sx={{mt: 3, mx: 5}}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <Typography variant="h3"> Vulnerability Report </Typography>
-          </Grid>
-          <Grid item xs={4} sx={{mt: 2}}>
-
-            <Box display="flex" justifyContent="flex-end">
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={(event) =>
-                  handleButton()}
-              >
-                Scan
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <VulnerabilitiesSummary
-        items={props.vulnerabilities}></VulnerabilitiesSummary>
-      <VulnerabilitiesListAll
-        items={props.vulnerabilities}></VulnerabilitiesListAll>
+      <ReportHeader/>
+      <ReportSummary
+        items={props.vulnerabilities}
+      />
+      <ReportListAll
+        items={props.vulnerabilities}
+      />
     </PageContainer>
 
   );

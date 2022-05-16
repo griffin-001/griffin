@@ -26,6 +26,8 @@ const NavBar: FunctionComponent<Props> = (props) => {
       width: "100%",
       paddingLeft: "1rem",
       borderBottom: "solid 1px " + COLOURS.BLACK_TEXT,
+      zIndex: 10,
+      backgroundColor: COLOURS.WHITE_BACKGROUND,
     }}>
       <Box sx={{
         display: "flex",
@@ -53,7 +55,7 @@ const NavBar: FunctionComponent<Props> = (props) => {
         <NavBarBtn text={"Home"} link={"/"}/>
         <NavBarBtn text={"Report"} link={"/vulnerabilitiesReport"}/>
         <NavBarBtn text={"Dashboard"} link={"/projectsDashboard"}/>
-        <NavBarBtn text={"Setup"} link={"/initiateScan"}/>
+        <NavBarBtn text={"Scan"} link={"/initiateScan"}/>
         <NavBarBtn text={"Profile"} link={"/profile"}/>
       </Box>
     </Box>
