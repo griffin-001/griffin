@@ -47,7 +47,8 @@ const NavBar: FunctionComponent<Props> = (props) => {
       <Box sx={{
         display: "flex",
         flexDirection: "row",
-        paddingRight: "1rem"
+        paddingRight: "1rem",
+        marginRight: "calc(1rem + 100% - 100vw)",
       }}>
         <NavBarBtn text={"Home"} link={"/"}/>
         <NavBarBtn text={"Report"} link={"/vulnerabilitiesReport"}/>
