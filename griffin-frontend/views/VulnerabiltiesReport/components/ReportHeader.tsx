@@ -19,9 +19,24 @@ const ReportHeader: FunctionComponent<Props> = (props) => {
 
   return (
     <Section>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <Heading> Vulnerability Report </Heading>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Grid
+          item xs={8}
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Heading> Scan History </Heading>
         </Grid>
         <Grid item xs={4}>
 
@@ -32,7 +47,7 @@ const ReportHeader: FunctionComponent<Props> = (props) => {
               onClick={(event) =>
                 handleButton()}
             >
-              Scan
+              Start New Scan
             </Button>
           </Box>
         </Grid>

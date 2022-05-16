@@ -16,7 +16,7 @@ class Landing extends React.Component<Props> {
   render() {
 
     return (
-      <PageContainer isCentered>
+      <PageContainer isCentered disableNav>
         <Grid
           container
           spacing={2}
