@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class InsightsController {
 
     @GetMapping("/basicinfo")
-    public String get
+    public String getSomething() {
+        return "Something";
+    }
     
 }
