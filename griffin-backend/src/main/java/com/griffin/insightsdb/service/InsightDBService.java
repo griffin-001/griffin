@@ -6,9 +6,11 @@ import com.griffin.insightsdb.model.Server;
 import com.griffin.insightsdb.repository.DependencyRepository;
 import com.griffin.insightsdb.repository.RepositoryRepository;
 import com.griffin.insightsdb.repository.ServerRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -70,5 +72,19 @@ public class InsightDBService {
             }
         }
 
+    }
+
+    public List<Repository> getDependenciesChanges(String name){
+        List<Repository> repositories = repositoryRepository.findAllByNameOrderByTimestampDesc(name);
+        if (repositories.size() == 0){
+            return null;
+        }else if(repositories.size() <= 2){
+            return repositories;
+        }else {
+            List<Repository> res = new LinkedList<>();
+            res.add(repositories.get(0));
+            res.add(repositories.get(1));
+            return res;
+        }
     }
 }

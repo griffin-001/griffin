@@ -42,6 +42,8 @@ public class Application {
 
 
 			insightDBService.UpdateProject(ip, name, "repo4", dependency, bytes);
+			List<Repository> res = insightDBService.getDependenciesChanges("repo4");
+			System.out.println(res.get(0).getName());
 		};
 	}
 
