@@ -14,6 +14,24 @@ interface Props {
   // this function should not take any props for the time being
 }
 
+/////////////////////////////////////////////////
+// todo Scanner todos
+
+// NOW
+
+// Connect axios to scanner
+
+// NEXT SPRINT
+
+// Clean up ui, especially the colours so that they are less blocky
+// - maybe change this into coloured tags kind of like jira/trello
+
+// Add additional column for the Vulnerability id / unique identifier / name
+// - discuss this with the team
+
+/////////////////////////////////////////////////
+
+
 // todo this contains the logic for the scan component
 const ScannerWrapper: FunctionComponent<Props> = (props) => {
 
