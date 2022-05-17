@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
+import type {NextPage} from 'next'
 import Landing from "../views/Landing/Landing";
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   return <Landing/>
 }
 
-export default Home
+export default Index
