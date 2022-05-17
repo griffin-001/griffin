@@ -1,0 +1,52 @@
+package gradle_files
+
+plugins {
+    id 'java'
+}
+
+group 'com.xy'
+version '1.0-SNAPSHOT'
+
+/*The path to the warehouse*/
+repositories {
+    mavenCentral()
+}
+
+// tomcat: The following configuration will download the plugin binaries on first launch
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        //style 1
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.5'
+    }
+}
+
+
+/*jar files in dependencies
+* group name version
+* */
+dependencies {
+    //style 2
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.0'
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.11'
+    //style 1
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    //style 2
+    compile group: 'org.springframework', name: 'spring-beans', version: '5.1.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '5.1.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.2.RELEASE'
+
+    //style 1
+    // tomcat
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:9.0.1"
+}
+
+
+test {
+    useJUnitPlatform()
+}
