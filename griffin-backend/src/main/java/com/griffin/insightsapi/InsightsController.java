@@ -10,5 +10,4 @@ public class InsightsController {
     public String getSomething() {
         return "Something";
     }
-    
 }

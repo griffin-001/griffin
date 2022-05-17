@@ -28,7 +28,8 @@ import java.nio.file.Paths;
 @RestController
 //@Service
 //@EnableScheduling
-public class CollectorService {
+public class  CollectorService {
+    private final TransformerService transformerService;
     private static final Logger log = LoggerFactory.getLogger(CollectorService.class);
     private final Environment environment;
     private final BitbucketProperties bitbucketProperties;
@@ -37,10 +38,13 @@ public class CollectorService {
     private List<Project> projects;
 
     public CollectorService(Environment environment,
+                            TransformerService transformerService,
                             BitbucketProperties bitbucketProperties,
                             BitbucketWrapper bitbucketWrapper,
-                            GitlabWrapper gitlabWrapper) {
+                            GitlabWrapper gitlabWrapper,
+                            List<Project> projects) {
         this.environment = environment;
+        this.transformerService = transformerService;
         this.bitbucketProperties = bitbucketProperties;
         this.bitbucketWrapper = bitbucketWrapper;
         this.gitlabWrapper = gitlabWrapper;
@@ -61,13 +65,7 @@ public class CollectorService {
     @GetMapping("/collect")
     public void collect() throws SQLException {
         collectFrom("bitbucket");
-        /*
-        TODO: at the moment, just to get this wired up, we're directly creating
-        a transformer instance, but in the future we will have a transformer
-        class listening for an event sent from the collector or something like that.
-        */
-        TransformerService transformerService = new TransformerService(projects);
-        transformerService.transform();
+        transformerService.transform(projects);
     }
 
     public void collectFrom(String scmType) {
