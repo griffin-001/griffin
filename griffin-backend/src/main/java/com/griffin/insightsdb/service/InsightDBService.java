@@ -35,7 +35,7 @@ public class InsightDBService {
      * @param dependencies dependency list
      * @param build build file, should be byte[]
      */
-    public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build){
+    public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build, String project){
 
         //find server by ip
         Server server = serverRepository.findByIp(ip);
@@ -44,10 +44,10 @@ public class InsightDBService {
         if (server == null){
             Server new_server = new Server(ip, type);
             serverRepository.save(new_server);
-            Repository repository = new Repository(name, build, dependencies, new_server);
+            Repository repository = new Repository(name, build, dependencies, new_server, project);
             repositoryRepository.save(repository);
         }else{
-            Repository repository = new Repository(name, build, dependencies, server);
+            Repository repository = new Repository(name, build, dependencies, server, project);
             repositoryRepository.save(repository);
         }
 

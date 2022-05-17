@@ -55,7 +55,7 @@ public class TransformerService {
                     dependency.add("test1");
                     dependency.add("test2");
                     try {
-                        insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, Files.readAllBytes(repo.getBuildFiles().get(0).toPath()));
+                        insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, Files.readAllBytes(repo.getBuildFiles().get(0).toPath()), "project1");
                     } catch (IOException e) {
                         e.printStackTrace();
                         log.warn("Failed to read bytes from build file");
