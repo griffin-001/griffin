@@ -19,7 +19,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/griffindb
     username: postgres
-    password: 2102201060
+    password: 123
     driver-class-name: org.postgresql.Driver
 
   jpa:
