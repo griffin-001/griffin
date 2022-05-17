@@ -28,9 +28,6 @@ dependencies {
 	implementation 'com.vladmihalcea:hibernate-types-52:2.16.2'
 	// implementation 'com.vladmihalcea:hibernate-types-60:2.16.2'
 
-	// TODO: Remove mysql dependency.
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
-
 }
 
 tasks.named('test') {

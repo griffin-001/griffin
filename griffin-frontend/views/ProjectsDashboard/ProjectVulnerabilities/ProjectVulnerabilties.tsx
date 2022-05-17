@@ -7,34 +7,37 @@ import PageContainer from "../../../components/PageContainer";
 
 interface Props {
 
-    vulnerabilities: Array<Vulnerability>,
+  vulnerabilities: Array<Vulnerability>,
 }
 
+// todo this is deprecated/unused
+//  - saving this in case it is needed for a later sprint
 const ProjectVulnerabilties: FunctionComponent<Props> = (props) => {
 
-    const [selectedItem, setSelectedItem] = useState(props.vulnerabilities[0]);
+  const [selectedItem, setSelectedItem] = useState(props.vulnerabilities[0]);
 
-    const handleSelect = (item: Vulnerability) => {
-        setSelectedItem(item);
-    }
+  const handleSelect = (item: Vulnerability) => {
+    setSelectedItem(item);
+  }
 
   // toggle between a table showing current vs existing vulnerabilities
   return (
-      <PageContainer>
-         <Box>
-            <Typography variant={"h6"}>
-                Project Vulnerabilities
-            </Typography>
-            <Grid container spacing={2}>
-                <Grid item xs={4}>
-                    <VulnerabilityList items={props.vulnerabilities} onSelect={handleSelect}/>
-                </Grid>
-                <Grid item xs={8}>
-                    <VulnerabilityDisplay item={selectedItem}/>
-                </Grid>
-            </Grid>
-        </Box>
-      </PageContainer>
+    <PageContainer>
+      <Box>
+        <Typography variant={"h6"}>
+          Project Vulnerabilities
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <VulnerabilityList items={props.vulnerabilities}
+                               onSelect={handleSelect}/>
+          </Grid>
+          <Grid item xs={8}>
+            <VulnerabilityDisplay item={selectedItem}/>
+          </Grid>
+        </Grid>
+      </Box>
+    </PageContainer>
   );
 };
 
