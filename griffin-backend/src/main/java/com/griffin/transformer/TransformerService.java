@@ -52,8 +52,9 @@ public class TransformerService {
 
                     // TODO: Currently hardcoded an needs to be done properly
                     List<String> dependency = new LinkedList<>();
-                    dependency.add("test1");
-                    dependency.add("test2");
+                    dependency.add("google.guava:guava:1.0.0");
+                    dependency.add("apache.tomcat:tomcat:4.0.1");
+                    dependency.add("springboot.framework:bean:3.1.12");
                     try {
                         insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, Files.readAllBytes(repo.getBuildFiles().get(0).toPath()));
                     } catch (IOException e) {
