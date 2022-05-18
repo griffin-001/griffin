@@ -27,14 +27,22 @@ public class DependencyChecker {
         this.cveDatabaseConnection = cveDatabaseConnection;
     }
 
-    //TODO Make object that extends Vulnerability but with Dependency details.
+    /**
+     * Checks the dependencies used by each repository against the vulnerabilities database. Returns a Map
+     * of repo's with vulnerable dependencies, if any. Map will always contain repository as key but may not
+     * have a value if there are no vulnerabilities.
+     * @param repositories
+     * @return
+     */
     public HashMap<Repository, List<Vulnerability>> checkDependenciesWithCVE(List<Repository> repositories) {
         logger.info("Checking all dependencies against vulnerabilities database...");
         HashMap<Repository, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
         List<Vulnerability> vulnerabilities = new ArrayList<>();
 
-        //Fetch dependencies
-        dependencies = dependencyRepository.findAll();
+        //Fetch dependencies; filter out internal dependencies
+        dependencies = dependencyRepository.findAll().stream()
+            .filter(dep -> (dep.getCategory().equals("external")))
+            .collect(Collectors.toList());
 
         //Check each dependency version against the vulnerabilities database
         //Store a map of vulnerable dependencies, if any, with the vulnerability description
@@ -42,18 +50,18 @@ public class DependencyChecker {
             String[] dependencyMetadata = dependency.getName().split(":");
             // String dependency = "google.guava:guava:1.0.0";
             // String[] dependencyMetadata = dependency.split(":");
-            logger.info("Checking dependency: "+dependency.getName());
+            logger.info("Checking vulnerability database for dependency: "+dependency.getName());
 
             Vulnerability vulnerability = cveDatabaseConnection.searchVersion(dependencyMetadata[0], dependencyMetadata[1],
                 dependencyMetadata[2]);
 
-            //TODO maybe check for dupes? 
             if (vulnerability != null) {
                 vulnerabilities.add(vulnerability);
             }
             //TODO If record for a dependencies' version not in database, fetch from CVE database
             
         }
+        logger.info("Scanning repository dependencies against vulnerable dependencies...");
         //For each project, check if their dependencies is in vulnerabilities dependencies map
         for (Repository repo : repositories) {
             List<String> repoDependencies = repo.getDependency();
@@ -63,10 +71,7 @@ public class DependencyChecker {
                 .filter(vuln -> (repoDependencies.contains(vuln.getDepName())))
                 .collect(Collectors.toList());
             
-            //Add repo-vulnerabilities mapping if found
-            if (!foundVulnerabilities.isEmpty()) {
-                vulnerableDepMap.put(repo, foundVulnerabilities);
-            }
+            vulnerableDepMap.put(repo, foundVulnerabilities);
         }
         return vulnerableDepMap;
     }

@@ -63,14 +63,13 @@ public class CVEDatabaseConnection {
                 String description = rs.getString("description");
                 
                 //Reconstruct dependency name
-                String depName = groupId + artifactId + version;
+                String depName = groupId+":"+artifactId+":"+version;
                 Vulnerability vulnObject = new Vulnerability(depName, cve_id, description, 
                     version_start, version_end);
                 versionMap.put(id, vulnObject);
             }
 
             vulnerability= searchVul(versionMap,version);
-            System.out.println(artifactId+" "+version+" "+vulnerability);
 
         } catch (Exception throwables) {
             throwables.printStackTrace();
