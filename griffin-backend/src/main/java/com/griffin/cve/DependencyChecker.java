@@ -1,7 +1,6 @@
 package com.griffin.cve;
 
 import com.griffin.insightsdb.repository.DependencyRepository;
-import com.griffin.insightsdb.repository.RepositoryRepository;
 import com.griffin.cve.utils.CVEDatabaseConnection;
 import com.griffin.insightsdb.model.Dependency;
 import com.griffin.insightsdb.model.Repository;
@@ -10,33 +9,31 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DependencyChecker {
     private static final Logger logger = LoggerFactory.getLogger(DependencyChecker.class);
-    private RepositoryRepository repositoryRepository;
     private DependencyRepository dependencyRepository;
     private CVEDatabaseConnection cveDatabaseConnection;
 
     private List<Dependency> dependencies;
-    private List<Repository> repositories;
 
-    public DependencyChecker(RepositoryRepository repositoryRepository ,
-    DependencyRepository dependencyRepository, CVEDatabaseConnection cveDatabaseConnection) {
-        this.repositoryRepository = repositoryRepository;
+    public DependencyChecker(DependencyRepository dependencyRepository, CVEDatabaseConnection cveDatabaseConnection) {
         this.dependencyRepository = dependencyRepository;
         this.cveDatabaseConnection = cveDatabaseConnection;
     }
 
     //TODO Make object that extends Vulnerability but with Dependency details.
-    public HashMap<Dependency, Vulnerability> checkDependencies() {
+    public HashMap<Repository, List<Vulnerability>> checkDependenciesWithCVE(List<Repository> repositories) {
         logger.info("Checking all dependencies against vulnerabilities database...");
-        HashMap<Dependency, Vulnerability> depVulMap = new HashMap<>();
+        HashMap<Repository, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
+        List<Vulnerability> vulnerabilities = new ArrayList<>();
 
-        //Fetch all stored repositories and dependencies
-        repositories = repositoryRepository.findAll();
+        //Fetch dependencies
         dependencies = dependencyRepository.findAll();
 
         //Check each dependency version against the vulnerabilities database
@@ -52,16 +49,26 @@ public class DependencyChecker {
 
             //TODO maybe check for dupes? 
             if (vulnerability != null) {
-                depVulMap.put(dependency, vulnerability);
+                vulnerabilities.add(vulnerability);
             }
             //TODO If record for a dependencies' version not in database, fetch from CVE database
             
         }
-        //TODO For each project, check their dependencies is in vulnerabilities dependencies map
-        return depVulMap;
-        
+        //For each project, check if their dependencies is in vulnerabilities dependencies map
+        for (Repository repo : repositories) {
+            List<String> repoDependencies = repo.getDependency();
 
-    
+            List<Vulnerability> foundVulnerabilities =
+                vulnerabilities.stream()
+                .filter(vuln -> (repoDependencies.contains(vuln.getDepName())))
+                .collect(Collectors.toList());
+            
+            //Add repo-vulnerabilities mapping if found
+            if (!foundVulnerabilities.isEmpty()) {
+                vulnerableDepMap.put(repo, foundVulnerabilities);
+            }
+        }
+        return vulnerableDepMap;
     }
 
 
