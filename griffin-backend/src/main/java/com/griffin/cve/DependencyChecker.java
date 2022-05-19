@@ -3,7 +3,7 @@ package com.griffin.cve;
 import com.griffin.insightsdb.repository.DependencyRepository;
 import com.griffin.cve.utils.CVEDatabaseConnection;
 import com.griffin.insightsdb.model.Dependency;
-import com.griffin.insightsdb.model.Repository;
+import com.griffin.insightsdb.model.RepositorySnapShot;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,9 +35,9 @@ public class DependencyChecker {
      * @param repositories
      * @return
      */
-    public HashMap<Repository, List<Vulnerability>> checkDependenciesWithCVE(List<Repository> repositories) {
+    public HashMap<RepositorySnapShot, List<Vulnerability>> checkDependenciesWithCVE(List<RepositorySnapShot> repositories) {
         logger.info("Checking all dependencies against vulnerabilities database...");
-        HashMap<Repository, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
+        HashMap<RepositorySnapShot, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
         List<Vulnerability> vulnerabilities = new ArrayList<>();
 
         //Fetch dependencies; filter out internal dependencies
@@ -61,12 +62,15 @@ public class DependencyChecker {
         }
         logger.info("Scanning repository dependencies against found vulnerable dependencies...");
         //For each project, check if their dependencies is in vulnerabilities dependencies map
-        for (Repository repo : repositories) {
-            List<String> repoDependencies = repo.getDependency();
+        for (RepositorySnapShot repo : repositories) {
+            Set<Dependency> repoDependencies = repo.getDependencies();
 
             List<Vulnerability> foundVulnerabilities =
                 vulnerabilities.stream()
-                .filter(vuln -> (repoDependencies.contains(vuln.getDepName())))
+                .filter(vuln -> (
+                    repoDependencies.stream()
+                    .anyMatch(dep -> (dep.getName().equals(vuln.getDepName())))
+                ))
                 .collect(Collectors.toList());
             
             vulnerableDepMap.put(repo, foundVulnerabilities);

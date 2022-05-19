@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 
 import com.griffin.cve.Vulnerability;
-import com.griffin.insightsdb.model.Repository;
+import com.griffin.insightsdb.model.RepositorySnapShot;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -45,7 +45,7 @@ public class ScanResponse {
      * Handles calculating statistics on instantiation. Fetch JSON response data via toString().
      * @param results
      */
-    public ScanResponse(HashMap<Repository, List<Vulnerability>> results) {
+    public ScanResponse(HashMap<RepositorySnapShot, List<Vulnerability>> results) {
         this.dateTime = new Date();
 
         this.totalRepositories = results.keySet().size();
@@ -54,7 +54,7 @@ public class ScanResponse {
     }
 
     @SuppressWarnings("unchecked")
-    private void compileToJSON(HashMap<Repository, List<Vulnerability>> results) {
+    private void compileToJSON(HashMap<RepositorySnapShot, List<Vulnerability>> results) {
         JSONObject summary = new JSONObject();
         JSONArray dataList = new JSONArray();
 
@@ -70,8 +70,9 @@ public class ScanResponse {
 
         responseJSONObj.put("summary", summary);
 
+        //TODO Preserve ordering. Sort by project -> repo name -> dependency name -> status
         //Compile 'data'
-        for (Entry<Repository, List<Vulnerability>> repoSet : results.entrySet()) {
+        for (Entry<RepositorySnapShot, List<Vulnerability>> repoSet : results.entrySet()) {
             for (Vulnerability vuln : repoSet.getValue()) {
                 JSONObject dataEntry = new JSONObject();
                 
@@ -94,9 +95,9 @@ public class ScanResponse {
      * A dependency is 'resolved' if it appreared in previous scans before but no longer exists in the current scan.
      * @param results
      */
-    private void resolveVulnerabilityStatus(HashMap<Repository, List<Vulnerability>> results) {
+    private void resolveVulnerabilityStatus(HashMap<RepositorySnapShot, List<Vulnerability>> results) {
         //TODO How to link with project names ???
-        for (Entry<Repository, List<Vulnerability>> repoSet : results.entrySet()) {
+        for (Entry<RepositorySnapShot, List<Vulnerability>> repoSet : results.entrySet()) {
             boolean isUnresolved = false;
             boolean isResolved = false;
             boolean isNew = true;

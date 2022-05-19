@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @SpringBootApplication
 public class Application {
@@ -30,15 +31,14 @@ public class Application {
 								  RepositorySnapShotRepository repositorySnapShotRepository){
 		return args -> {
 			TimeStamp timeStamp = new TimeStamp();
-			Server server1 = new Server("8.8.8.8", "bitbuucket", timeStamp);
+			Server server1 = new Server("8.8.8.8", "bitbucket", timeStamp);
 
 
-			Dependency dependency1 = new Dependency("google.guava:guava:1.0.0", "1", "1");
-			Dependency dependency2 = new Dependency("apache.tomcat:tomcat:4.0.1", "1", "1");
+			Dependency dependency1 = new Dependency("google.guava:guava:1.0.0", "1", "external");
+			Dependency dependency2 = new Dependency("apache.tomcat:tomcat:4.0.1", "1", "external");
 
-
-			File build = new File("C:\\Users\\CTY\\Documents\\GitHub\\griffin1" +
-					"\\griffin-backend\\repositories\\bitbucket\\kafka\\build.gradle");
+			String currWorkingDir = System.getProperty("user.dir");
+			File build = Paths.get(currWorkingDir, "/repositories/bitbucket/kafka/build.gradle").toFile();
 			byte[] bytes = Files.readAllBytes(build.toPath());
 
 			RepositorySnapShot repositorySnapShot1 = new RepositorySnapShot("repo1", bytes, server1, "proj1");
