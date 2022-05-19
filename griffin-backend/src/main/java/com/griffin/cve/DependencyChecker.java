@@ -48,8 +48,6 @@ public class DependencyChecker {
         //Store a map of vulnerable dependencies, if any, with the vulnerability description
         for (Dependency dependency : dependencies) {
             String[] dependencyMetadata = dependency.getName().split(":");
-            // String dependency = "google.guava:guava:1.0.0";
-            // String[] dependencyMetadata = dependency.split(":");
             logger.info("Checking vulnerability database for dependency: "+dependency.getName());
 
             Vulnerability vulnerability = cveDatabaseConnection.searchVersion(dependencyMetadata[0], dependencyMetadata[1],
@@ -61,7 +59,7 @@ public class DependencyChecker {
             //TODO If record for a dependencies' version not in database, fetch from CVE database
             
         }
-        logger.info("Scanning repository dependencies against vulnerable dependencies...");
+        logger.info("Scanning repository dependencies against found vulnerable dependencies...");
         //For each project, check if their dependencies is in vulnerabilities dependencies map
         for (Repository repo : repositories) {
             List<String> repoDependencies = repo.getDependency();

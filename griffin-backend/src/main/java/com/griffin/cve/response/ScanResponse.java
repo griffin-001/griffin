@@ -38,8 +38,13 @@ public class ScanResponse {
     private int unresolvedExistingVulnerabilities = 0; 
     private int resolvedExisitingVulnerabilities = 0;
 
+    //TODO Refactor this into a JSON Response Wrapper for other uses
     private JSONObject responseJSONObj = new JSONObject();
 
+    /**
+     * Handles calculating statistics on instantiation. Fetch JSON response data via toString().
+     * @param results
+     */
     public ScanResponse(HashMap<Repository, List<Vulnerability>> results) {
         this.dateTime = new Date();
 
@@ -83,9 +88,14 @@ public class ScanResponse {
         responseJSONObj.put("data", dataList);
     }
 
-
+    /**
+     * Determines if the vulnerable dependencies in current scan are 'new' or 'unresolved' or 'resolved'.<br /><br />
+     * A dependency is 'unresolved' if it appeared in previous scans before and persists in the current scan. <br /><br />
+     * A dependency is 'resolved' if it appreared in previous scans before but no longer exists in the current scan.
+     * @param results
+     */
     private void resolveVulnerabilityStatus(HashMap<Repository, List<Vulnerability>> results) {
-        //TODO How to link in projects ???
+        //TODO How to link with project names ???
         for (Entry<Repository, List<Vulnerability>> repoSet : results.entrySet()) {
             boolean isUnresolved = false;
             boolean isResolved = false;
