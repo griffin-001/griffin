@@ -1,30 +1,27 @@
 package com.griffin.insightsdb.service;
 
-import com.griffin.insightsdb.model.Dependency;
-import com.griffin.insightsdb.model.Repository;
-import com.griffin.insightsdb.model.Server;
 import com.griffin.insightsdb.repository.DependencyRepository;
-import com.griffin.insightsdb.repository.RepositoryRepository;
+import com.griffin.insightsdb.repository.RepositorySnapShotRepository;
 import com.griffin.insightsdb.repository.ServerRepository;
-import org.springframework.data.domain.Sort;
+import com.griffin.insightsdb.repository.TimeStampRepository;
 import org.springframework.stereotype.Component;
-
-
-import java.util.LinkedList;
-import java.util.List;
 
 @Component
 public class InsightDBService {
 
     ServerRepository serverRepository;
     DependencyRepository dependencyRepository;
-    RepositoryRepository repositoryRepository;
+    RepositorySnapShotRepository repositoryRepository;
+
+    TimeStampRepository timeStampRepository;
 
     public InsightDBService(ServerRepository serverRepository,
-                            DependencyRepository dependencyRepository, RepositoryRepository repositoryRepository) {
+                            DependencyRepository dependencyRepository,
+                            RepositorySnapShotRepository repositoryRepository, TimeStampRepository timeStampRepository) {
         this.serverRepository = serverRepository;
         this.dependencyRepository = dependencyRepository;
         this.repositoryRepository = repositoryRepository;
+        this.timeStampRepository = timeStampRepository;
     }
 
     /**
@@ -35,6 +32,7 @@ public class InsightDBService {
      * @param dependencies dependency list
      * @param build build file, should be byte[]
      */
+    /*
     public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build, String project){
 
         //find server by ip
@@ -87,4 +85,6 @@ public class InsightDBService {
             return res;
         }
     }
+
+     */
 }
