@@ -3,7 +3,7 @@ package com.griffin.cve;
 import com.griffin.insightsdb.repository.DependencyRepository;
 import com.griffin.cve.utils.CVEDatabaseConnection;
 import com.griffin.insightsdb.model.Dependency;
-import com.griffin.insightsdb.model.Repository;
+import com.griffin.insightsdb.model.RepositorySnapShot;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,11 +35,12 @@ public class DependencyChecker {
      * @param repositories
      * @return
      */
-    public HashMap<Repository, List<Vulnerability>> checkDependenciesWithCVE(List<Repository> repositories) {
+    public HashMap<RepositorySnapShot, List<Vulnerability>> checkDependenciesWithCVE(List<RepositorySnapShot> repositories) {
         logger.info("Checking all dependencies against vulnerabilities database...");
-        HashMap<Repository, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
+        HashMap<RepositorySnapShot, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
         List<Vulnerability> vulnerabilities = new ArrayList<>();
 
+        //TODO Fetch dependencies that belong to the repos provided
         //Fetch dependencies; filter out internal dependencies
         dependencies = dependencyRepository.findAll().stream()
             .filter(dep -> (dep.getCategory().equals("external")))
@@ -48,27 +50,29 @@ public class DependencyChecker {
         //Store a map of vulnerable dependencies, if any, with the vulnerability description
         for (Dependency dependency : dependencies) {
             String[] dependencyMetadata = dependency.getName().split(":");
-            // String dependency = "google.guava:guava:1.0.0";
-            // String[] dependencyMetadata = dependency.split(":");
             logger.info("Checking vulnerability database for dependency: "+dependency.getName());
 
             Vulnerability vulnerability = cveDatabaseConnection.searchVersion(dependencyMetadata[0], dependencyMetadata[1],
                 dependencyMetadata[2]);
 
             if (vulnerability != null) {
+                //TODO Pass vulnerable dependency to dependency-team to record into table (String)
                 vulnerabilities.add(vulnerability);
             }
             //TODO If record for a dependencies' version not in database, fetch from CVE database
             
         }
-        logger.info("Scanning repository dependencies against vulnerable dependencies...");
+        logger.info("Scanning repository dependencies against found vulnerable dependencies...");
         //For each project, check if their dependencies is in vulnerabilities dependencies map
-        for (Repository repo : repositories) {
-            List<String> repoDependencies = repo.getDependency();
+        for (RepositorySnapShot repo : repositories) {
+            Set<Dependency> repoDependencies = repo.getDependencies();
 
             List<Vulnerability> foundVulnerabilities =
                 vulnerabilities.stream()
-                .filter(vuln -> (repoDependencies.contains(vuln.getDepName())))
+                .filter(vuln -> (
+                    repoDependencies.stream()
+                    .anyMatch(dep -> (dep.getName().equals(vuln.getDepName())))
+                ))
                 .collect(Collectors.toList());
             
             vulnerableDepMap.put(repo, foundVulnerabilities);
