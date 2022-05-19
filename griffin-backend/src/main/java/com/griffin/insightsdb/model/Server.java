@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Entity(name = "server")
 @Table(name = "server")
-@Proxy(lazy = false)
 public class Server {
 
     @Id
@@ -20,7 +19,7 @@ public class Server {
     @Column( name = "ip", nullable = false, unique = true)
     private String ip;
 
-    @Column( name = "type", nullable = false, unique = true)
+    @Column( name = "type", nullable = false)
     private String type;
 
     @OneToMany(mappedBy = "server", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

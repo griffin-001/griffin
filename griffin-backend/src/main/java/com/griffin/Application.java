@@ -1,13 +1,7 @@
 package com.griffin;
 
-import com.griffin.insightsdb.model.Dependency;
-import com.griffin.insightsdb.model.RepositorySnapShot;
-import com.griffin.insightsdb.model.Server;
-import com.griffin.insightsdb.model.TimeStamp;
-import com.griffin.insightsdb.repository.DependencyRepository;
-import com.griffin.insightsdb.repository.RepositorySnapShotRepository;
-import com.griffin.insightsdb.repository.ServerRepository;
-import com.griffin.insightsdb.repository.TimeStampRepository;
+import com.griffin.insightsdb.model.*;
+import com.griffin.insightsdb.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,8 +22,10 @@ public class Application {
 	@Bean
 	public CommandLineRunner demo(TimeStampRepository timeStampRepository, ServerRepository serverRepository,
 								  DependencyRepository dependencyRepository,
-								  RepositorySnapShotRepository repositorySnapShotRepository){
+								  RepositorySnapShotRepository repositorySnapShotRepository,
+								  SnapshotDependencyRepository snapshotDependencyRepository){
 		return args -> {
+
 			TimeStamp timeStamp = new TimeStamp();
 			Server server1 = new Server("8.8.8.8", "bitbucket", timeStamp);
 
@@ -44,15 +40,12 @@ public class Application {
 			RepositorySnapShot repositorySnapShot1 = new RepositorySnapShot("repo1", bytes, server1, "proj1");
 			RepositorySnapShot repositorySnapShot2 = new RepositorySnapShot("repo2", bytes, server1, "proj2");
 
-			repositorySnapShot1.getDependencies().add(dependency1);
-			repositorySnapShot2.getDependencies().add(dependency1);
-			repositorySnapShot1.getDependencies().add(dependency2);
-			repositorySnapShot2.getDependencies().add(dependency2);
+			SnapshotDependency map1 = new SnapshotDependency(dependency1, repositorySnapShot1, "new");
+			SnapshotDependency map2 = new SnapshotDependency(dependency1, repositorySnapShot2,"new");
+			SnapshotDependency map3 = new SnapshotDependency(dependency2, repositorySnapShot1,"new");
+			SnapshotDependency map4 = new SnapshotDependency(dependency2, repositorySnapShot2, "new");
 
-			dependency1.getRepositorySnapShotSet().add(repositorySnapShot1);
-			dependency1.getRepositorySnapShotSet().add(repositorySnapShot2);
-			dependency2.getRepositorySnapShotSet().add(repositorySnapShot1);
-			dependency2.getRepositorySnapShotSet().add(repositorySnapShot2);
+
 
 			timeStampRepository.save(timeStamp);
 			serverRepository.save(server1);
@@ -60,7 +53,10 @@ public class Application {
 			repositorySnapShotRepository.save(repositorySnapShot2);
 			dependencyRepository.save(dependency1);
 			dependencyRepository.save(dependency2);
-
+			snapshotDependencyRepository.save(map1);
+			snapshotDependencyRepository.save(map2);
+			snapshotDependencyRepository.save(map3);
+			snapshotDependencyRepository.save(map4);
 
 		};
 	}

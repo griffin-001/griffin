@@ -3,13 +3,17 @@ package com.griffin.transformer;
 import com.griffin.collector.Project;
 import com.griffin.collector.Repo;
 import com.griffin.collector.bitbucket.BitbucketRepo;
+import com.griffin.insightsdb.model.RepositorySnapShot;
 import com.griffin.insightsdb.service.InsightDBService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -47,7 +51,7 @@ public class TransformerService {
                     }
 
                     // TODO: Currently hardcoded an needs to be done properly
-                    /*
+
                     List<String> dependency = new LinkedList<>();
                     dependency.add("google.guava:guava:1.0.0");
                     dependency.add("apache.tomcat:tomcat:4.0.1");
@@ -58,9 +62,8 @@ public class TransformerService {
                         e.printStackTrace();
                         log.warn("Failed to read bytes from build file");
                     }
-                    List<Repository> res = insightDBService.getDependenciesChanges("repo4");
-                    System.out.println(res.get(0).getName());
-                    */
+
+
 
 
 
