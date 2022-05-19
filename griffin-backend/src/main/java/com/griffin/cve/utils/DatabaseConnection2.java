@@ -55,7 +55,9 @@ public class DatabaseConnection2 {
                 String cve_id = rs.getString("cve_id");
                 String description = rs.getString("description");
 
-                Vulnerability vulnObject = new Vulnerability(cve_id, description,
+                //Reconstruct dependency name
+                String depName = groupId+":"+artifactId+":"+version;
+                Vulnerability vulnObject = new Vulnerability(depName, cve_id, description,
                         version_start, version_end);
                 versionMap.put(id, vulnObject);
             }
