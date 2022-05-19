@@ -1,4 +1,4 @@
-package gradle_files
+package testbuildfiles
 
 plugins {
     id 'java'
