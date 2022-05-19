@@ -56,7 +56,7 @@ public class TransformerService {
                     dependency.add("apache.tomcat:tomcat:4.0.1");
                     dependency.add("springboot.framework:bean:3.1.12");
                     try {
-                        insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, Files.readAllBytes(repo.getBuildFiles().get(0).toPath()));
+                        insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, Files.readAllBytes(repo.getBuildFiles().get(0).toPath()), "project1");
                     } catch (IOException e) {
                         e.printStackTrace();
                         log.warn("Failed to read bytes from build file");
