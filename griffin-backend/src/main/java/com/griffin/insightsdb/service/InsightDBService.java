@@ -1,10 +1,17 @@
 package com.griffin.insightsdb.service;
 
+import com.griffin.insightsdb.model.Dependency;
+import com.griffin.insightsdb.model.RepositorySnapShot;
+import com.griffin.insightsdb.model.Server;
+import com.griffin.insightsdb.model.TimeStamp;
 import com.griffin.insightsdb.repository.DependencyRepository;
 import com.griffin.insightsdb.repository.RepositorySnapShotRepository;
 import com.griffin.insightsdb.repository.ServerRepository;
 import com.griffin.insightsdb.repository.TimeStampRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class InsightDBService {
@@ -24,54 +31,54 @@ public class InsightDBService {
         this.timeStampRepository = timeStampRepository;
     }
 
-    /**
-     *
-     * @param ip ip of the server
-     * @param type type of the server
-     * @param name name of the repo
-     * @param dependencies dependency list
-     * @param build build file, should be byte[]
-     */
-    /*
     public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build, String project){
 
-        //find server by ip
-        Server server = serverRepository.findByIp(ip);
+        TimeStamp latest = timeStampRepository.findAllByOrderByTimestampAsc().get(0);
+        if(latest == null){
+            latest = new TimeStamp();
+            timeStampRepository.save(latest);
+        }
+        Server server = latest.getServer().stream()
+                .filter(s->s.getIp().equals(ip)).collect(Collectors.toSet()).iterator().next();
 
-        //if server not exist, add new server to database, add create a new repo and add to server
         if (server == null){
-            Server new_server = new Server(ip, type);
+            Server new_server = new Server(ip, type, latest);
             serverRepository.save(new_server);
-            Repository repository = new Repository(name, build, dependencies, new_server, project);
+            RepositorySnapShot repository = new RepositorySnapShot(name, build, new_server, project);
             repositoryRepository.save(repository);
         }else{
-            Repository repository = new Repository(name, build, dependencies, server, project);
+            RepositorySnapShot repository = new RepositorySnapShot(name, build, server, project);
             repositoryRepository.save(repository);
         }
 
-
-        //check if new repo is used as dependency by other repository before, u
-        // update the category to internal if it iss true
         Dependency existing_dependency = dependencyRepository.findByName(name);
+
         if (existing_dependency == null){
             Dependency new_dependency = new Dependency(name, "normal", "external");
             dependencyRepository.save(new_dependency);
         }else {
-
             existing_dependency.setCategory("internal");
             dependencyRepository.save(existing_dependency);
         }
 
-        //check dependency list and add new dependency to the DEPENDENCY table if not present before
+        RepositorySnapShot repo = repositoryRepository.findByName(name);
+
         for(String dependency: dependencies){
             if(!dependencyRepository.existsByName(dependency)){
                 Dependency new_dependency = new Dependency(dependency, "normal", "external");
                 dependencyRepository.save(new_dependency);
+                repo.getDependencies().add(new_dependency);
+                new_dependency.getRepositorySnapShotSet().add(repo);
+            }else {
+                Dependency exist_dependency = dependencyRepository.findByName(dependency);
+                repo.getDependencies().add(exist_dependency);
+                exist_dependency.getRepositorySnapShotSet().add(repo);
             }
-        }
 
+        }
     }
 
+    /*
     public List<Repository> getDependenciesChanges(String name){
         List<Repository> repositories = repositoryRepository.findAllByNameOrderByTimestampDesc(name);
         if (repositories.size() == 0){

@@ -7,4 +7,5 @@ import javax.transaction.Transactional;
 
 @Transactional
 public interface RepositorySnapShotRepository extends JpaRepository<RepositorySnapShot, Long> {
+    RepositorySnapShot findByName(String name);
 }
