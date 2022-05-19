@@ -51,6 +51,7 @@ public class InsightDBService {
         for (Server s : latest.getServer()){
             if(s.getIp().equals(ip)){
                 server = s;
+                System.out.println("---------------------------------------------------------------------");
                 break;
             }
         }
@@ -60,10 +61,16 @@ public class InsightDBService {
             Server new_server = new Server(ip, type, latest);
             serverRepository.save(new_server);
             RepositorySnapShot repository = new RepositorySnapShot(name, build, new_server, project);
+            new_server.getRepository().add(repository);
             repositorySnapShotRepository.save(repository);
             current_id = repository.getId();
+            latest.getServer().add(new_server);
+            serverRepository.save(new_server);
+            timeStampRepository.save(latest);
         }else{
             RepositorySnapShot repository = new RepositorySnapShot(name, build, server, project);
+            server.getRepository().add(repository);
+            serverRepository.save(server);
             repositorySnapShotRepository.save(repository);
             current_id = repository.getId();
         }
