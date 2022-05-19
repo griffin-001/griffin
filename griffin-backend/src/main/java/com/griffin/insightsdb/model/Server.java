@@ -4,6 +4,7 @@ package com.griffin.insightsdb.model;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "server")
@@ -23,12 +24,18 @@ public class Server {
     private String type;
 
     @OneToMany(mappedBy = "server", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Repository> repository;
+    private Set<RepositorySnapShot> repository = new HashSet<>();
 
-    public Server(String ip, String type) {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "timestamp_id", nullable = false)
+    private TimeStamp timestamp;
+
+    public Server(String ip, String type, TimeStamp timeStamp) {
         this.ip = ip;
         this.type = type;
+        this.timestamp = timeStamp;
     }
+
 
     public Server() {
 
@@ -56,5 +63,21 @@ public class Server {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Set<RepositorySnapShot> getRepository() {
+        return repository;
+    }
+
+    public void setRepository(Set<RepositorySnapShot> repository) {
+        this.repository = repository;
+    }
+
+    public TimeStamp getTimeStamp() {
+        return timestamp;
+    }
+
+    public void setTimeStamp(TimeStamp timeStamp) {
+        this.timestamp = timeStamp;
     }
 }

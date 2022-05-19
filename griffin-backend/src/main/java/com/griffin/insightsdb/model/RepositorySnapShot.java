@@ -7,14 +7,16 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity(name = "repository")
-@Table(name = "repository")
+@Entity(name = "repository_snapshot")
+@Table(name = "repository_snapshot")
 @TypeDef(name = "list-array", typeClass = ListArrayType.class)
 @Proxy(lazy = false)
 
-public class Repository {
+public class RepositorySnapShot {
 
     @Id
     @SequenceGenerator(name = "repository_sequence", sequenceName = "repository_sequence", allocationSize = 1)
@@ -24,34 +26,32 @@ public class Repository {
     @Column( name = "name", nullable = false)
     private String name;
 
-    @Column(name = "timestamp", columnDefinition = "timestamp not null default current_timestamp")
-    @CreationTimestamp
-    private Date timestamp;
-
+    @Column(name = "project", nullable = false)
+    private String project;
 
     @Lob
     @Column( name = "build")
     private byte[] build;
 
-    @Type(type = "list-array")
-    @Column(
-            name = "dependency",
-            columnDefinition = "text[]"
-    )
-    private List<String> dependency;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "server_id", nullable = false)
     private Server server;
 
-    public Repository(String name, byte[] build, List<String> dependency, Server server) {
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "repository_dependency", joinColumns = { @JoinColumn(name = "repository_id") },
+            inverseJoinColumns = { @JoinColumn(name = "dependency_id") })
+    Set<Dependency> dependencies = new HashSet<>();
+
+
+    public RepositorySnapShot(String name, byte[] build, Server server, String project) {
         this.name = name;
         this.build = build;
-        this.dependency = dependency;
         this.server = server;
+        this.project = project;
     }
 
-    public Repository() {
+    public RepositorySnapShot() {
 
     }
 
@@ -71,12 +71,12 @@ public class Repository {
         this.name = name;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public String getProject() {
+        return project;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setProject(String project) {
+        this.project = project;
     }
 
     public byte[] getBuild() {
@@ -87,11 +87,21 @@ public class Repository {
         this.build = build;
     }
 
-    public List<String> getDependency() {
-        return dependency;
+    public Server getServer() {
+        return server;
     }
 
-    public void setDependency(List<String> dependency) {
-        this.dependency = dependency;
+    public void setServer(Server server) {
+        this.server = server;
     }
+
+    public Set<Dependency> getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(Set<Dependency> dependencies) {
+        this.dependencies = dependencies;
+    }
+
+
 }

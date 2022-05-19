@@ -1,30 +1,27 @@
 package com.griffin.insightsdb.service;
 
-import com.griffin.insightsdb.model.Dependency;
-import com.griffin.insightsdb.model.Repository;
-import com.griffin.insightsdb.model.Server;
 import com.griffin.insightsdb.repository.DependencyRepository;
-import com.griffin.insightsdb.repository.RepositoryRepository;
+import com.griffin.insightsdb.repository.RepositorySnapShotRepository;
 import com.griffin.insightsdb.repository.ServerRepository;
-import org.springframework.data.domain.Sort;
+import com.griffin.insightsdb.repository.TimeStampRepository;
 import org.springframework.stereotype.Component;
-
-
-import java.util.LinkedList;
-import java.util.List;
 
 @Component
 public class InsightDBService {
 
     ServerRepository serverRepository;
     DependencyRepository dependencyRepository;
-    RepositoryRepository repositoryRepository;
+    RepositorySnapShotRepository repositoryRepository;
+
+    TimeStampRepository timeStampRepository;
 
     public InsightDBService(ServerRepository serverRepository,
-                            DependencyRepository dependencyRepository, RepositoryRepository repositoryRepository) {
+                            DependencyRepository dependencyRepository,
+                            RepositorySnapShotRepository repositoryRepository, TimeStampRepository timeStampRepository) {
         this.serverRepository = serverRepository;
         this.dependencyRepository = dependencyRepository;
         this.repositoryRepository = repositoryRepository;
+        this.timeStampRepository = timeStampRepository;
     }
 
     /**
@@ -35,7 +32,8 @@ public class InsightDBService {
      * @param dependencies dependency list
      * @param build build file, should be byte[]
      */
-    public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build){
+    /*
+    public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build, String project){
 
         //find server by ip
         Server server = serverRepository.findByIp(ip);
@@ -44,10 +42,10 @@ public class InsightDBService {
         if (server == null){
             Server new_server = new Server(ip, type);
             serverRepository.save(new_server);
-            Repository repository = new Repository(name, build, dependencies, new_server);
+            Repository repository = new Repository(name, build, dependencies, new_server, project);
             repositoryRepository.save(repository);
         }else{
-            Repository repository = new Repository(name, build, dependencies, server);
+            Repository repository = new Repository(name, build, dependencies, server, project);
             repositoryRepository.save(repository);
         }
 
@@ -87,4 +85,6 @@ public class InsightDBService {
             return res;
         }
     }
+
+     */
 }
