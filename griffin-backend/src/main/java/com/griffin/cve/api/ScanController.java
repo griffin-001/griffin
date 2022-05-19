@@ -30,12 +30,11 @@ public class ScanController {
     @GetMapping("/scan/all")
     public String runScanAll() {
         logger.info("Scanning all dependencies for vulnerabilities...");
-        //TODO Maybe pass in User ID to fetch which repo corresponds to that user and check
+        //TODO scan latest snapshot only
         List<RepositorySnapShot> repositories = repositorySnapShotRepository.findAll();
         results = dependencyChecker.checkDependenciesWithCVE(repositories);
         
         logger.info("Preparing response message...");
-        //TODO Convert results into Scan response object for frontend
         ScanResponse response = ResponseManager.getInstance().mapToResponse(results);
         
         return response.toString();

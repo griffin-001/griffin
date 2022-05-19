@@ -40,6 +40,7 @@ public class DependencyChecker {
         HashMap<RepositorySnapShot, List<Vulnerability>> vulnerableDepMap = new HashMap<>();
         List<Vulnerability> vulnerabilities = new ArrayList<>();
 
+        //TODO Fetch dependencies that belong to the repos provided
         //Fetch dependencies; filter out internal dependencies
         dependencies = dependencyRepository.findAll().stream()
             .filter(dep -> (dep.getCategory().equals("external")))
@@ -55,6 +56,7 @@ public class DependencyChecker {
                 dependencyMetadata[2]);
 
             if (vulnerability != null) {
+                //TODO Pass vulnerable dependency to dependency-team to record into table (String)
                 vulnerabilities.add(vulnerability);
             }
             //TODO If record for a dependencies' version not in database, fetch from CVE database
