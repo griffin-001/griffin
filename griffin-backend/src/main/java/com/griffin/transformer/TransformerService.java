@@ -35,7 +35,7 @@ public class TransformerService {
                 for(File buildFile : buildFiles) {
                     String fileType = getFileExtension(buildFile.getName());
                     String projectName = "";
-                    List<String> dependencies;
+                    List<String> dependencies = null;
 
                     if (fileType.equals(".xml")) {
                         log.info(repo + " : Maven found");
@@ -49,14 +49,7 @@ public class TransformerService {
                     } else {
                         log.error("\"" + buildFile.getName() + "\", " + fileType + " - Invalid build file extension");
                     }
-
-                    // TODO: Currently hardcoded an needs to be done properly
-
-                    List<String> dependency = new LinkedList<>();
-                    dependency.add("google.guava:guava:1.0.0");
-                    dependency.add("apache.tomcat:tomcat:4.0.1");
-                    dependency.add("springboot.framework:bean:3.1.12");
-                    insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, "project1");
+                    insightDBService.UpdateProject("8.8.8.8", "bitbucket", projectName, dependencies, "project1");
 
 
                 }

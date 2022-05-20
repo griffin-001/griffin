@@ -5,6 +5,9 @@ import com.griffin.collector.bitbucket.BitbucketRepo;
 import com.griffin.collector.bitbucket.BitbucketWrapper;
 import com.griffin.collector.gitlab.GitlabWrapper;
 import com.griffin.config.BitbucketProperties;
+import com.griffin.insightsdb.model.TimeStamp;
+import com.griffin.insightsdb.repository.TimeStampRepository;
+import com.griffin.insightsdb.service.InsightDBService;
 import com.griffin.transformer.TransformerService;
 
 import org.slf4j.Logger;
@@ -37,18 +40,21 @@ public class  CollectorService {
     private GitlabWrapper gitlabWrapper;
     private List<Project> projects;
 
+    private TimeStampRepository timeStampRepository;
     public CollectorService(Environment environment,
                             TransformerService transformerService,
                             BitbucketProperties bitbucketProperties,
                             BitbucketWrapper bitbucketWrapper,
                             GitlabWrapper gitlabWrapper,
-                            List<Project> projects) {
+                            List<Project> projects,
+                            TimeStampRepository timeStampRepository) {
         this.environment = environment;
         this.transformerService = transformerService;
         this.bitbucketProperties = bitbucketProperties;
         this.bitbucketWrapper = bitbucketWrapper;
         this.gitlabWrapper = gitlabWrapper;
         this.projects = new ArrayList<>();
+        this.timeStampRepository = timeStampRepository;
     }
 
     @GetMapping("/test")
@@ -64,6 +70,8 @@ public class  CollectorService {
      */
     @GetMapping("/collect")
     public void collect() throws SQLException {
+        TimeStamp timeStamp = new TimeStamp();
+        timeStampRepository.save(timeStamp);
         collectFrom("bitbucket");
         transformerService.transform(projects);
     }
