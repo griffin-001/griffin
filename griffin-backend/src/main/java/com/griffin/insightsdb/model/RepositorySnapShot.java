@@ -36,7 +36,7 @@ public class RepositorySnapShot {
 
     @Type(type = "list-array")
     @Column(name = "vulnerablity_history", columnDefinition = "text[]")
-    private List<String> vulnerabilities;
+    private List<String> vulnerabilities = new ArrayList<>();
 
 
     public RepositorySnapShot(String name, Server server, String project) {

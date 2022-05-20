@@ -118,6 +118,10 @@ public class InsightDBService {
                 String status = snapshotDependencyRepository.
                         findByDependencyIdAndRepositorySnapShotId(dependency_id, oldDependencyId).getStatus();
 
+                if (status == null && repo.getVulnerabilities().size() > 0
+                        && repo.getVulnerabilities().contains(dependency)){
+                    status = "unresolved";
+                }
                 SnapshotDependency snapshotDependency = new SnapshotDependency(new_dependency,
                         repo, Objects.requireNonNullElse(status, "new_dependency"));
                 snapshotDependencyRepository.save(snapshotDependency);
