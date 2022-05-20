@@ -86,6 +86,24 @@ public class InsightDBService {
 
         RepositorySnapShot repo = repositorySnapShotRepository.findById(current_id).orElse(null);
 
+        List<RepositorySnapShot> repos = repositorySnapShotRepository.findByName(name);
+
+        Long oldDependencyId = (long) -1;
+
+        for(RepositorySnapShot repositorySnapShot: repos){
+            if (repositorySnapShot.getServer().getTimeStamp().getTimestamp()
+                    .compareTo(second_latest.getTimestamp()) == 0){
+                oldDependencyId = repositorySnapShot.getId();
+                break;
+            }
+        }
+
+        repo.getVulnerabilities().
+                addAll(Objects.requireNonNull(repositorySnapShotRepository.
+                        findById(oldDependencyId).orElse(null)).getVulnerabilities());
+
+        repositorySnapShotRepository.save(repo);
+
         //add dependency
         for(String dependency: dependencies){
             Dependency new_dependency;
@@ -101,16 +119,6 @@ public class InsightDBService {
                 SnapshotDependency snapshotDependency = new SnapshotDependency(new_dependency, repo, "new_dependency");
                 snapshotDependencyRepository.save(snapshotDependency);
             }else {
-                Long oldDependencyId = (long) -1;
-                List<RepositorySnapShot> repos = repositorySnapShotRepository.findByName(name);
-
-                for(RepositorySnapShot repositorySnapShot: repos){
-                    if (repositorySnapShot.getServer().getTimeStamp().getTimestamp()
-                            .compareTo(second_latest.getTimestamp()) == 0){
-                        oldDependencyId = repositorySnapShot.getId();
-                        break;
-                    }
-                }
 
                 Long dependency_id = dependencyRepository.findByName(dependency).getId();
                 String status = snapshotDependencyRepository.
