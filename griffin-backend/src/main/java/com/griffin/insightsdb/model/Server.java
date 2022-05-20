@@ -16,7 +16,7 @@ public class Server {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_sequence")
     private Long id;
 
-    @Column( name = "ip", nullable = false, unique = true)
+    @Column( name = "ip", nullable = false)
     private String ip;
 
     @Column( name = "type", nullable = false)

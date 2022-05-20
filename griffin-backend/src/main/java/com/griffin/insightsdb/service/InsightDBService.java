@@ -34,8 +34,16 @@ public class InsightDBService {
     public void UpdateProject(String ip, String type, String name, List<String> dependencies, String project){
 
         //find the latest timestamps and second-latest timestamp
+
         List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDesc();
         TimeStamp latest = timestamps.get(0);
+
+        if(latest == null){
+            TimeStamp timeStamp = new TimeStamp();
+            timeStampRepository.save(timeStamp);
+            latest = timeStamp;
+        }
+        
         TimeStamp second_latest = null;
         Long current_id;
 
