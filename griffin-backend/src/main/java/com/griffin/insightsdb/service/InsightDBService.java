@@ -34,7 +34,7 @@ public class InsightDBService {
     public void UpdateProject(String ip, String type, String name, List<String> dependencies, String project){
 
         //find the latest timestamps and second-latest timestamp
-        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDsc();
+        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDesc();
         TimeStamp latest = timestamps.get(0);
         TimeStamp second_latest = null;
         Long current_id;
@@ -90,17 +90,20 @@ public class InsightDBService {
 
         Long oldDependencyId = (long) -1;
 
-        for(RepositorySnapShot repositorySnapShot: repos){
-            if (repositorySnapShot.getServer().getTimeStamp().getTimestamp()
-                    .compareTo(second_latest.getTimestamp()) == 0){
-                oldDependencyId = repositorySnapShot.getId();
-                break;
+
+        if(second_latest != null){
+            for(RepositorySnapShot repositorySnapShot: repos){
+                if (repositorySnapShot.getServer().getTimeStamp().getTimestamp()
+                        .compareTo(second_latest.getTimestamp()) == 0){
+                    oldDependencyId = repositorySnapShot.getId();
+                    break;
+                }
             }
         }
 
-        repo.getVulnerabilities().
-                addAll(Objects.requireNonNull(repositorySnapShotRepository.
-                        findById(oldDependencyId).orElse(null)).getVulnerabilities());
+
+        repositorySnapShotRepository.findById(oldDependencyId).
+                ifPresent(oldRepo -> repo.getVulnerabilities().addAll(oldRepo.getVulnerabilities()));
 
         repositorySnapShotRepository.save(repo);
 
@@ -140,7 +143,7 @@ public class InsightDBService {
     //return a hashmap with key is a timestamp and value is a repository snapshot for the latest 2 snapshot that have
     // the given repository name
     public Map<TimeStamp, RepositorySnapShot> getDependenciesChanges(String name){
-        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDsc();
+        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDesc();
         if(timestamps.size() == 0){
             return null;
         }
