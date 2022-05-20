@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 describe("<ErrorPage />", () => {
-    it("Should have Title", () => {
+    it("Should render Error", () => {
         act(() => {
             render(<ErrorPage/>, container);
         });

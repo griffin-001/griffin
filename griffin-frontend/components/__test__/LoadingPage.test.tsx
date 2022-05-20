@@ -15,8 +15,8 @@ afterEach(() => {
     container = null;
 })
 
-describe("<ErrorPage />", () => {
-    it("Should have Title", () => {
+describe("<LoadingPage />", () => {
+    it("Should render Loading", () => {
         act(() => {
             render(<LoadingPage/>, container);
         });
