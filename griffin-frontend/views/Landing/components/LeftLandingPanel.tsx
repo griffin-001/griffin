@@ -24,6 +24,7 @@ const LeftLandingPanel: FunctionComponent<Props> = (props) => {
           width: 350,
         }}
         src="/assets/griffin-logo.png"
+        data-testid = "griffin-logo"
       />
     </Grid>
   );
