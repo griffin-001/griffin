@@ -33,7 +33,7 @@ public class InsightDBService {
     }
 
 
-    public void UpdateProject(String ip, String type, String name, List<String> dependencies, byte[] build, String project){
+    public void UpdateProject(String ip, String type, String name, List<String> dependencies, String project){
 
         //find the latest timestamps and second-latest timestamp
         List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampAsc();
@@ -51,7 +51,6 @@ public class InsightDBService {
         for (Server s : latest.getServer()){
             if(s.getIp().equals(ip)){
                 server = s;
-                System.out.println("---------------------------------------------------------------------");
                 break;
             }
         }
@@ -60,7 +59,7 @@ public class InsightDBService {
         if (server == null){
             Server new_server = new Server(ip, type, latest);
             serverRepository.save(new_server);
-            RepositorySnapShot repository = new RepositorySnapShot(name, build, new_server, project);
+            RepositorySnapShot repository = new RepositorySnapShot(name, new_server, project);
             new_server.getRepository().add(repository);
             repositorySnapShotRepository.save(repository);
             current_id = repository.getId();
@@ -68,7 +67,7 @@ public class InsightDBService {
             serverRepository.save(new_server);
             timeStampRepository.save(latest);
         }else{
-            RepositorySnapShot repository = new RepositorySnapShot(name, build, server, project);
+            RepositorySnapShot repository = new RepositorySnapShot(name, server, project);
             server.getRepository().add(repository);
             serverRepository.save(server);
             repositorySnapShotRepository.save(repository);
@@ -101,7 +100,7 @@ public class InsightDBService {
 
             //find the relationship inbetween snapshot and dependency in last timestamp
             if(second_latest == null){
-                SnapshotDependency snapshotDependency = new SnapshotDependency(new_dependency, repo, "new");
+                SnapshotDependency snapshotDependency = new SnapshotDependency(new_dependency, repo, "new_dependency");
                 snapshotDependencyRepository.save(snapshotDependency);
             }else {
                 Long oldDependencyId = (long) -1;
@@ -120,7 +119,7 @@ public class InsightDBService {
                         findByDependencyIdAndRepositorySnapShotId(dependency_id, oldDependencyId).getStatus();
 
                 SnapshotDependency snapshotDependency = new SnapshotDependency(new_dependency,
-                        repo, Objects.requireNonNullElse(status, "new"));
+                        repo, Objects.requireNonNullElse(status, "new_dependency"));
                 snapshotDependencyRepository.save(snapshotDependency);
             }
         }

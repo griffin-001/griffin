@@ -39,7 +39,7 @@ public class RepositorySnapShot {
     private List<String> vulnerabilities;
 
 
-    public RepositorySnapShot(String name, byte[] build, Server server, String project) {
+    public RepositorySnapShot(String name, Server server, String project) {
         this.name = name;
         this.server = server;
         this.project = project;

@@ -37,8 +37,8 @@ public class Application {
 			File build = Paths.get(currWorkingDir, "/repositories/bitbucket/kafka/build.gradle").toFile();
 			byte[] bytes = Files.readAllBytes(build.toPath());
 
-			RepositorySnapShot repositorySnapShot1 = new RepositorySnapShot("repo1", bytes, server1, "proj1");
-			RepositorySnapShot repositorySnapShot2 = new RepositorySnapShot("repo2", bytes, server1, "proj2");
+			RepositorySnapShot repositorySnapShot1 = new RepositorySnapShot("repo1", server1, "proj1");
+			RepositorySnapShot repositorySnapShot2 = new RepositorySnapShot("repo2", server1, "proj2");
 
 			SnapshotDependency map1 = new SnapshotDependency(dependency1, repositorySnapShot1, "new");
 			SnapshotDependency map2 = new SnapshotDependency(dependency1, repositorySnapShot2,"new");
