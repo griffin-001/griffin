@@ -1,0 +1,6 @@
+# Use this only for storing credentials.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/griffindb
+    username: postgres
+    password: 123

@@ -1,9 +1,20 @@
 # ---------------------------------------------
---- # Set Active Profile
+--- # Set active profile & global defaults.
 # ---------------------------------------------
 spring:
   profiles:
     active: dev
+
+  main:
+    banner-mode: off
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 # ---------------------------------------------
 --- # Development Profile.
@@ -13,38 +24,24 @@ spring:
     activate:
       on-profile: dev
 
-  main:
-    banner-mode: off
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/griffindb
-    username: postgres
-    password: 123
-    driver-class-name: org.postgresql.Driver
-
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 noclones: false
 minimalclones: true
+
 bitbucket:
   protocol: 'http://'
   apibase: '/rest/api/1.0/'
   servers:
     - '3.26.194.213'
-    - '3.26.194.213'
-gitlab:
-  protocol: 'http'
-  apibase: '/not/sure/yet/'
-  servers:
-    - '1.2.3.4'
-    - '5.6.7.8'
-    - '42.42.42.42'
+#    - '3.26.194.213'
+#gitlab:
+#  protocol: 'http'
+#  apibase: '/not/sure/yet/'
+#  servers:
+#    - '42.42.42.42'
+#    - '1.2.3.4'
 
 # ---------------------------------------------
 --- # Production Profile.
@@ -54,22 +51,14 @@ spring:
     activate:
       on-profile: prod
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/insightsdb  # TODO: Use a key store for this.
-    username: postgres
-    password: 123  # TODO: Use a key store for this.
-    driver-class-name: org.postgresql.Driver
-
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: create  # (create, create-drop, validate, update)
 
 noclones: false
 minimalclones: false
+
 bitbucket:
   protocol: 'http://'
   apibase: '/rest/api/1.0/'

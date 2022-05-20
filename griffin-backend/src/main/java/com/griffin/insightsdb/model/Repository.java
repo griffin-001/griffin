@@ -28,6 +28,24 @@ public class Repository {
     @CreationTimestamp
     private Date timestamp;
 
+    @Column(name = "project", nullable = false)
+    private String project;
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
 
     @Lob
     @Column( name = "build")
@@ -44,11 +62,12 @@ public class Repository {
     @JoinColumn(name = "server_id", nullable = false)
     private Server server;
 
-    public Repository(String name, byte[] build, List<String> dependency, Server server) {
+    public Repository(String name, byte[] build, List<String> dependency, Server server, String project) {
         this.name = name;
         this.build = build;
         this.dependency = dependency;
         this.server = server;
+        this.project = project;
     }
 
     public Repository() {
