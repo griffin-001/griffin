@@ -42,7 +42,7 @@ public class BitbucketRepo implements Repo {
             retrieveBuildFileViaApi(protocol, apiBase);
         } else {
             getCloneUrls(root);
-            cloneRepo();
+            updateRepo();
             findBuildFiles();
         }
     }
@@ -66,14 +66,31 @@ public class BitbucketRepo implements Repo {
         }
     }
 
-    // TODO: Use /opt/data or /var or /etc when prod profile is set.
-    private void cloneRepo() {
-        String currentDir = System.getProperty("user.dir");
-        String repoDirString = Paths.get(currentDir) + "/repositories/bitbucket/" + name;
+    /**
+     * This method pulls content for a repository from a remote SCM instance.
+     * If the repository does not exist locally, it clones it.
+     * If it does exist locally, it pulls changes instead.
+     * Currently, we just use whatever default branch is setup for that repo.
+     * These repositories are all stored in the root of this project in /repositories
+     * TODO: Use /opt/data or /var or /etc when prod profile is set.
+     */
+    private void updateRepo() {
+        String repoDirString = System.getProperty("user.dir") + "/repositories/bitbucket/" + name;
         localLocation = Paths.get(repoDirString);
         if (Files.exists(localLocation)) {
-            log.info("Repo " + name + " already exists on this machine, skipping cloning");
-            // TODO: Git pull here.
+            log.info("Repo " + name + " already exists on this machine, pulling changes");
+            try {
+                Git git = Git.open(localLocation.toFile());
+                try {
+                    git.pull().call();
+                    git.close();
+                    log.info("Finished pulling changes from " + hrefHTTP);
+                } catch (Exception e) {
+                    log.warn("Error pulling changes from " + hrefHTTP);
+                }
+            } catch (IOException e) {
+                log.warn("Failed to open local git repo " + e.getMessage());
+            }
         } else {
             try {
                 Files.createDirectories(localLocation);
@@ -83,7 +100,7 @@ public class BitbucketRepo implements Repo {
             }
             try {
                 log.info("cloning " + hrefHTTP);
-                Git repo = Git.cloneRepository().
+                Git git = Git.cloneRepository().
                         setURI(hrefHTTP).
                         setDirectory(new File(repoDirString)).
                         call();
