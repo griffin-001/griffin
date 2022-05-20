@@ -7,6 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface TimeStampRepository extends JpaRepository<TimeStamp, Long> {
-    List<TimeStamp> findAllByOrderByTimestampAsc();
+    List<TimeStamp> findAllByOrderByTimestampDsc();
     TimeStamp findByTimestamp(Date timeStamp);
 }

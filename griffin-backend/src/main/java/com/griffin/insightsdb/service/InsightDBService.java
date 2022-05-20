@@ -4,9 +4,7 @@ import com.griffin.insightsdb.model.*;
 import com.griffin.insightsdb.repository.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,7 +34,7 @@ public class InsightDBService {
     public void UpdateProject(String ip, String type, String name, List<String> dependencies, String project){
 
         //find the latest timestamps and second-latest timestamp
-        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampAsc();
+        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDsc();
         TimeStamp latest = timestamps.get(0);
         TimeStamp second_latest = null;
         Long current_id;
@@ -130,20 +128,38 @@ public class InsightDBService {
     }
 
 
-    /*
-    public List<Repository> getDependenciesChanges(String name){
-        List<Repository> repositories = repositoryRepository.findAllByNameOrderByTimestampDesc(name);
-        if (repositories.size() == 0){
+
+    //return a hashmap with key is a timestamp and value is a repository snapshot for the latest 2 snapshot that have
+    // the given repository name
+    public Map<TimeStamp, RepositorySnapShot> getDependenciesChanges(String name){
+        List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDsc();
+        if(timestamps.size() == 0){
             return null;
-        }else if(repositories.size() <= 2){
-            return repositories;
-        }else {
-            List<Repository> res = new LinkedList<>();
-            res.add(repositories.get(0));
-            res.add(repositories.get(1));
+        }
+        List<RepositorySnapShot> repositorySnapShots = repositorySnapShotRepository.findByName(name);
+
+        if (timestamps.size() == 1){
+            if(repositorySnapShots.isEmpty()){
+                return null;
+            }else {
+                Map<TimeStamp, RepositorySnapShot> res =  new HashMap<>();
+                res.put(timestamps.get(0), repositorySnapShots.get(0));
+                return res;
+            }
+
+        } else {
+            Map<TimeStamp, RepositorySnapShot> res =  new HashMap<>();
+            for(RepositorySnapShot repositorySnapShot: repositorySnapShots){
+                if (repositorySnapShot.getServer().getTimeStamp().
+                        getTimestamp().compareTo((timestamps.get(0).getTimestamp()))==0){
+                    res.put(timestamps.get(0), repositorySnapShot);
+                } else if (repositorySnapShot.getServer().getTimeStamp().
+                        getTimestamp().compareTo((timestamps.get(1).getTimestamp()))==0) {
+                    res.put(timestamps.get(1), repositorySnapShot);
+                }
+            }
             return res;
         }
     }
 
-     */
 }
