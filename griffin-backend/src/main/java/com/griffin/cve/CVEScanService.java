@@ -7,7 +7,6 @@ import com.griffin.insightsdb.model.RepositorySnapShot;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class CVEScanService {
     }
 
     /**
-     * @deprecated
+     * @deprecated <br/><br/>
      * Checks the dependencies used by each repository against the vulnerabilities database. Returns a Map
      * of repo's with vulnerable dependencies, if any. Map will always contain repository as key but may not
      * have a value if there are no vulnerabilities.
@@ -89,26 +88,26 @@ public class CVEScanService {
      * @return true if dependency has vulnerability
      * @throws Exception for dependency name given is not in valid format xxx:xxx:xxx
      */
-    public Boolean checkVulnerability(Dependency dependency) throws Exception {
-        logger.info("Checking for vulnerabilities for "+dependency.getName());
+    public Boolean checkVulnerability(String dependencyName) throws Exception {
+        logger.info("Checking for vulnerabilities for "+dependencyName);
         String groupId, artifactId, version;
 
         //Split dependency name into their formats
         try {
-            String[] depMetaData = dependency.getName().split(":");
+            String[] depMetaData = dependencyName.split(":");
             groupId = depMetaData[0];
             artifactId = depMetaData[1];
             version = depMetaData[2];
         }
         catch (ArrayIndexOutOfBoundsException e) {
-            logger.error("Dependency name not valid: "+dependency.getName());
+            logger.error("Dependency name not valid: "+dependencyName);
             throw new Exception("Dependency name is not valid!");
         }
 
         // Check dependency against vulnerabilities cache list
         for (Vulnerability vuln : vulnerabilities) {
             // check if the dependency has an entry in vulnerabilities list
-            if (vuln.getDepName().equals(dependency.getName())) {
+            if (vuln.getDepName().equals(dependencyName)) {
                 // If there is an entry, determine if there is a CVE ID to the vulnerability,
                 // or if the entry is just a cache entry
                 return vuln.getCveId() != null;
@@ -122,7 +121,7 @@ public class CVEScanService {
             return true;
         }
         else {
-            Vulnerability cacheVuln = new Vulnerability(dependency.getName(), null, null, null, null);
+            Vulnerability cacheVuln = new Vulnerability(dependencyName, null, null, null, null);
 
             vulnerabilities.add(cacheVuln);
             return false;
