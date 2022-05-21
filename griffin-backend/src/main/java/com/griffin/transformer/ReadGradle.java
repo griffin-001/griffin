@@ -55,6 +55,9 @@ public class ReadGradle {
         configurations.add("runtime");
         configurations.add("testRuntime");
 
+        // Custom dependency configuration types
+        configurations.add("tomcat");
+
         try {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(new FileInputStream(fileName)));
@@ -78,22 +81,26 @@ public class ReadGradle {
                 if (configurations.contains(splitLine[CONFIG_INDEX])) {
                     if (splitLine.length == FORMAT_1_LEN) {
                         // Ensure info index is a string
-                        if (splitLine[FORMAT_1_INFO_INDEX].startsWith("'") ||
-                                splitLine[FORMAT_1_INFO_INDEX].startsWith("\"")) {
-                            dependencies.add(splitLine[FORMAT_1_INFO_INDEX]
-                                    .replace("'", ""));
+                        if (splitLine[FORMAT_1_INFO_INDEX].startsWith("'")) {
+                            dependencies.add(splitLine[FORMAT_1_INFO_INDEX].replace("'", ""));
+                        } else if (splitLine[FORMAT_1_INFO_INDEX].startsWith("\"")) {
+                            dependencies.add(splitLine[FORMAT_1_INFO_INDEX].replace("\"", ""));
                         }
+
                     } else if (splitLine.length == FORMAT_2_LEN) {
                         String dependency = "";
                         dependency += splitLine[FORMAT_1_GROUP_INDEX]
                                 .replace(",", "")
-                                .replace("'", "") + ":";
+                                .replace("'", "")
+                                .replace("\"", "") + ":";
                         dependency += splitLine[FORMAT_1_NAME_INDEX]
                                 .replace(",", "")
-                                .replace("'", "") + ":";
+                                .replace("'", "")
+                                .replace("\"", "") + ":";
                         dependency += splitLine[FORMAT_1_VERSION_INDEX]
                                 .replace(",", "")
-                                .replace("'", "");
+                                .replace("'", "")
+                                .replace("\"", "");
                         dependencies.add(dependency);
                     }
                 }
