@@ -41,6 +41,8 @@ public class TransformerService {
                         log.info(repo + " : Maven found");
                         projectName = ReadXML.parseProjectName(buildFile);
                         dependencies = ReadXML.parseDependencies(buildFile);
+                        insightDBService.UpdateProject("8.8.8.8", "bitbucket", projectName, dependencies, project.getKey());
+
                     } else if (fileType.equals(".gradle")) {
                         log.info(repo.toString() + " : Gradle found");
                         // Below code causes ArrayIndexOutOfBoundsException
@@ -49,7 +51,6 @@ public class TransformerService {
                     } else {
                         log.error("\"" + buildFile.getName() + "\", " + fileType + " - Invalid build file extension");
                     }
-                    insightDBService.UpdateProject("8.8.8.8", "bitbucket", projectName, dependencies, "project1");
 
 
                 }
