@@ -9,6 +9,9 @@ import Heading from "../../components/Text/Heading";
 import {Box, CircularProgress} from "@mui/material";
 import ErrorPage from "../../components/ErrorPage";
 import LoadingPage from "../../components/LoadingPage";
+import {readScanHistory} from "../../apis/scanHistoryApis";
+import useCancelAxiosOnUnmount from "../../hooks/useCancelAxiosOnUnmount";
+import BodyText from "../../components/Text/BodyText";
 
 interface Props {
   // this function should not take any props for the time being
@@ -41,31 +44,34 @@ const ScannerWrapper: FunctionComponent<Props> = (props) => {
   // This will store if we are loading
   const [loading, setLoading] = useState<boolean>(true);
 
+  // todo remove this - this is a test
+  const [test, setTest] = useState(null);
 
-  // todo This is for when the scanner page initially loads
+  // this is for when the scanner page initially loads
   useEffect(() => {
 
-    // todo call the backend to initially load the data for the page
-    // axios call can go here
+    readScanHistory()
+      .then((response) => {
 
-    // after the call occurs, ensure you have a:
-    // .then((res) => {
-    // setListOfScans(res);
-    // setLoading(false);
-    // }
+        // todo remove this once loading is properly implemented
+        setListOfScans(sampleScanResults);
+        console.log(response);
+        setTest(response.data);
 
-    // todo remove this once loading is properly implemented
-    setListOfScans(sampleScanResults);
-    setLoading(false);
+        // todo this is the actual implementation
+        // setListOfScans(response.data);
 
-    // this is what is called a cleanup function,
-    // you probably won't need to put anything here, it is just best practice
-    return () => {
-      // todo handle any unresolved promises etc...
-    };
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
 
     // an empty dependency array here ensures this loop only runs once
   }, []);
+
+  // this contains an axios cleanup function
+  useCancelAxiosOnUnmount();
 
   // todo this is what call the update function, and runs the scanner
   function runScanner() {
@@ -86,7 +92,12 @@ const ScannerWrapper: FunctionComponent<Props> = (props) => {
   if (!listOfScans) return <ErrorPage/>;
 
   return (
-    // todo currently hardcoded
+    // todo this is just a test
+    // <BodyText>
+    //   {JSON.stringify(test)}
+    // </BodyText>
+
+    // todo comment this back in later
     <Scanner listOfScans={listOfScans} runScanner={runScanner}/>
   );
 };
