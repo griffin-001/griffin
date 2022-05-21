@@ -260,4 +260,10 @@ public class InsightDBService {
         }
     }
 
+    //return all dependencies
+    public List<Dependency> findAllDependencies() {
+        List<Dependency> dependencies = dependencyRepository.findAll();
+        return dependencies;
+    }
+  
 }
