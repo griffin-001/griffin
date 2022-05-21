@@ -26,6 +26,8 @@ spring:
 
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create  # (create, create-drop, validate, update)
 
 
 noclones: false
