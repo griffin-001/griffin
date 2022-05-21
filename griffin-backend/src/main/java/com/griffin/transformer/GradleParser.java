@@ -1,9 +1,21 @@
 package com.griffin.transformer;
 
-import java.io.*;
-import java.util.*;
 
-public class ReadGradle {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+@Component
+public class GradleParser {
+    private static final Logger log = LoggerFactory.getLogger(GradleParser.class);
     public static final int CONFIG_INDEX = 0;
 
     // Format 1:
@@ -18,7 +30,7 @@ public class ReadGradle {
     public static final int FORMAT_1_NAME_INDEX = 4;
     public static final int FORMAT_1_VERSION_INDEX = 6;
 
-    public static String parseProjectName(File file) {
+    public String parseProjectName(File file) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;
@@ -28,14 +40,13 @@ public class ReadGradle {
                     return line.split("=")[1].replace("'","").trim();
                 }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Couldn't parse Gradle project name");
         }
         return "";
     }
 
-    public static List<String> parseDependencies(File fileName) {
+    public List<String> parseDependencies(File fileName) {
         List<String> dependencies = new ArrayList<>();
         HashSet<String> configurations = new HashSet<>();
 
@@ -108,7 +119,7 @@ public class ReadGradle {
 
             return dependencies;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Error parsing Gradle dependencies");
         }
         return null;
     }

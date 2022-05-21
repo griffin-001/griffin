@@ -1,10 +1,13 @@
 package com.griffin.griffinbackend;
 
 import com.griffin.collector.Crawler;
-import com.griffin.transformer.ReadGradle;
-import com.griffin.transformer.ReadXML;
+import com.griffin.transformer.GradleParser;
+import com.griffin.transformer.XMLParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -14,7 +17,14 @@ import java.nio.file.Paths;
 import java.util.List;
 
 
+@SpringBootTest
 class ApplicationTests {
+
+	@Autowired
+	XMLParser xmlParser;
+
+	@Autowired
+	GradleParser gradleParser;
 
 	// Test if code correctly reads the project name and all dependencies in the pom.xml file
 	@DisplayName("ReadXML")
@@ -23,9 +33,8 @@ class ApplicationTests {
 
 		File buildFile = Paths.get("src/test/testbuildfiles/pom.xml").toFile();
 
-
-		String projectName = ReadXML.parseProjectName(buildFile);
-		List<String> dependencies = ReadXML.parseDependencies(buildFile);
+		String projectName = xmlParser.parseProjectName(buildFile);
+		List<String> dependencies = xmlParser.parseDependencies(buildFile);
 
 		int lengthOfDepList = dependencies.toArray().length;
 
@@ -44,9 +53,8 @@ class ApplicationTests {
 		File buildFile1 = Paths.get("src/test/testbuildfiles/setting.gradle").toFile();
 		File buildFile2 = Paths.get("src/test/testbuildfiles/build.gradle").toFile();
 
-
-		String projectName = ReadGradle.parseProjectName(buildFile1);
-		List<String> dependencies = ReadGradle.parseDependencies(buildFile2);
+		String projectName = gradleParser.parseProjectName(buildFile1);
+		List<String> dependencies = gradleParser.parseDependencies(buildFile2);
 
 		int lengthOfDepList = dependencies.toArray().length;
 
@@ -78,6 +86,7 @@ class ApplicationTests {
 
 		assertEquals(4, length);
 	}
+
 
 	//Test if the build file can be found correctly from pandas.
 	@DisplayName("crawler-pandas")

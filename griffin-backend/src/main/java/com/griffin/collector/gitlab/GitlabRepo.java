@@ -10,4 +10,14 @@ public class GitlabRepo implements Repo {
     public List<File> getBuildFiles() {
         return null;
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getIp() {
+        return null;
+    }
 }
