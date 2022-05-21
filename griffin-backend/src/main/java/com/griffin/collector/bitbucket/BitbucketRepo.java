@@ -202,6 +202,16 @@ public class BitbucketRepo implements Repo {
     }
 
     @Override
+    public String getIp() {
+        return ip;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public String toString() {
         return new ToStringCreator(this).
                 append("name", name).
