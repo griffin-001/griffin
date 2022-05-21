@@ -1,5 +1,7 @@
 package com.griffin.insightsdb.model;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,8 +24,8 @@ public class Dependency {
     @Column(name = "category", nullable = false)
     private String category;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "dependencies")
-    Set<RepositorySnapShot> repositorySnapShotSet = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "dependency")
+    Set<SnapshotDependency> snapshotDependency = new HashSet<>();
 
     public Dependency(String name, String status, String category) {
         this.name = name;
@@ -67,11 +69,11 @@ public class Dependency {
         this.category = category;
     }
 
-    public Set<RepositorySnapShot> getRepositorySnapShotSet() {
-        return repositorySnapShotSet;
+    public Set<SnapshotDependency> getSnapshotDependency() {
+        return snapshotDependency;
     }
 
-    public void setRepositorySnapShotSet(Set<RepositorySnapShot> repositorySnapShotSet) {
-        this.repositorySnapShotSet = repositorySnapShotSet;
+    public void setSnapshotDependency(Set<SnapshotDependency> snapshotDependency) {
+        this.snapshotDependency = snapshotDependency;
     }
 }

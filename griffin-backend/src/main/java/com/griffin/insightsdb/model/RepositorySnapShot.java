@@ -6,16 +6,11 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "repository_snapshot")
 @Table(name = "repository_snapshot")
 @TypeDef(name = "list-array", typeClass = ListArrayType.class)
-@Proxy(lazy = false)
-
 public class RepositorySnapShot {
 
     @Id
@@ -29,24 +24,23 @@ public class RepositorySnapShot {
     @Column(name = "project", nullable = false)
     private String project;
 
-    @Lob
-    @Column( name = "build")
-    private byte[] build;
 
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "server_id", nullable = false)
     private Server server;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "repository_dependency", joinColumns = { @JoinColumn(name = "repository_id") },
-            inverseJoinColumns = { @JoinColumn(name = "dependency_id") })
-    Set<Dependency> dependencies = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "repositorySnapShot")
+    Set<SnapshotDependency> snapshotDependency = new HashSet<>();
 
 
-    public RepositorySnapShot(String name, byte[] build, Server server, String project) {
+    @Type(type = "list-array")
+    @Column(name = "vulnerablity_history", columnDefinition = "text[]")
+    private List<String> vulnerabilities = new ArrayList<>();
+
+
+    public RepositorySnapShot(String name, Server server, String project) {
         this.name = name;
-        this.build = build;
         this.server = server;
         this.project = project;
     }
@@ -79,13 +73,6 @@ public class RepositorySnapShot {
         this.project = project;
     }
 
-    public byte[] getBuild() {
-        return build;
-    }
-
-    public void setBuild(byte[] build) {
-        this.build = build;
-    }
 
     public Server getServer() {
         return server;
@@ -95,13 +82,19 @@ public class RepositorySnapShot {
         this.server = server;
     }
 
-    public Set<Dependency> getDependencies() {
-        return dependencies;
+    public Set<SnapshotDependency> getSnapshotDependency() {
+        return snapshotDependency;
     }
 
-    public void setDependencies(Set<Dependency> dependencies) {
-        this.dependencies = dependencies;
+    public void setSnapshotDependency(Set<SnapshotDependency> snapshotDependency) {
+        this.snapshotDependency = snapshotDependency;
     }
 
+    public List<String> getVulnerabilities() {
+        return vulnerabilities;
+    }
 
+    public void setVulnerabilities(List<String> vulnerabilities) {
+        this.vulnerabilities = vulnerabilities;
+    }
 }

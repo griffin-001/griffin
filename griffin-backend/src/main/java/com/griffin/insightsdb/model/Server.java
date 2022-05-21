@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Entity(name = "server")
 @Table(name = "server")
-@Proxy(lazy = false)
 public class Server {
 
     @Id
@@ -17,10 +16,10 @@ public class Server {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_sequence")
     private Long id;
 
-    @Column( name = "ip", nullable = false, unique = true)
+    @Column( name = "ip", nullable = false)
     private String ip;
 
-    @Column( name = "type", nullable = false, unique = true)
+    @Column( name = "type", nullable = false)
     private String type;
 
     @OneToMany(mappedBy = "server", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
