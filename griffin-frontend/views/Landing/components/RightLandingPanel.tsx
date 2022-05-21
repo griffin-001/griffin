@@ -31,6 +31,7 @@ const RightLandingPanel: FunctionComponent<Props> = (props) => {
             alignItems: 'center'
           }}>
             <Button
+              data-testid = "landing-page-button"
               variant="contained"
               onClick={() => {
                 router.push("/scanner")
