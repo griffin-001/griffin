@@ -3,7 +3,7 @@ package com.griffin.cve.api;
 import java.util.HashMap;
 import java.util.List;
 
-import com.griffin.cve.DependencyChecker;
+import com.griffin.cve.CVEScanService;
 import com.griffin.cve.Vulnerability;
 import com.griffin.cve.response.ResponseManager;
 import com.griffin.cve.response.ScanResponse;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ScanController {
     private final Logger logger = LoggerFactory.getLogger(ScanController.class);
-    private final DependencyChecker dependencyChecker;
+    private final CVEScanService dependencyChecker;
     private final RepositorySnapShotRepository repositorySnapShotRepository;
     private HashMap<RepositorySnapShot, List<Vulnerability>> results = new HashMap<>();
 
-    public ScanController(DependencyChecker dependencyChecker, RepositorySnapShotRepository repositorySnapShotRepository) {
+    public ScanController(CVEScanService dependencyChecker, RepositorySnapShotRepository repositorySnapShotRepository) {
         this.dependencyChecker = dependencyChecker;
         this.repositorySnapShotRepository = repositorySnapShotRepository;
     }

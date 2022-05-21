@@ -1,6 +1,6 @@
 package com.griffin.cve.api;
 
-import com.griffin.cve.DependencyChecker;
+import com.griffin.cve.CVEScanService;
 import com.griffin.cve.Vulnerability;
 import com.griffin.cve.utils.DependencyChanges;
 import com.griffin.insightsdb.model.Dependency;
