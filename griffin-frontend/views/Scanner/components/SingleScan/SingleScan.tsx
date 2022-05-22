@@ -15,7 +15,7 @@ const SingleScan: FunctionComponent<Props> = (props) => {
       <Grid container sx={{height: "100%"}}>
         <Grid item xs={4} sx={{borderRight: 1}}>
           <SummaryInfo
-            dateTime={props.scan.dateTime}
+            dateString={props.scan.dateString}
             summary={props.scan.summary}
           />
         </Grid>

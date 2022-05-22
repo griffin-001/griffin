@@ -26,9 +26,9 @@
 type ListOfScans = Scan[];
 
 interface Scan {
-  dateTime: Date; // I am flexible regarding the type of this
-  // if you would to make this a string can you please use this format:
+  // Please use this format:
   // https://en.wikipedia.org/wiki/ISO_8601
+  dateString: string;
 
   // the summary information could technically be obtained from the raw data on the frontend
   // however this is much neater if the backend can just return it

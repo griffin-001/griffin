@@ -8,18 +8,21 @@ import {COLOURS} from "../../../../constants/colours";
 import Heading from "../../../../components/Text/Heading";
 
 interface Props {
-  dateTime: Date;
+  dateString: string;
   summary: VulnerabilitySummary;
 }
 
 const SummaryInfo: FunctionComponent<Props> = (props) => {
+
+  // reformat the date string
+  const dateToDisplay = new Date(props.dateString);
 
   return (
     <Stack>
       <Box sx={{p: 2, borderBottom: 1}}>
         <CenteredBox>
           {/*todo we will need to format this more*/}
-          <SubHeading center> {props.dateTime.toString()} </SubHeading>
+          <SubHeading center> {dateToDisplay.toUTCString()} </SubHeading>
         </CenteredBox>
       </Box>
       <Box sx={{p: 2}}>
