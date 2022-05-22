@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // this is the old test one
-  // baseURL: 'http://52.65.89.122/',
+  // If the remote server is down, run it locally and use this:
+  // baseURL: 'http://woodruffhosting.com:80/',
 
-  // this is the new one
-  baseURL: 'http://54.79.241.62:80/',
+  // Otherwise, use https to connect to the server:
+  baseURL: 'https://woodruffhosting.com:443/',
 });
 
 export async function readScanHistory() {

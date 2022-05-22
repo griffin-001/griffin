@@ -1,19 +1,13 @@
 package com.griffin.insightsapi;
 
-import com.griffin.cve.Vulnerability;
-import com.griffin.cve.response.ScanResponse;
 import com.griffin.insightsdb.model.Dependency;
-import com.griffin.insightsdb.model.RepositorySnapShot;
-import com.griffin.insightsdb.model.TimeStamp;
-import com.griffin.insightsdb.repository.TimeStampRepository;
 import com.griffin.insightsdb.service.InsightDBService;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@CrossOrigin("*")
 @RestController
 public class InsightsController {
 

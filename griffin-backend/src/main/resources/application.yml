@@ -16,6 +16,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+server:
+  forward-headers-strategy: framework
+
 # ---------------------------------------------
 --- # Development Profile.
 # ---------------------------------------------
@@ -28,7 +31,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create  # (create, create-drop, validate, update)
-
 
 noclones: false
 minimalclones: true
@@ -55,9 +57,9 @@ spring:
       on-profile: prod
 
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: create  # (create, create-drop, validate, update)
+      ddl-auto: create-drop  # (create, create-drop, validate, update)
 
 noclones: false
 minimalclones: false
