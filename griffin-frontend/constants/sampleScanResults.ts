@@ -1,6 +1,6 @@
 export const sampleScanResults: ListOfScans = [
   {
-    dateTime: new Date,
+    dateString: (new Date).toISOString(),
     summary: {
       newVulnerabilities: 1,
       unresolvedExistingVulnerabilities: 1,
@@ -42,7 +42,7 @@ export const sampleScanResults: ListOfScans = [
     ],
   },
   {
-    dateTime: new Date,
+    dateString: (new Date).toISOString(),
     summary: {
       newVulnerabilities: 3,
       unresolvedExistingVulnerabilities: 0,
