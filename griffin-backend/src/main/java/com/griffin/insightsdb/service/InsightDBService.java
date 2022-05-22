@@ -249,7 +249,6 @@ public class InsightDBService {
                 for(SnapshotDependency prevRecord: previous){
                     if (prevRecord.getStatus().equals("unresolved")){
                         if (!dependencies.contains(prevRecord.getDependency().getName())){
-                            System.out.println("----------------------------------------------------------");
                             SnapshotDependency resolved =
                                     new SnapshotDependency(prevRecord.getDependency(), currentRepo, "resolved");
                             snapshotDependencyRepository.save(resolved);
