@@ -49,7 +49,7 @@ public class TransformerService {
             for(Repo repo : repositories.values()) {
                 List<File> buildFiles = repo.getBuildFiles();
                 List<String> allDependencies = extractDependencies(buildFiles);
-                insightDBService.UpdateProject(
+                insightDBService.UpdateRepository(
                         repo.getIp(),
                         repo.getClass().getSimpleName(),
                         repo.getName(),
