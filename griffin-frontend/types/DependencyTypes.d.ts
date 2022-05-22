@@ -28,14 +28,14 @@ type ListOfScans = Scan[];
 interface Scan {
   // Please use this format:
   // https://en.wikipedia.org/wiki/ISO_8601
-  dateString: string;
+  date: string;
 
   // the summary information could technically be obtained from the raw data on the frontend
   // however this is much neater if the backend can just return it
   summary: {
-    newVulnerabilities: number; // introduced to the system in the last scan (type = new)
-    unresolvedExistingVulnerabilities: number; // already existed in the previous scan (type = unresolved)
-    resolvedExistingVulnerabilities: number; // existed in the previous scan, but have been removed (type = resolved)
+    newVulnerabilities: number; // introduced to the system in the last scan (type = new) (red)
+    unresolvedExistingVulnerabilities: number; // already existed in the previous scan (type = unresolved) (yellow)
+    resolvedExistingVulnerabilities: number; // existed in the previous scan, but have been removed (type = resolved) (green)
     projectsAffected: number; // numerator (number of projects that have a new or unresolved vulnerability)
     totalProjects: number; // denominator
     repositoriesAffected: number; // numerator (number of repos that have a new or unresolved vulnerability)

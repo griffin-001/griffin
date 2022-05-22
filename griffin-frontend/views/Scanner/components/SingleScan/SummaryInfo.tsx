@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {Box} from "@mui/system";
 import {Divider, Grid, Stack} from "@mui/material";
 import SubHeading from "../../../../components/Text/SubHeading";
@@ -8,14 +8,14 @@ import {COLOURS} from "../../../../constants/colours";
 import Heading from "../../../../components/Text/Heading";
 
 interface Props {
-  dateString: string;
+  date: string;
   summary: VulnerabilitySummary;
 }
 
 const SummaryInfo: FunctionComponent<Props> = (props) => {
 
   // reformat the date string
-  const dateToDisplay = new Date(props.dateString);
+  const dateToDisplay = new Date(props.date);
 
   return (
     <Stack>
