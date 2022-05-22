@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class CVEDatabaseConnection {
     private final Environment environment;
 
+    //TODO Maybe refactor into JPA format like TingYu?
     public CVEDatabaseConnection(Environment environment) {
         this.environment = environment;    
     }

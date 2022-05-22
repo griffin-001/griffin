@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.griffin.cve.Vulnerability;
-import com.griffin.insightsdb.model.Repository;
+import com.griffin.insightsdb.model.RepositorySnapShot;
 
 public final class ResponseManager {
     private static ResponseManager instance = null;
@@ -27,7 +27,7 @@ public final class ResponseManager {
      * @param results 
      * @return ScanResponse object
      */
-    public ScanResponse mapToResponse(HashMap<Repository, List<Vulnerability>> results) {
+    public ScanResponse mapToResponse(HashMap<RepositorySnapShot, List<Vulnerability>> results) {
         ScanResponse response = new ScanResponse(results);
 
         scanHistory.add(0, response);

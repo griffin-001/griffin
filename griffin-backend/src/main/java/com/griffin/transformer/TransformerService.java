@@ -3,73 +3,103 @@ package com.griffin.transformer;
 import com.griffin.collector.Project;
 import com.griffin.collector.Repo;
 import com.griffin.collector.bitbucket.BitbucketRepo;
-import com.griffin.insightsdb.model.Repository;
 import com.griffin.insightsdb.service.InsightDBService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
+
+/**
+ * Receives a list of project from the collector service.
+ * For every project in that list, it goes through all the repositories and
+ *  extracts information from them. At the moment that information is limited
+ *  to just getting the build files and then getting all the dependencies out
+ *  of them.
+ * In the future, if we decide to collect other information like KLOC (lines of code)
+ *  from these repos, we should do it in this class.
+ */
 @Service
 public class TransformerService {
     private static final Logger log = LoggerFactory.getLogger(TransformerService.class);
     private final InsightDBService insightDBService;
+    private final XMLParser xmlParser;
+    private final GradleParser gradleParser;
 
-    public TransformerService(InsightDBService insightDBService) {
+    public TransformerService(InsightDBService insightDBService, XMLParser xmlParser, GradleParser gradleParser) {
         this.insightDBService = insightDBService;
+        this.xmlParser = xmlParser;
+        this.gradleParser = gradleParser;
     }
 
+    /**
+     * Extract all dependencies for all repos in the given list,
+     *  and save the details to the database.
+     * @param projects is a list of projects with all details filled in.
+     */
     public void transform(List<Project> projects) {
         for(Project project : projects) {
             HashMap<String, BitbucketRepo> repositories = project.getRepoHashMap();
 
             for(Repo repo : repositories.values()) {
                 List<File> buildFiles = repo.getBuildFiles();
-
-                for(File buildFile : buildFiles) {
-                    String fileType = getFileExtension(buildFile.getName());
-                    String projectName = "";
-                    List<String> dependencies;
-
-                    if (fileType.equals(".xml")) {
-                        log.info(repo + " : Maven found");
-                        projectName = ReadXML.parseProjectName(buildFile);
-                        dependencies = ReadXML.parseDependencies(buildFile);
-                    } else if (fileType.equals(".gradle")) {
-                        log.info(repo.toString() + " : Gradle found");
-                        // Below code causes ArrayIndexOutOfBoundsException
-                        projectName = ReadGradle.parseProjectName(buildFile);
-                        dependencies = ReadGradle.parseDependencies(buildFile);
-                    } else {
-                        log.error("\"" + buildFile.getName() + "\", " + fileType + " - Invalid build file extension");
-                    }
-
-                    // TODO: Currently hardcoded an needs to be done properly
-                    List<String> dependency = new LinkedList<>();
-                    dependency.add("google.guava:guava:1.0.0");
-                    dependency.add("apache.tomcat:tomcat:4.0.1");
-                    dependency.add("springboot.framework:bean:3.1.12");
-                    try {
-                        insightDBService.UpdateProject("1234", "typeTest", "repo4", dependency, Files.readAllBytes(repo.getBuildFiles().get(0).toPath()), "project1");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        log.warn("Failed to read bytes from build file");
-                    }
-                    List<Repository> res = insightDBService.getDependenciesChanges("repo4");
-                    System.out.println(res.get(0).getName());
-
-
-                }
+                List<String> allDependencies = extractDependencies(buildFiles);
+                insightDBService.UpdateRepository(
+                        repo.getIp(),
+                        repo.getClass().getSimpleName(),
+                        repo.getName(),
+                        allDependencies,
+                        project.getKey()
+                );
             }
         }
     }
 
+    /**
+     * For a list of build files, get all the dependencies in
+     *  all of those build files, and output them in a list.
+     * @param buildFiles from a specific repo (presumably).
+     * @return list of dependencies as strings.
+     */
+    private List<String> extractDependencies(List<File> buildFiles) {
+        List<String> dependencies = new ArrayList<>();
+        for(File buildFile : buildFiles) {
+            String fileType = getFileExtension(buildFile.getName());
+
+            if (fileType.equals(".xml")) {
+                log.info("Maven build file found " + buildFile.getName());
+                List<String> newDependencies = xmlParser.parseDependencies(buildFile);
+                if (newDependencies != null) {
+                    dependencies.addAll(newDependencies);
+                } else {
+                    log.warn("No dependencies in Maven build file " + buildFile.getName());
+                }
+
+            } else if (fileType.equals(".gradle")) {
+                log.info("Gradle build file found: " + buildFile.getName());
+                List<String> newDependencies = gradleParser.parseDependencies(buildFile);  // May cause ArrayIndexOutOfBoundsException.
+                if (newDependencies != null) {
+                    dependencies.addAll(newDependencies);
+                } else {
+                    log.warn("No dependencies in Gradle build file: " + buildFile.getName());
+                }
+
+            } else {
+                log.warn("Invalid build file extension: " + fileType);
+            }
+        }
+        return dependencies;
+    }
+
+    /**
+     * Helper method.
+     * Does exactly what you think it does.
+     */
     private String getFileExtension(String fileName) {
         int lastIndexOf = fileName.lastIndexOf(".");
         if (lastIndexOf == -1) {

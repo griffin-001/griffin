@@ -59,6 +59,11 @@ public class BitbucketProject implements Project {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public String toString() {
         return new ToStringCreator(this).
                 append("key", key).

@@ -3,12 +3,12 @@ package com.griffin.cve.api;
 import java.util.HashMap;
 import java.util.List;
 
-import com.griffin.cve.DependencyChecker;
+import com.griffin.cve.CVEScanService;
 import com.griffin.cve.Vulnerability;
 import com.griffin.cve.response.ResponseManager;
 import com.griffin.cve.response.ScanResponse;
-import com.griffin.insightsdb.model.Repository;
-import com.griffin.insightsdb.repository.RepositoryRepository;
+import com.griffin.insightsdb.model.RepositorySnapShot;
+import com.griffin.insightsdb.repository.RepositorySnapShotRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,24 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ScanController {
     private final Logger logger = LoggerFactory.getLogger(ScanController.class);
-    private final DependencyChecker dependencyChecker;
-    private final RepositoryRepository repositoryRepository;
-    private HashMap<Repository, List<Vulnerability>> results = new HashMap<>();
+    private final CVEScanService dependencyChecker;
+    private final RepositorySnapShotRepository repositorySnapShotRepository;
+    private HashMap<RepositorySnapShot, List<Vulnerability>> results = new HashMap<>();
 
-    public ScanController(DependencyChecker dependencyChecker, RepositoryRepository repositoryRepository) {
+    public ScanController(CVEScanService dependencyChecker, RepositorySnapShotRepository repositorySnapShotRepository) {
         this.dependencyChecker = dependencyChecker;
-        this.repositoryRepository = repositoryRepository;
+        this.repositorySnapShotRepository = repositorySnapShotRepository;
     }
 
     @GetMapping("/scan/all")
     public String runScanAll() {
         logger.info("Scanning all dependencies for vulnerabilities...");
-        //TODO Maybe pass in User ID to fetch which repo corresponds to that user and check
-        List<Repository> repositories = repositoryRepository.findAll();
+        //TODO scan latest snapshot only
+        List<RepositorySnapShot> repositories = repositorySnapShotRepository.findAll();
         results = dependencyChecker.checkDependenciesWithCVE(repositories);
         
         logger.info("Preparing response message...");
-        //TODO Convert results into Scan response object for frontend
         ScanResponse response = ResponseManager.getInstance().mapToResponse(results);
         
         return response.toString();

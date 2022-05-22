@@ -19,4 +19,9 @@ public class GitlabProject implements Project {
     public String getKey() {
         return null;
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }

@@ -11,4 +11,6 @@ public interface Project {
     public HashMap<String, BitbucketRepo> getRepoHashMap();
 
     public String getKey();
+
+    public String getName();
 }

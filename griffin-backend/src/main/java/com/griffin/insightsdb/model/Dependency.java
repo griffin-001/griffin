@@ -1,6 +1,10 @@
 package com.griffin.insightsdb.model;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "dependency")
 @Table(name = "dependency")
@@ -19,6 +23,9 @@ public class Dependency {
 
     @Column(name = "category", nullable = false)
     private String category;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "dependency")
+    Set<SnapshotDependency> snapshotDependency = new HashSet<>();
 
     public Dependency(String name, String status, String category) {
         this.name = name;
@@ -60,5 +67,13 @@ public class Dependency {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Set<SnapshotDependency> getSnapshotDependency() {
+        return snapshotDependency;
+    }
+
+    public void setSnapshotDependency(Set<SnapshotDependency> snapshotDependency) {
+        this.snapshotDependency = snapshotDependency;
     }
 }
