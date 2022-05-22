@@ -1,5 +1,6 @@
 package com.griffin.insightsdb.service;
 
+import com.griffin.cve.CVEScanService;
 import com.griffin.insightsdb.model.*;
 import com.griffin.insightsdb.repository.*;
 import org.springframework.stereotype.Component;
@@ -18,16 +19,20 @@ public class InsightDBService {
 
     SnapshotDependencyRepository snapshotDependencyRepository;
 
+    CVEScanService cveScanService;
+
     public InsightDBService(ServerRepository serverRepository,
                             DependencyRepository dependencyRepository,
                             RepositorySnapShotRepository repositoryRepository,
                             TimeStampRepository timeStampRepository,
-                            SnapshotDependencyRepository snapshotDependencyRepository) {
+                            SnapshotDependencyRepository snapshotDependencyRepository,
+                            CVEScanService cveScanService) {
         this.serverRepository = serverRepository;
         this.dependencyRepository = dependencyRepository;
         this.repositorySnapShotRepository = repositoryRepository;
         this.timeStampRepository = timeStampRepository;
         this.snapshotDependencyRepository = snapshotDependencyRepository;
+        this.cveScanService = cveScanService;
     }
 
 
@@ -104,6 +109,7 @@ public class InsightDBService {
 
         //check the project is referenced by other project or not and update the category accordingly
         if (existing_dependency == null){
+
             Dependency new_dependency = new Dependency(name, "normal", "external");
             dependencyRepository.save(new_dependency);
         }else {
@@ -135,13 +141,19 @@ public class InsightDBService {
 
         repositorySnapShotRepository.save(repo);
 
-
-
         //add dependency
         if (dependencies != null) {
 
             for (String dependency : dependencies) {
                 Dependency new_dependency;
+
+                boolean isVulnerable = false;
+                try {
+                     isVulnerable = cveScanService.checkVulnerability(dependency);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
 
                 if (!dependencyRepository.existsByName(dependency)) {
                     new_dependency = new Dependency(dependency, "normal", "external");
@@ -180,13 +192,34 @@ public class InsightDBService {
                             }
                         }
 
+                        if(isVulnerable) {
+                            System.out.println("");
+                            status =  "unresolved";
+                        }
+
                         SnapshotDependency snapshotDependency1 = new SnapshotDependency(new_dependency,
                                 repo, Objects.requireNonNullElse(status, "new_dependency"));
                         snapshotDependencyRepository.save(snapshotDependency1);
                     }
                 }
             }
+
+            if (oldRepoId != -1){
+                List<SnapshotDependency> previous = snapshotDependencyRepository.findByRepositorySnapShotId(oldRepoId);
+                for(SnapshotDependency snapshotDependency: previous){
+                    if (snapshotDependency.getStatus().equals("unresolved")){
+                        Dependency dependency = dependencyRepository.findById(snapshotDependency
+                                .getDependency().getId()).orElse(null);
+                        if (dependency != null && !dependencies.contains(dependency.getName())){
+                            SnapshotDependency snapshotDependency1 =
+                                    new SnapshotDependency(snapshotDependency.getDependency(), repo, "resolved");
+                            snapshotDependencyRepository.save(snapshotDependency1);
+                        }
+                    }
+                }
+            }
         }
+
     }
 
 

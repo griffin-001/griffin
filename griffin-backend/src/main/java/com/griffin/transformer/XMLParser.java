@@ -2,15 +2,22 @@ package com.griffin.transformer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadXML {
-    public static String parseProjectName(File file) {
+@Component
+public class XMLParser {
+    private static final Logger log = LoggerFactory.getLogger(XMLParser.class);
+    public String parseProjectName(File file) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -22,13 +29,12 @@ public class ReadXML {
             return element.getTextContent();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Couldn't parse XML project name");
+            log.warn("Couldn't parse XML project name");
             return null;
         }
     }
 
-    public static List<String> parsePlugins(File file) {
+    public List<String> parsePlugins(File file) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -41,13 +47,12 @@ public class ReadXML {
             return xmlToStrings(pluginList);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Couldn't parse XML plugins");
+            log.warn("Couldn't parse XML plugins");
             return null;
         }
     }
 
-    public static List<String> parseDependencies(File file) {
+    public List<String> parseDependencies(File file) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -60,13 +65,12 @@ public class ReadXML {
             return xmlToStrings(dependencyList);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Couldn't parse XML dependencies");
+            log.warn("Couldn't parse XML dependencies");
             return null;
         }
     }
 
-    public static List<String> parseProperties(File file) {
+    public List<String> parseProperties(File file) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -79,13 +83,12 @@ public class ReadXML {
             return xmlToStrings(dependencyList);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Couldn't parse XML properties");
+            log.warn("Couldn't parse XML properties");
             return null;
         }
     }
 
-    private static List<String> xmlToStrings(NodeList dependencyList) {
+    private List<String> xmlToStrings(NodeList dependencyList) {
         List<String> stringList = new ArrayList<>();
 
         for(int i = 0; i < dependencyList.getLength(); i++) {

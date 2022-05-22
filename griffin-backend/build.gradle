@@ -26,10 +26,10 @@ dependencies {
 
 	// TODO: Why are we using an old version if we don't have to?
 	implementation 'com.vladmihalcea:hibernate-types-52:2.16.2'
-	// implementation 'com.vladmihalcea:hibernate-types-60:2.16.2'
+//	 implementation 'com.vladmihalcea:hibernate-types-60:2.16.2'
 
 	testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
-
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 tasks.named('test') {

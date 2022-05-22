@@ -7,7 +7,6 @@ import com.griffin.collector.gitlab.GitlabWrapper;
 import com.griffin.config.BitbucketProperties;
 import com.griffin.insightsdb.model.TimeStamp;
 import com.griffin.insightsdb.repository.TimeStampRepository;
-import com.griffin.insightsdb.service.InsightDBService;
 import com.griffin.transformer.TransformerService;
 
 import org.slf4j.Logger;

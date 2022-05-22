@@ -27,6 +27,7 @@ spring:
   jpa:
     show-sql: true
 
+
 noclones: false
 minimalclones: true
 
