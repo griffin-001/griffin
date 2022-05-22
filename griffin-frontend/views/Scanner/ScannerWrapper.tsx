@@ -1,17 +1,12 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import Scanner from "./Scanner";
-import {
-  sampleScanResults,
-  testVulnerabilities
-} from "../../constants/sampleScanResults";
-import PageContainer from "../../components/PageContainer";
-import Heading from "../../components/Text/Heading";
-import {Box, CircularProgress} from "@mui/material";
 import ErrorPage from "../../components/ErrorPage";
 import LoadingPage from "../../components/LoadingPage";
-import {readScanHistory} from "../../apis/scanHistoryApis";
+import {
+  readScanHistory,
+  readUpdatedScanHistory
+} from "../../apis/scanHistoryApis";
 import useCancelAxiosOnUnmount from "../../hooks/useCancelAxiosOnUnmount";
-import BodyText from "../../components/Text/BodyText";
 
 interface Props {
   // this function should not take any props for the time being
@@ -35,7 +30,7 @@ interface Props {
 /////////////////////////////////////////////////
 
 
-// todo this contains the logic for the scan component
+// this contains the logic for the scan component
 const ScannerWrapper: FunctionComponent<Props> = (props) => {
 
   // This will store our data
@@ -44,23 +39,19 @@ const ScannerWrapper: FunctionComponent<Props> = (props) => {
   // This will store if we are loading
   const [loading, setLoading] = useState<boolean>(true);
 
-  // todo remove this - this is a test
-  const [test, setTest] = useState(null);
-
   // this is for when the scanner page initially loads
   useEffect(() => {
 
     readScanHistory()
       .then((response) => {
+        console.log(response)
 
-        // todo remove this once loading is properly implemented
-        setListOfScans(sampleScanResults);
-        console.log(response);
-        setTest(response.data);
 
-        // todo this is the actual implementation
-        // setListOfScans(response.data);
+        // this is some demo data
+        // setListOfScans(sampleScanResults);
 
+        // actual response
+        setListOfScans(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -73,31 +64,24 @@ const ScannerWrapper: FunctionComponent<Props> = (props) => {
   // this contains an axios cleanup function
   useCancelAxiosOnUnmount();
 
-  // todo this is what call the update function, and runs the scanner
+  // this is what call the update function, and runs the scanner
   function runScanner() {
     // first we set it to loading
     setLoading(true);
 
     // do the call
-
-    // make sure we handle then
-    // after the call occurs, ensure you have a:
-    // .then((res) => {
-    // setListOfScans(res);
-    // setLoading(false);
-    // }
+    readUpdatedScanHistory()
+      .then((response) => {
+        setListOfScans(response.data);
+        // done loading
+        setLoading(false);
+      });
   }
 
   if (loading) return <LoadingPage/>;
   if (!listOfScans) return <ErrorPage/>;
 
   return (
-    // todo this is just a test
-    // <BodyText>
-    //   {JSON.stringify(test)}
-    // </BodyText>
-
-    // todo comment this back in later
     <Scanner listOfScans={listOfScans} runScanner={runScanner}/>
   );
 };

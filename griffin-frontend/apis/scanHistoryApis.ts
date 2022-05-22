@@ -1,13 +1,25 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'http://52.65.89.122/',
+  // this is the old test one
+  // baseURL: 'http://52.65.89.122/',
+
+  // this is the new one
+  baseURL: 'http://52.65.89.122:80/',
 });
 
 export async function readScanHistory() {
-  return await instance.get("test/simple"); // todo
+  // old
+  // return await instance.get("test/simple");
+  // new
+  return await instance.get("before");
+
 }
 
 export async function readUpdatedScanHistory() {
-  return await instance.get("test/simple"); // todo
+  // old
+  // return await instance.get("test/simple");
+
+  // new
+  return await instance.get("after");
 }
