@@ -35,31 +35,34 @@ public class InsightDBService {
     }
 
 
+    /**
+     *
+     * @param ip ip of the server
+     * @param type type of the server
+     * @param name name of the repository
+     * @param dependencies dependencies
+     * @param project project that the repository belongs to
+     */
     public void UpdateRepository(String ip, String type, String name, List<String> dependencies, String project){
 
+        System.out.println("----------------------------------------------------");
         //find the latest timestamps and second-latest timestamp
         List<TimeStamp> timestamps = timeStampRepository.findAllByOrderByTimestampDesc();
-        TimeStamp latest = timestamps.get(0);
+        TimeStamp latestTimeStamp = timestamps.get(0);
 
-
-
-        if(latest == null){
-            TimeStamp timeStamp = new TimeStamp();
-            timeStampRepository.save(timeStamp);
-            latest = timeStamp;
-        }
         
-        TimeStamp second_latest = null;
-        Long current_id;
+        TimeStamp secondLatestTimeStamp = null;
+        Long currentRepoId;
 
+        //find the time stamp prior to the latest one
         if (timestamps.size() > 1){
-            second_latest = timestamps.get(1);
+            secondLatestTimeStamp = timestamps.get(1);
         }
 
         //get the corresponding server
         Server server = null;
 
-        for (Server s : latest.getServer()){
+        for (Server s : latestTimeStamp.getServer()){
             if(s.getIp().equals(ip)){
                 server = s;
                 break;
@@ -67,26 +70,26 @@ public class InsightDBService {
         }
 
 
-
         //create server if server not found, then create new snapshot on it
         if (server == null){
 
-            Server new_server = new Server(ip, type, latest);
+            Server new_server = new Server(ip, type, latestTimeStamp);
             serverRepository.save(new_server);
 
             RepositorySnapShot repository = new RepositorySnapShot(name, new_server, project);
             new_server.getRepository().add(repository);
             repositorySnapShotRepository.save(repository);
 
-            current_id = repository.getId();
-            latest.getServer().add(new_server);
+            currentRepoId = repository.getId();
+            latestTimeStamp.getServer().add(new_server);
 
             serverRepository.save(new_server);
-            timeStampRepository.save(latest);
+            timeStampRepository.save(latestTimeStamp);
         }else{
 
-
+            //if server exist, create or get the repository that need update
             RepositorySnapShot repository = null;
+
             for(RepositorySnapShot repositorySnapShot: server.getRepository()){
                 if (repositorySnapShot.getProject().equals(project) && repositorySnapShot.getName().equals(name)){
                     repository = repositorySnapShot;
@@ -99,46 +102,52 @@ public class InsightDBService {
                 repositorySnapShotRepository.save(repository);
                 serverRepository.save(server);
             }
-            current_id = repository.getId();
+            currentRepoId = repository.getId();
         }
 
 
 
-        Dependency existing_dependency = dependencyRepository.findByName(name);
+        Dependency existingDependency = dependencyRepository.findByName(name);
 
         //check the repository is referenced by other repository or not and update the category accordingly
-        if (existing_dependency == null){
+        if (existingDependency == null){
 
             Dependency new_dependency = new Dependency(name, "normal", "external");
             dependencyRepository.save(new_dependency);
         }else {
-            existing_dependency.setCategory("internal");
-            dependencyRepository.save(existing_dependency);
+            existingDependency.setCategory("internal");
+            dependencyRepository.save(existingDependency);
         }
 
-        RepositorySnapShot repo = repositorySnapShotRepository.findById(current_id).orElse(null);
+        RepositorySnapShot currentRepo = repositorySnapShotRepository.findById(currentRepoId).orElse(null);
 
         List<RepositorySnapShot> repos = repositorySnapShotRepository.findByName(name);
 
         Long oldRepoId = (long) -1;
 
-
-
-        if(second_latest != null){
+        //find the current repository in last time stamp
+        if(secondLatestTimeStamp != null){
             for(RepositorySnapShot repositorySnapShot: repos){
                 if (repositorySnapShot.getServer().getTimeStamp().getTimestamp()
-                        .compareTo(second_latest.getTimestamp()) == 0
-                &&repositorySnapShot.getProject().equals(repo.getProject())){
+                        .compareTo(secondLatestTimeStamp.getTimestamp()) == 0
+                &&repositorySnapShot.getProject().equals(currentRepo.getProject())){
                     oldRepoId = repositorySnapShot.getId();
                     break;
                 }
             }
         }
 
-        repositorySnapShotRepository.findById(oldRepoId).
-                ifPresent(oldRepo -> repo.getVulnerabilities().addAll(oldRepo.getVulnerabilities()));
+        //inheriting vulnerability history
+        RepositorySnapShot prevRepo = repositorySnapShotRepository.findById(oldRepoId).orElse(null);
+        if (prevRepo != null){
+            for(String vulnerabilities: prevRepo.getVulnerabilities()){
+                if (!currentRepo.getVulnerabilities().contains(vulnerabilities)){
+                    currentRepo.getVulnerabilities().add(vulnerabilities);
+                }
+            }
+        }
 
-        repositorySnapShotRepository.save(repo);
+        repositorySnapShotRepository.save(currentRepo);
 
         //add dependency
         if (dependencies != null) {
@@ -163,77 +172,92 @@ public class InsightDBService {
                 }
 
                 //find the relationship in between snapshot and dependency in last timestamp
-                if (second_latest == null) {
+                if (secondLatestTimeStamp == null) {
                     if (snapshotDependencyRepository.
-                            findByDependencyIdAndRepositorySnapShotId(new_dependency.getId(), repo.getId()) == null){
+                            findByDependencyIdAndRepositorySnapShotId(new_dependency.getId(), currentRepo.getId()) == null){
 
+                        SnapshotDependency snapshotDependency;
                         if(isVulnerable){
-                            SnapshotDependency snapshotDependency =
-                                    new SnapshotDependency(new_dependency, repo, "new_vulnerability");
-                            snapshotDependencyRepository.save(snapshotDependency);
+                            snapshotDependency = new SnapshotDependency(new_dependency, currentRepo, "new_vulnerability");
                         }else {
-                            SnapshotDependency snapshotDependency =
-                                    new SnapshotDependency(new_dependency, repo, "new_dependency");
-                            snapshotDependencyRepository.save(snapshotDependency);
+                            snapshotDependency = new SnapshotDependency(new_dependency, currentRepo, "new_dependency");
                         }
+                        snapshotDependencyRepository.save(snapshotDependency);
 
 
                     }
                 } else {
                     if (snapshotDependencyRepository.
-                            findByDependencyIdAndRepositorySnapShotId(new_dependency.getId(), repo.getId()) == null){
+                            findByDependencyIdAndRepositorySnapShotId(new_dependency.getId(), currentRepo.getId()) == null){
                         Long dependency_id = dependencyRepository.findByName(dependency).getId();
 
                         String status = null;
 
-                        SnapshotDependency snapshotDependency = snapshotDependencyRepository.
+                        SnapshotDependency prevSnapshotDependency = snapshotDependencyRepository.
                                 findByDependencyIdAndRepositorySnapShotId(dependency_id, oldRepoId);
-                        if(isVulnerable) {
-                            status =  "new_vulnerability";
-                            if (!repo.getVulnerabilities().contains(dependency)){
-                                repo.getVulnerabilities().add(dependency);
-                            }
-                        }
 
-                        if (snapshotDependency == null && repo.getVulnerabilities().size() > 0
-                                && repo.getVulnerabilities().contains(dependency)) {
-                            status = "unresolved";
-                        } else if(snapshotDependency != null){
-                            status = snapshotDependency.getStatus();
-                            if (status.equals("new_dependency")){
-                                status = "existing_dependency";
-                            }if(status.equals("new_vulnerability") && isVulnerable){
+
+                        if (prevSnapshotDependency == null) {
+                            if(currentRepo.getVulnerabilities().size() > 0
+                                    && currentRepo.getVulnerabilities().contains(dependency)){
                                 status = "unresolved";
+                            }else if(isVulnerable){
+                                status = "new_vulnerability";
+                            }else {
+                                status = "new_dependency";
+                            }
+
+                        } else {
+                            String preStatus = prevSnapshotDependency.getStatus();
+
+                            if(isVulnerable){
+                                status = "new_vulnerability";
+                            }else if (preStatus.equals("new_dependency")){
+                                status = "existing_dependency";
+                            }else if(preStatus.equals("existing_dependency")){
+                                status = "existing_dependency";
+                            }
+
+                            if(preStatus.equals("new_vulnerability") && isVulnerable){
+                                status = "unresolved";
+                            }if(preStatus.equals("unresolved") && isVulnerable){
+                                status = "unresolved";
+                            }if(preStatus.equals("resolved")){
+                                status = "exclude";
                             }
                         }
 
-                        if (status == null) status = "new_dependency";
 
-                        if(!status.equals("resolved")){
+                        if(status != null && !status.equals("exclude")){
                             SnapshotDependency snapshotDependency1 = new SnapshotDependency(new_dependency,
-                                    repo, status);
+                                    currentRepo, status);
                             snapshotDependencyRepository.save(snapshotDependency1);
                         }
                     }
                 }
+
+                if(isVulnerable) {
+                    if (!currentRepo.getVulnerabilities().contains(dependency)){
+                        currentRepo.getVulnerabilities().add(dependency);
+                    }
+                }
             }
+            repositorySnapShotRepository.save(currentRepo);
 
             if (oldRepoId != -1){
                 List<SnapshotDependency> previous = snapshotDependencyRepository.findByRepositorySnapShotId(oldRepoId);
-                for(SnapshotDependency snapshotDependency: previous){
-                    if (snapshotDependency.getStatus().equals("unresolved")){
-                        Dependency dependency = dependencyRepository.findById(snapshotDependency
-                                .getDependency().getId()).orElse(null);
-                        if (dependency != null && !dependencies.contains(dependency.getName())){
-                            SnapshotDependency snapshotDependency1 =
-                                    new SnapshotDependency(snapshotDependency.getDependency(), repo, "resolved");
-                            snapshotDependencyRepository.save(snapshotDependency1);
+                for(SnapshotDependency prevRecord: previous){
+                    if (prevRecord.getStatus().equals("unresolved")){
+                        if (!dependencies.contains(prevRecord.getDependency().getName())){
+                            System.out.println("----------------------------------------------------------");
+                            SnapshotDependency resolved =
+                                    new SnapshotDependency(prevRecord.getDependency(), currentRepo, "resolved");
+                            snapshotDependencyRepository.save(resolved);
                         }
                     }
                 }
             }
         }
-        repositorySnapShotRepository.save(repo);
     }
 
 
