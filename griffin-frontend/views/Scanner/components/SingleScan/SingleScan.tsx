@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from "react";
+import React, {FunctionComponent, useEffect} from "react";
 import {Divider, Grid, Link, Stack, Typography} from "@mui/material";
 import Section from "../../../../components/Section";
 
@@ -10,12 +10,17 @@ interface Props {
 }
 
 const SingleScan: FunctionComponent<Props> = (props) => {
+
+  useEffect(() => {
+    console.log(props.scan.summary)
+  }, [props]);
+
   return (
     <Section border>
       <Grid container sx={{height: "100%"}}>
         <Grid item xs={4} sx={{borderRight: 1}}>
           <SummaryInfo
-            dateString={props.scan.dateString}
+            date={props.scan.date}
             summary={props.scan.summary}
           />
         </Grid>

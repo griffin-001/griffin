@@ -5,7 +5,7 @@ const instance = axios.create({
   // baseURL: 'http://52.65.89.122/',
 
   // this is the new one
-  baseURL: 'http://52.65.89.122:80/',
+  baseURL: 'http://54.79.241.62:80/',
 });
 
 export async function readScanHistory() {
