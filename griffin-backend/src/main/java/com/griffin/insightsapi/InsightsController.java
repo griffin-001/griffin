@@ -38,11 +38,11 @@ public class InsightsController {
     public ResponseEntity<JSONArray> before() {
         JSONObject summary = new JSONObject();
         summary.put("newVulnerabilities", 0);
-        summary.put("unresolvedExistingVulnerabilities", 3);
-        summary.put("resolvedExistingVulnerabilities", 0);
-        summary.put("projectsAffected", 1);
+        summary.put("unresolvedExistingVulnerabilities", 0);
+        summary.put("resolvedExistingVulnerabilities", 3);
+        summary.put("projectsAffected", 0);
         summary.put("totalProjects", 1);
-        summary.put("repositoriesAffected", 1);
+        summary.put("repositoriesAffected", 0);
         summary.put("totalRepositories", 1);
 
         JSONArray data = new JSONArray();
@@ -142,11 +142,11 @@ public class InsightsController {
 
         JSONObject summary2 = new JSONObject();
         summary2.put("newVulnerabilities", 0);
-        summary2.put("unresolvedExistingVulnerabilities", 3);
-        summary2.put("resolvedExistingVulnerabilities", 0);
-        summary2.put("projectsAffected", 1);
+        summary2.put("unresolvedExistingVulnerabilities", 0);
+        summary2.put("resolvedExistingVulnerabilities", 3);
+        summary2.put("projectsAffected", 0);
         summary2.put("totalProjects", 1);
-        summary2.put("repositoriesAffected", 1);
+        summary2.put("repositoriesAffected", 0);
         summary2.put("totalRepositories", 1);
 
         JSONArray data2 = new JSONArray();
