@@ -29,9 +29,9 @@ public class InsightsController {
     @GetMapping("/allDeps")
     public String allDeps() {
         logger.info("Getting all deps...");
-        List<Dependency> dependensies = insightDBService.findAllDependencies();
+        List<Dependency> dependencies = insightDBService.findAllDependencies();
 
-        return dependensies.toString();
+        return dependencies.toString();
     }
 
     @GetMapping("/before")
@@ -48,27 +48,27 @@ public class InsightsController {
         JSONArray data = new JSONArray();
 
         JSONObject p1 = new JSONObject();
-        p1.put("projectName", "assertj");
-        p1.put("repoName", "assertj-core");
+        p1.put("projectName", "Dummy");
+        p1.put("repoName", "gorm-hibernate5");
         p1.put("dependencyName", "org.eclipse.jgit");
         p1.put("dependencyVersion", "6.1.0.202203080745-r");
-        p1.put("vulnerabilityStatus", "unresolved");
+        p1.put("vulnerabilityStatus", "resolved");
         data.add(p1);
 
         JSONObject p2 = new JSONObject();
-        p2.put("projectName", "assertj");
-        p2.put("repoName", "assertj-core");
+        p2.put("projectName", "Dummy");
+        p2.put("repoName", "gorm-hibernate5");
         p2.put("dependencyName", "org.springframework.boot:spring-boot-starter");
         p2.put("dependencyVersion", "2.7.0");
-        p2.put("vulnerabilityStatus", "unresolved");
+        p2.put("vulnerabilityStatus", "resolved");
         data.add(p2);
 
         JSONObject p3 = new JSONObject();
-        p3.put("projectName", "assertj");
-        p3.put("repoName", "assertj-core");
+        p3.put("projectName", "Dummy");
+        p3.put("repoName", "gorm-hibernate5");
         p3.put("dependencyName", "org.springframework.boot:spring-boot-starter-web");
         p3.put("dependencyVersion", "2.7.0");
-        p3.put("vulnerabilityStatus", "unresolved");
+        p3.put("vulnerabilityStatus", "resolved");
         data.add(p3);
 
         String date = "2022-05-22T06:49:04.971978458Z";
@@ -98,32 +98,32 @@ public class InsightsController {
         JSONArray data = new JSONArray();
 
         JSONObject p1 = new JSONObject();
-        p1.put("projectName", "assertj");
-        p1.put("repoName", "assertj-core");
+        p1.put("projectName", "Dummy");
+        p1.put("repoName", "gorm-hibernate5");
         p1.put("dependencyName", "org.eclipse.jgit");
         p1.put("dependencyVersion", "6.1.0.202203080745-r");
         p1.put("vulnerabilityStatus", "resolved");
         data.add(p1);
 
         JSONObject p2 = new JSONObject();
-        p2.put("projectName", "assertj");
-        p2.put("repoName", "assertj-core");
+        p2.put("projectName", "Dummy");
+        p2.put("repoName", "gorm-hibernate5");
         p2.put("dependencyName", "org.springframework.boot:spring-boot-starter");
         p2.put("dependencyVersion", "2.7.0");
         p2.put("vulnerabilityStatus", "resolved");
         data.add(p2);
 
         JSONObject p3 = new JSONObject();
-        p3.put("projectName", "assertj");
-        p3.put("repoName", "assertj-core");
+        p3.put("projectName", "Dummy");
+        p3.put("repoName", "gorm-hibernate5");
         p3.put("dependencyName", "org.springframework.boot:spring-boot-starter-web");
         p3.put("dependencyVersion", "2.7.0");
         p3.put("vulnerabilityStatus", "resolved");
         data.add(p3);
 
         JSONObject log4j = new JSONObject();
-        log4j.put("projectName", "assertj");
-        log4j.put("repoName", "assertj-core");
+        log4j.put("projectName", "Dummy");
+        log4j.put("repoName", "gorm-hibernate5");
         log4j.put("dependencyName", "org.apache.logging.log4j");
         log4j.put("dependencyVersion", "2.13.0");
         log4j.put("vulnerabilityStatus", "new");
@@ -152,27 +152,27 @@ public class InsightsController {
         JSONArray data2 = new JSONArray();
 
         JSONObject p12 = new JSONObject();
-        p12.put("projectName", "assertj");
-        p12.put("repoName", "assertj-core");
+        p12.put("projectName", "Dummy");
+        p12.put("repoName", "gorm-hibernate5");
         p12.put("dependencyName", "org.eclipse.jgit");
         p12.put("dependencyVersion", "6.1.0.202203080745-r");
-        p12.put("vulnerabilityStatus", "unresolved");
+        p12.put("vulnerabilityStatus", "resolved");
         data2.add(p12);
 
         JSONObject p22 = new JSONObject();
-        p22.put("projectName", "assertj");
-        p22.put("repoName", "assertj-core");
+        p22.put("projectName", "Dummy");
+        p22.put("repoName", "gorm-hibernate5");
         p22.put("dependencyName", "org.springframework.boot:spring-boot-starter");
         p22.put("dependencyVersion", "2.7.0");
-        p22.put("vulnerabilityStatus", "unresolved");
+        p22.put("vulnerabilityStatus", "resolved");
         data2.add(p22);
 
         JSONObject p32 = new JSONObject();
-        p32.put("projectName", "assertj");
-        p32.put("repoName", "assertj-core");
+        p32.put("projectName", "Dummy");
+        p32.put("repoName", "gorm-hibernate5");
         p32.put("dependencyName", "org.springframework.boot:spring-boot-starter-web");
         p32.put("dependencyVersion", "2.7.0");
-        p32.put("vulnerabilityStatus", "unresolved");
+        p32.put("vulnerabilityStatus", "resolved");
         data2.add(p32);
 
         String date2 = "2022-05-22T06:49:04.971978458Z";
