@@ -23,17 +23,44 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+This application is automatically deployed to [Vercel](https://griffin-mu.vercel.app/scanner) continuously integrated on the main branch of this repository.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you wish to deploy this manually, the steps to build and run the frontend include: 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Build the frontend artifacts
 
-## Deploy on Vercel
+```
+yarn build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Then, start your frontend
+```
+yarn start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Development
+
+### IDE
+
+Webstorm is **Strongly** recommended as an IDE. As students, we have access to the enterprise version for free.
+
+To work on the frontend, open this directory as a project in Webstorm.
+
+### File Structure
+
+#### Views
+Views describe what a specific page should be displaying. A file here should include all the code for displaying one single page within the project. If a component is specific to one page, put it here.
+
+#### Pages 
+All pages within the project should have their own file, displaying the view of that page.
+
+#### Components (Global components)
+All components that are not specific to one page should be put here.
+
+#### APIs (Connecting to the backend)
+Different API call groups should be put here in the same file. 
+
