@@ -6,7 +6,12 @@ The system is split into two components, stored in  `griffin-frontend` and `grif
 
 ## Frontend
 
-TODO
+The frontend consists of multiple components and pages in an organised file structure, including:
+
+- Views (Page specific files)
+- Pages 
+- Components (Global components)
+- APIs (Connecting to the backend)
 
 For development instructions see the [readme](griffin-frontend/README.md) in griffin-frontend.
 
