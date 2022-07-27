@@ -8,3 +8,5 @@
 *.class
 /output
 
+
+megalinter-reports/
