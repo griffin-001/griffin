@@ -44,4 +44,6 @@ repo-build-files/
 
 ### H2 Database ###
 *.mv.db
+megalinter-reports/
+
 
